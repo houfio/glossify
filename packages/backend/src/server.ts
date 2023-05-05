@@ -9,6 +9,7 @@ import { schema } from './schema';
 const yoga = createYoga({
   schema,
   graphqlEndpoint: '/',
+  landingPage: false,
   context: async ({ request }) => {
     const token = request.headers.get('Authorization') || '';
 
