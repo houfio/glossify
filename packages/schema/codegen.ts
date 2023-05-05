@@ -1,4 +1,4 @@
-import { schema } from '@glossify/backend';
+import { schema } from '@glossify/backend/src/schema';
 import type { CodegenConfig } from '@graphql-codegen/cli';
 import { printSchema } from 'graphql';
 
