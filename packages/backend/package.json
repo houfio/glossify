@@ -2,8 +2,9 @@
   "name": "@glossify/backend",
   "version": "0.0.0",
   "scripts": {
-    "build": "npm run generate",
+    "build": "npm run generate && prisma migrate deploy",
     "generate": "prisma generate",
+    "migrate": "prisma migrate dev",
     "start": "node -r @swc-node/register dev.ts",
     "lint": "eslint ."
   },
