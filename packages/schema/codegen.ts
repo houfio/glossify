@@ -4,7 +4,7 @@ import { printSchema } from 'graphql';
 
 const config: CodegenConfig = {
   schema: printSchema(schema),
-  documents: '../frontend/src/**/*.tsx',
+  documents: '../frontend/src/**/*.{ts,tsx}',
   generates: {
     './src/': {
       preset: 'client'

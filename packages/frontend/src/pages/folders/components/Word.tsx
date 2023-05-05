@@ -1,16 +1,9 @@
 import { useDraggable } from '@dnd-kit/core';
 import { faGripDotsVertical } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FragmentType, graphql, useFragment } from '@glossify/schema';
+import { FragmentType, useFragment } from '@glossify/schema';
 
-const WordFragment = graphql(`
-  fragment WordFragment on Word {
-    id
-    left
-    right
-    type
-  }
-`);
+import { WordFragment } from '../../../fragments.ts';
 
 type Props = {
   word: FragmentType<typeof WordFragment>

@@ -1,5 +1,5 @@
 import { faAdd, faFilePlus } from '@fortawesome/pro-regular-svg-icons';
-import { CreateWordInput, graphql, WordType } from '@glossify/schema';
+import { CreateWordInput, FragmentType, graphql, useFragment, WordType } from '@glossify/schema';
 import { DialoogProps } from 'dialoog';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'urql';
@@ -8,6 +8,7 @@ import { AddDialog } from '../../../components/dialogs/AddDialog.tsx';
 import { Button } from '../../../components/forms/Button.tsx';
 import { Form } from '../../../components/forms/Form.tsx';
 import { Input } from '../../../components/forms/Input.tsx';
+import { ParentFragment } from '../../../fragments.ts';
 import { useNotifications } from '../../../hooks/useNotifications.tsx';
 
 const mutation = graphql(`
@@ -19,13 +20,14 @@ const mutation = graphql(`
 `);
 
 type Props = DialoogProps & {
-  folderId: string
+  folder: FragmentType<typeof ParentFragment>
 };
 
-export function AddWordDialog({ folderId, ...props }: Props) {
+export function AddWordDialog({ folder, ...props }: Props) {
+  const folderData = useFragment(ParentFragment, folder);
   const form = useForm({
     defaultValues: {
-      folderId,
+      folderId: folderData.id,
       left: '',
       right: '',
       tagIds: [],
@@ -56,8 +58,8 @@ export function AddWordDialog({ folderId, ...props }: Props) {
       {...props}
     >
       <Form form={form} onSubmit={add}>
-        <Input name="left" label="Source word"/>
-        <Input name="right" label="Destination word"/>
+        <Input name="left" label={`Source word (${folderData.leftFlag})`}/>
+        <Input name="right" label={`Destination word (${folderData.rightFlag})`}/>
         <Button text="Add" icon={faAdd}/>
       </Form>
     </AddDialog>

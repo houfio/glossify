@@ -50,7 +50,7 @@ export function Folders() {
   const [, { open }] = useDialoog();
 
   const folders = data.data?.me?.folders ?? data.data?.folder?.children ?? [];
-  const words = data.data?.folder?.words ?? [];
+  const folder = data.data?.folder;
 
   return (
     <Page
@@ -59,8 +59,11 @@ export function Folders() {
         icon: faFilePlus,
         iconOnly: 'laptop',
         disabled: !params.id,
-        onClick: open.c((props) => (
-          <AddWordDialog folderId={params.id!} {...props}/>
+        onClick: folder && open.c((props) => (
+          <AddWordDialog
+            folder={folder}
+            {...props}
+          />
         ))
       }, {
         text: 'Add folder',
@@ -96,12 +99,12 @@ export function Folders() {
             </Column>
           ))}
         </Row>
-        {Boolean(words.length) && (
+        {folder && (
           <>
             <div className={styles.words}>
               Words
             </div>
-            {words.map((word) => (
+            {folder.words.map((word) => (
               <Word key={word.id} word={word}/>
             ))}
           </>

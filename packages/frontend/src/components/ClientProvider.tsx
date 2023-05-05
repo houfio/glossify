@@ -1,7 +1,8 @@
 import { authExchange } from '@urql/exchange-auth';
+import { cacheExchange } from '@urql/exchange-graphcache';
 import { createClient as createWSClient } from 'graphql-ws';
 import { ReactNode, useMemo } from 'react';
-import { cacheExchange, Client, fetchExchange, Provider, subscriptionExchange } from 'urql';
+import { Client, fetchExchange, Provider, subscriptionExchange } from 'urql';
 
 import { useAuthentication } from '../states/authentication.ts';
 
@@ -19,7 +20,7 @@ export function ClientProvider({ children }: Props) {
     return new Client({
       url: import.meta.env.VITE_API_URL,
       exchanges: [
-        cacheExchange,
+        cacheExchange(),
         authExchange(async (utils) => ({
           addAuthToOperation: (operation) => !token ? operation : utils.appendHeaders(operation, {
             Authorization: `Bearer ${token}`
