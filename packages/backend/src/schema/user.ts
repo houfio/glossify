@@ -7,7 +7,8 @@ import { db } from '../db';
 
 const User = builder.prismaObject('User', {
   authScopes: (user, { userId }) => user.id === userId ? true : {
-    admin: true
+    admin: true,
+    $granted: 'readUser'
   },
   fields: (t) => ({
     id: t.exposeID('id'),
@@ -63,6 +64,7 @@ builder.mutationField('register', (t) => t.prismaField({
   args: {
     input: t.arg({ type: RegisterInput, required: true })
   },
+  grantScopes: ['readUser'],
   resolve: async (query, _, { input }) => db.user.create({
     ...query,
     data: {
@@ -92,6 +94,7 @@ builder.mutationField('login', (t) => t.field({
   args: {
     input: t.arg({ type: LoginInput, required: true })
   },
+  grantScopes: ['readUser'],
   resolve: async (query, { input }) => {
     const user = await db.user.findUniqueOrThrow({
       where: { email: input.email }
