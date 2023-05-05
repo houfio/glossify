@@ -1,0 +1,19 @@
+.dialog {
+  display: flex;
+  flex-direction: column;
+  max-width: 25rem;
+}
+
+.icon {
+  color: var(--secondary);
+}
+
+.title {
+  margin: 1rem 0;
+  align-self: center;
+  font-size: 1.25rem;
+}
+
+.subtitle {
+  margin-bottom: 1rem;
+}

@@ -1,0 +1,86 @@
+@import "../../../utils";
+
+.wrapper {
+  position: relative;
+  transition: transform .25s ease, opacity .25s ease;
+
+  &.dragging {
+    transition: none;
+    z-index: 1000;
+  }
+
+  &.over {
+    opacity: .5;
+    transform: scale(.95);
+  }
+}
+
+.handle {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  padding: .1rem;
+  cursor: grab;
+  touch-action: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 8.5rem;
+  padding: 1rem;
+  color: var(--on-secondary-container);
+  background-color: var(--secondary-container);
+  border-radius: 1rem;
+  text-decoration: none;
+  transition: border-radius .25s ease;
+
+  &:active {
+    border-radius: 2.5rem;
+  }
+
+  &.parent {
+    padding: 2rem;
+    color: var(--on-surface-container);
+    background-color: var(--surface-container);
+    border-radius: 2.5rem;
+
+    &:active {
+      border-radius: 1rem;
+    }
+  }
+
+  &:not(.parent) .title {
+    text-indent: 1rem;
+  }
+
+  &:not(.dragging) {
+    @include with-interactions(--on-secondary-container);
+  }
+}
+
+.title {
+  display: -webkit-box;
+  margin-bottom: .5rem;
+  font-size: 1.25rem;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.subtitle {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  font-size: .75rem;
+}
+
+.details {
+  display: flex;
+  gap: .5rem;
+
+  &.end {
+    align-self: flex-end;
+  }
+}

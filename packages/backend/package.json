@@ -1,0 +1,25 @@
+{
+  "name": "@glossify/backend",
+  "version": "0.0.0",
+  "scripts": {
+    "generate": "prisma generate",
+    "start": "node -r @swc-node/register src/server.ts",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@pothos/core": "^3.30.0",
+    "@pothos/plugin-prisma": "^3.50.0",
+    "@pothos/plugin-scope-auth": "^3.19.1",
+    "@pothos/plugin-validation": "^3.9.1",
+    "@pothos/plugin-simple-objects": "^3.6.8",
+    "@prisma/client": "^4.13.0",
+    "bcrypt": "^5.1.0",
+    "graphql-subscriptions": "^2.0.0",
+    "graphql-yoga": "^3.9.1"
+  },
+  "devDependencies": {
+    "@swc-node/register": "^1.6.5",
+    "@types/bcrypt": "^5.0.0",
+    "prisma": "^4.13.0"
+  }
+}

@@ -1,0 +1,37 @@
+.wrapper {
+  position: relative;
+  display: block;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  padding: 1.4rem 1rem .6rem;
+  border: 1px solid var(--outline);
+  border-radius: .25rem;
+  transition: border-color .25s ease;
+
+  &:focus {
+    border-color: var(--primary);
+
+    & ~ .label {
+      color: var(--primary);
+    }
+  }
+
+  &:not(:placeholder-shown) ~ .label, &:focus ~ .label {
+    top: .5rem;
+    font-size: .75rem;
+  }
+}
+
+.label {
+  position: absolute;
+  left: .5rem;
+  top: calc(50% - .6rem);
+  padding: 0 .5rem;
+  color: var(--on-surface-variant);
+  pointer-events: none;
+  transition: top .25s ease, font-size .25s ease;
+}

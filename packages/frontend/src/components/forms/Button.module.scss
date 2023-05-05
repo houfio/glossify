@@ -1,0 +1,40 @@
+@import "../../utils";
+
+.button {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
+  padding: 1rem;
+  color: var(--on-primary);
+  background-color: var(--primary);
+  border-radius: 2rem;
+  font-weight: 600;
+  transition: opacity .25s ease, border-radius .25s ease;
+
+  &:disabled {
+    opacity: .4;
+    pointer-events: none;
+  }
+
+  &:active {
+    border-radius: 1rem;
+  }
+
+  @include with-interactions(--on-primary);
+}
+
+.iconOnly {
+  display: none;
+
+  @each $breakpoint, $width in $breakpoints {
+    @if $width > 0 {
+      &.#{$breakpoint} {
+        @include with-breakpoint($breakpoint) {
+          display: inline;
+        }
+      }
+    }
+  }
+}

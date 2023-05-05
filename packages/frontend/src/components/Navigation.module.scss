@@ -1,0 +1,96 @@
+@import "../utils";
+
+.navigation {
+  position: sticky;
+  display: flex;
+  bottom: 0;
+  background-color: var(--surface-container);
+
+  @include with-breakpoint(laptop) {
+    flex-direction: column;
+    top: 0;
+    height: 100vh;
+  }
+}
+
+.logo {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 5.5rem;
+  color: var(--on-surface-container);
+  font-family: "Lora", serif;
+  font-size: 2rem;
+
+  @include with-breakpoint(laptop) {
+    display: flex;
+  }
+}
+
+.item {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  padding: .75rem 0 1rem;
+  text-decoration: none;
+
+  &:hover .state::before {
+    opacity: 8%;
+  }
+
+  &:active .state::before,  &:focus .state::before {
+    opacity: 12%;
+  }
+
+  &.active .state::after {
+    transform: none;
+    opacity: 1;
+  }
+
+  @include with-breakpoint(laptop) {
+    flex: 0;
+    padding: .75rem;
+  }
+}
+
+.wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 4rem;
+  height: 2rem;
+  margin-bottom: .25rem;
+}
+
+.state::before, .state::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  border-radius: 1rem;
+  transition: all .25s ease;
+}
+
+.state::before {
+  background-color: var(--on-surface);
+}
+
+.state::after {
+  background-color: var(--secondary-container);
+  transform: scaleX(0);
+}
+
+.icon {
+  position: absolute;
+  color: var(--on-secondary-container);
+}
+
+.label {
+  color: var(--on-surface);
+  font-size: .85rem;
+}

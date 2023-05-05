@@ -1,0 +1,60 @@
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:password@localhost:5432/postgres?schema=public"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator pothos {
+  provider = "prisma-pothos-types"
+}
+
+model User {
+  id       String   @id @default(cuid())
+  email    String   @unique
+  password String
+  username String   @unique
+  folders  Folder[]
+  tags     Tag[]
+}
+
+model Folder {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  parent    Folder?  @relation("Parent", fields: [parentId], references: [id])
+  parentId  String?
+  name      String
+  leftFlag  String
+  rightFlag String
+  words     Word[]
+  children  Folder[] @relation("Parent")
+}
+
+model Word {
+  id       String   @id @default(cuid())
+  folder   Folder   @relation(fields: [folderId], references: [id])
+  folderId String
+  type     WordType
+  left     String
+  right    String
+  tags     Tag[]
+}
+
+enum WordType {
+  NOUN
+  VERB
+  ADVERB
+  ADJECTIVE
+}
+
+model Tag {
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  tag    String
+  color  String
+  words  Word[]
+}
