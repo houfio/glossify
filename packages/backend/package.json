@@ -15,11 +15,13 @@
     "@prisma/client": "^4.13.0",
     "bcrypt": "^5.1.0",
     "graphql-subscriptions": "^2.0.0",
-    "graphql-yoga": "^3.9.1"
+    "graphql-yoga": "^3.9.1",
+    "jsonwebtoken": "^9.0.0"
   },
   "devDependencies": {
     "@swc-node/register": "^1.6.5",
     "@types/bcrypt": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.2",
     "prisma": "^4.13.0"
   }
 }
