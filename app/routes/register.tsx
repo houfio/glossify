@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client';
 import { Link, useActionData, useNavigation, useSearchParams } from '@remix-run/react';
 import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@vercel/remix';
 import { redirect } from '@vercel/remix';
@@ -12,7 +11,7 @@ import { Input } from '~/components/forms/Input';
 import { prisma } from '~/db.server';
 import { useFormErrors } from '~/hooks/useFormErrors';
 import { createUserSession, getUserId } from '~/session.server';
-import { errorResponse } from '~/utils/errorResponse.server';
+import { prismaResponse } from '~/utils/prismaResponse.server';
 import { validate } from '~/utils/validate';
 
 export const meta: V2_MetaFunction = () => [{ title: 'Register | Glossify' }];
@@ -56,14 +55,7 @@ export const action = async ({ request }: ActionArgs) => {
       data.data.redirect
     );
   } catch (e) {
-    if (!(e instanceof Prisma.PrismaClientKnownRequestError)) {
-      return errorResponse();
-    }
-
-    const target = e.meta?.target;
-    const field = Array.isArray(target) ? target[0] : undefined;
-
-    return errorResponse([field, 'Already in use']);
+    return prismaResponse(e);
   }
 };
 

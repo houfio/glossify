@@ -29,6 +29,8 @@ model Folder {
   rightFlag String
   words     Word[]
   children  Folder[] @relation("Parent")
+
+  @@unique([userId, parentId, name])
 }
 
 model Word {
@@ -39,6 +41,8 @@ model Word {
   left     String
   right    String
   tags     Tag[]
+
+  @@unique([folderId, left])
 }
 
 enum WordType {
@@ -55,4 +59,6 @@ model Tag {
   tag    String
   color  String
   words  Word[]
+
+  @@unique([userId, tag])
 }

@@ -16,7 +16,7 @@ import { useUser } from '~/hooks/useUser';
 import { AddFolderDialog } from '~/routes/app.words.($id)/AddFolderDialog';
 import { Folder } from '~/routes/app.words.($id)/Folder';
 import { requireUserId } from '~/session.server';
-import { errorResponse } from '~/utils/errorResponse.server';
+import { prismaResponse } from '~/utils/prismaResponse.server';
 import { successResponse } from '~/utils/successResponse.server';
 import { validate } from '~/utils/validate';
 
@@ -93,11 +93,11 @@ export const action = async ({ params, request }: ActionArgs) => {
         });
 
         return successResponse(folder);
-      } catch {
-        return errorResponse();
+      } catch (e) {
+        return prismaResponse(e);
       }
     }
-  })
+  });
 };
 
 export default function Words() {
