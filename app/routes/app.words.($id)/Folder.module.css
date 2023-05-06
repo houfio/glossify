@@ -22,7 +22,7 @@
 }
 
 .wrapper.over {
-  opacity: .5;
+  opacity: .4;
   transform: scale(.95);
 }
 
@@ -54,11 +54,11 @@
 }
 
 .card:hover {
-  opacity: .9;
+  opacity: .8;
 }
 
 .card:focus {
-  opacity: .8;
+  opacity: .6;
 }
 
 .card:active {

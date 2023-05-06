@@ -4,11 +4,11 @@
 }
 
 .label:hover::before {
-  opacity: .9;
+  opacity: .8;
 }
 
 .checkbox:focus ~ .label::before {
-  opacity: .8;
+  opacity: .6;
 }
 
 .checkbox:disabled ~ .label::before {
