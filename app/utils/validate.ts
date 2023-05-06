@@ -1,10 +1,10 @@
 import type { objectOutputType, ZodError, ZodRawShape, ZodTypeAny } from 'zod';
 import { z } from 'zod';
 
-import { errors } from '~/utils/errors.server';
+import { errorResponse } from '~/utils/errorResponse.server';
 
 type Validate<T extends ZodRawShape> =
-  { success: false, response: ReturnType<typeof errors> } |
+  { success: false, response: ReturnType<typeof errorResponse> } |
   { success: true, data: objectOutputType<T, ZodTypeAny> };
 
 export async function validate<T extends ZodRawShape>(request: Request, shape: T): Promise<Validate<T>> {
@@ -21,7 +21,7 @@ export async function validate<T extends ZodRawShape>(request: Request, shape: T
 
     return {
       success: false,
-      response: errors(...issues)
+      response: errorResponse(...issues)
     };
   }
 

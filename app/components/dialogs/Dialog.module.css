@@ -1,0 +1,57 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(1rem);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translateY(1rem);
+  }
+}
+
+.backdrop {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .25);
+  z-index: 500;
+}
+
+.dialog {
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100vh - 2rem);
+  padding: 1.5rem;
+  color: var(--on-surface);
+  background-color: var(--surface-container);
+  border-radius: 1rem;
+}

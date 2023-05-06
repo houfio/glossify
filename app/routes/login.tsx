@@ -1,5 +1,5 @@
 import { Link, useActionData, useNavigation, useSearchParams } from '@remix-run/react';
-import type { ActionFunction, LoaderFunction, V2_MetaFunction } from '@vercel/remix';
+import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@vercel/remix';
 import { redirect } from '@vercel/remix';
 import { compare } from 'bcryptjs';
 import { z } from 'zod';
@@ -11,12 +11,12 @@ import { Input } from '~/components/forms/Input';
 import { prisma } from '~/db.server';
 import { useFormErrors } from '~/hooks/useFormErrors';
 import { createUserSession, getUserId } from '~/session.server';
-import { errors } from '~/utils/errors.server';
+import { errorResponse } from '~/utils/errorResponse.server';
 import { validate } from '~/utils/validate';
 
 export const meta: V2_MetaFunction = () => [{ title: 'Login | Glossify' }];
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader = async ({ request }: LoaderArgs) => {
   const userId = await getUserId(request);
 
   if (userId) {
@@ -26,7 +26,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   return null;
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: ActionArgs) => {
   const data = await validate(request, {
     email: z.string().email(),
     password: z.string(),
@@ -43,7 +43,7 @@ export const action: ActionFunction = async ({ request }) => {
   });
 
   if (!user || !await compare(data.data.password, user.password)) {
-    return errors('Invalid email or password');
+    return errorResponse('Invalid email or password');
   }
 
   return createUserSession(

@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { Link, useActionData, useNavigation, useSearchParams } from '@remix-run/react';
-import type { ActionFunction, LoaderFunction, V2_MetaFunction } from '@vercel/remix';
+import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@vercel/remix';
 import { redirect } from '@vercel/remix';
 import { hash } from 'bcryptjs';
 import { z } from 'zod';
@@ -12,12 +12,12 @@ import { Input } from '~/components/forms/Input';
 import { prisma } from '~/db.server';
 import { useFormErrors } from '~/hooks/useFormErrors';
 import { createUserSession, getUserId } from '~/session.server';
-import { errors } from '~/utils/errors.server';
+import { errorResponse } from '~/utils/errorResponse.server';
 import { validate } from '~/utils/validate';
 
 export const meta: V2_MetaFunction = () => [{ title: 'Register | Glossify' }];
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader = async ({ request }: LoaderArgs) => {
   const userId = await getUserId(request);
 
   if (userId) {
@@ -27,7 +27,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   return null;
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: ActionArgs) => {
   const data = await validate(request, {
     username: z.string().min(3).max(15),
     email: z.string().email(),
@@ -57,13 +57,13 @@ export const action: ActionFunction = async ({ request }) => {
     );
   } catch (e) {
     if (!(e instanceof Prisma.PrismaClientKnownRequestError)) {
-      return errors();
+      return errorResponse();
     }
 
     const target = e.meta?.target;
     const field = Array.isArray(target) ? target[0] : undefined;
 
-    return errors([field, 'Already in use']);
+    return errorResponse([field, 'Already in use']);
   }
 };
 
