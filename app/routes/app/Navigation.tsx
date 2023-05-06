@@ -26,7 +26,7 @@ export function Navigation({ items }: Props) {
         })}
       >
         <span className={styles.logo}>
-          gfy
+          Gfy
         </span>
         <div className={styles.spinner}>
           <Spinner/>

@@ -21,9 +21,9 @@ export const loader = async ({ request }: LoaderArgs) => {
 export default function App() {
   return (
     <div className={styles.app}>
-      <main className={styles.content}>
+      <div className={styles.content}>
         <Outlet/>
-      </main>
+      </div>
       <Navigation
         items={[{
           label: 'Words',
