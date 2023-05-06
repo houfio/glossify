@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { Link, useActionData, useSearchParams } from '@remix-run/react';
+import { Link, useActionData, useNavigation, useSearchParams } from '@remix-run/react';
 import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@vercel/remix';
 import { redirect } from '@vercel/remix';
 import { hash } from 'bcryptjs';
@@ -68,6 +68,7 @@ export const action = async ({ request }: ActionArgs) => {
 };
 
 export default function Login() {
+  const navigation = useNavigation();
   const actionData = useActionData<typeof action>();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get('redirect') || '/';
@@ -87,7 +88,7 @@ export default function Login() {
       actions={(
         <>
           <Checkbox name="remember" label="Remember me"/>
-          <Button text="Register" type="submit"/>
+          <Button text="Register" type="submit" loading={navigation.state == 'submitting'}/>
         </>
       )}
     >

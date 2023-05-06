@@ -50,3 +50,20 @@
     display: inline
   }
 }
+
+.content, .spinner {
+  transition: opacity .25s ease;
+}
+
+.spinner {
+  position: absolute;
+  opacity: 0;
+}
+
+.loading > .content {
+  opacity: 0;
+}
+
+.loading > .spinner {
+  opacity: 1;
+}

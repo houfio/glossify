@@ -1,4 +1,4 @@
-import { Link, useActionData, useSearchParams } from '@remix-run/react';
+import { Link, useActionData, useNavigation, useSearchParams } from '@remix-run/react';
 import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@vercel/remix';
 import { redirect } from '@vercel/remix';
 import { compare } from 'bcryptjs';
@@ -55,6 +55,7 @@ export const action = async ({ request }: ActionArgs) => {
 };
 
 export default function Login() {
+  const navigation = useNavigation();
   const actionData = useActionData<typeof action>();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get('redirect') || '/';
@@ -73,7 +74,7 @@ export default function Login() {
       actions={(
         <>
           <Checkbox name="remember" label="Remember me"/>
-          <Button text="Login" type="submit"/>
+          <Button text="Login" type="submit" loading={navigation.state == 'submitting'}/>
         </>
       )}
     >
