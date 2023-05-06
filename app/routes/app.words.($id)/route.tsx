@@ -73,17 +73,18 @@ export const action = async ({ params, request }: ActionArgs) => {
 };
 
 export default function Words() {
-  const loaderData = useLoaderData<typeof loader>();
-  const actionData = useActionData<typeof action>();
   const user = useUser();
   const [, { open, close }] = useDialoog();
 
-  useFormErrors(actionData, true);
+  const [loaderSuccess, loaderData] = useLoaderData<typeof loader>();
+  const [actionSuccess, , actionErrors] = useActionData<typeof action>() ?? [];
+
+  useFormErrors(actionErrors, true);
   useEffect(() => {
-    if (actionData?.success) {
+    if (actionSuccess) {
       close();
     }
-  }, [actionData, close]);
+  }, [actionSuccess, close]);
 
   return (
     <Page
@@ -97,12 +98,20 @@ export default function Words() {
         icon: faFolderPlus,
         iconOnly: 'laptop',
         onClick: open.c((props) => (
-          <AddFolderDialog errors={actionData} {...props}/>
+          <AddFolderDialog errors={actionErrors} {...props}/>
         ))
       }]}
     >
-      Welcome back, {user.username}
-      {JSON.stringify(loaderData)}
+      {loaderSuccess === 'root' ? (
+        <>
+          Welcome back, {user.username}
+          {JSON.stringify(loaderData)}
+        </>
+      ) : (
+        <>
+          {loaderData.name}
+        </>
+      )}
     </Page>
   );
 }

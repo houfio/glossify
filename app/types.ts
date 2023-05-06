@@ -1,4 +1,4 @@
-export type FormErrors = Array<{
+export type FormErrors = null | Array<{
   field?: string,
   message: string
 }>;

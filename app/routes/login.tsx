@@ -56,18 +56,19 @@ export const action = async ({ request }: ActionArgs) => {
 
 export default function Login() {
   const navigation = useNavigation();
-  const actionData = useActionData<typeof action>();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get('redirect') || '/';
 
-  useFormErrors(actionData);
+  const [, , actionErrors] = useActionData<typeof action>() ?? [];
+
+  useFormErrors(actionErrors);
 
   return (
     <Auth
       inputs={(
         <>
-          <Input name="email" label="Email" type="email" errors={actionData}/>
-          <Input name="password" label="Password" type="password" errors={actionData}/>
+          <Input name="email" label="Email" type="email" errors={actionErrors}/>
+          <Input name="password" label="Password" type="password" errors={actionErrors}/>
           <input type="hidden" name="redirect" value={redirectTo}/>
         </>
       )}
