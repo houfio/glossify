@@ -1,9 +1,10 @@
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NavLink } from '@remix-run/react';
+import { NavLink, useNavigation } from '@remix-run/react';
 
 import styles from './Navigation.module.css';
 
+import { Spinner } from '~/components/Spinner';
 import { cs } from '~/utils/cs';
 
 type Props = {
@@ -15,10 +16,21 @@ type Props = {
 };
 
 export function Navigation({ items }: Props) {
+  const navigation = useNavigation();
+
   return (
     <nav className={styles.navigation}>
-      <span className={styles.logo}>
-        gfy
+      <span
+        className={cs(styles.top, {
+          [styles.loading]: navigation.state === 'loading'
+        })}
+      >
+        <span className={styles.logo}>
+          gfy
+        </span>
+        <div className={styles.spinner}>
+          <Spinner/>
+        </div>
       </span>
       {items.map((item, i) => (
         <NavLink

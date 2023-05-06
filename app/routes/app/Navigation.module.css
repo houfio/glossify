@@ -5,13 +5,31 @@
   background-color: var(--surface-container);
 }
 
-.logo {
+.top {
   display: none;
   justify-content: center;
   align-items: center;
   height: 5.5rem;
   font-family: "Lora", serif;
   font-size: 2rem;
+}
+
+.logo, .spinner {
+  transition: opacity .25s ease;
+}
+
+.spinner {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading > .logo {
+  opacity: 0;
+}
+
+.loading > .spinner {
+  opacity: 1;
 }
 
 .item {
@@ -43,7 +61,7 @@
     height: 100vh;
   }
 
-  .logo {
+  .top {
     display: flex;
   }
 
