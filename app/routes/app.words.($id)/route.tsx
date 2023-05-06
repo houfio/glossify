@@ -1,5 +1,6 @@
 import { DndContext } from '@dnd-kit/core';
 import { faFilePlus, faFolderPlus } from '@fortawesome/pro-regular-svg-icons';
+import { WordType } from '@prisma/client';
 import { useActionData, useLoaderData } from '@remix-run/react';
 import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@vercel/remix';
 import { redirect } from '@vercel/remix';
@@ -14,7 +15,9 @@ import { prisma } from '~/db.server';
 import { useFormErrors } from '~/hooks/useFormErrors';
 import { useUser } from '~/hooks/useUser';
 import { AddFolderDialog } from '~/routes/app.words.($id)/AddFolderDialog';
+import { AddWordDialog } from '~/routes/app.words.($id)/AddWordDialog';
 import { Folder } from '~/routes/app.words.($id)/Folder';
+import { Word } from '~/routes/app.words.($id)/Word';
 import { requireUserId } from '~/session.server';
 import { prismaResponse } from '~/utils/prismaResponse.server';
 import { successResponse } from '~/utils/successResponse.server';
@@ -45,6 +48,9 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   const folder = await prisma.folder.findUnique({
     where: { id: params.id },
     include: {
+      words: {
+        orderBy: { left: 'asc' }
+      },
       children: {
         include: {
           _count: {
@@ -54,9 +60,7 @@ export const loader = async ({ request, params }: LoaderArgs) => {
         orderBy: { name: 'asc' }
       },
       parent: {
-        select: {
-          id: true
-        }
+        select: { id: true }
       }
     }
   });
@@ -69,9 +73,10 @@ export const loader = async ({ request, params }: LoaderArgs) => {
 };
 
 export const action = async ({ params, request }: ActionArgs) => {
+  const userId = await requireUserId(request);
+
   return namedAction(request, {
-    async create() {
-      const userId = await requireUserId(request);
+    async createFolder() {
       const data = await validate(request, {
         name: z.string().min(2),
         leftFlag: z.string().length(2).toUpperCase(),
@@ -83,7 +88,7 @@ export const action = async ({ params, request }: ActionArgs) => {
       }
 
       try {
-        const folder = await prisma.folder.create({
+        await prisma.folder.create({
           data: {
             user: {
               connect: { id: userId }
@@ -97,7 +102,35 @@ export const action = async ({ params, request }: ActionArgs) => {
           }
         });
 
-        return successResponse(folder);
+        return successResponse({});
+      } catch (e) {
+        return prismaResponse(e);
+      }
+    },
+    async createWord() {
+      const data = await validate(request, {
+        left: z.string().min(2),
+        right: z.string().min(2),
+        type: z.nativeEnum(WordType)
+      });
+
+      if (!data.success) {
+        return data.response;
+      }
+
+      try {
+        await prisma.word.create({
+          data: {
+            folder: {
+              connect: { id: params.id }
+            },
+            left: data.data.left,
+            right: data.data.right,
+            type: data.data.type
+          }
+        });
+
+        return successResponse({});
       } catch (e) {
         return prismaResponse(e);
       }
@@ -127,7 +160,10 @@ export default function Words() {
         text: 'Add word',
         icon: faFilePlus,
         iconOnly: 'laptop',
-        disabled: loaderSuccess !== 'parent'
+        disabled: loaderSuccess !== 'parent',
+        onClick: open.c((props) => loaderSuccess === 'parent' && (
+          <AddWordDialog folder={loaderData} errors={actionErrors} {...props}/>
+        ))
       }, {
         text: 'Add folder',
         icon: faFolderPlus,
@@ -153,6 +189,14 @@ export default function Words() {
                 <Folder key={folder.id} folder={folder}/>
               ))}
             </Row>
+            {loaderSuccess === 'parent' && Boolean(loaderData.words.length) && (
+              <>
+                WORDS
+                {loaderData.words.map((word) => (
+                  <Word key={word.id} word={word}/>
+                ))}
+              </>
+            )}
           </DndContext>
         )}
       </ClientOnly>

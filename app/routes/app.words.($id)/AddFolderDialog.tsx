@@ -26,6 +26,7 @@ export function AddFolderDialog({ errors, ...props }: Props & DialoogProps) {
         <FontAwesomeIcon icon={faArrowRight}/>
         <Input name="rightFlag" label="Destination" errors={errors}/>
       </div>
+      <input type="hidden" name="action" value="createFolder"/>
     </AddDialog>
   );
 }

@@ -10,7 +10,7 @@ type Validate<T extends ZodRawShape> =
 export async function validate<T extends ZodRawShape>(request: Request, shape: T): Promise<Validate<T>> {
   const data = await request.clone().formData();
   const values = Object.fromEntries(data);
-  const result = await z.strictObject(shape).safeParseAsync(values);
+  const result = await z.object(shape).safeParseAsync(values);
 
   if (!result.success) {
     const e = result.error as ZodError;

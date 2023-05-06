@@ -30,7 +30,7 @@ export function AddDialog({ title, subtitle, icon, children, ...props }: Props) 
         <span className={styles.subtitle}>
           {subtitle}
         </span>
-        <Form action={`${window.location.pathname}?/create`} method="post">
+        <Form action={window.location.pathname} method="post">
           {children}
           <div className={styles.actions}>
             <Button text="Add" icon={faAdd} loading={navigation.state === 'submitting'}/>
