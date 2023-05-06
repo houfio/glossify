@@ -36,7 +36,6 @@ export function Navigation({ items }: Props) {
         <NavLink
           key={i}
           to={item.to}
-          end={true}
           className={({ isActive }) => cs(styles.item, {
             [styles.active]: isActive
           })}

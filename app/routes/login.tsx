@@ -1,5 +1,5 @@
 import { Link, useActionData, useNavigation, useSearchParams } from '@remix-run/react';
-import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@vercel/remix';
+import type { ActionFunction, LoaderFunction, V2_MetaFunction } from '@vercel/remix';
 import { redirect } from '@vercel/remix';
 import { compare } from 'bcryptjs';
 import { z } from 'zod';
@@ -16,7 +16,7 @@ import { validate } from '~/utils/validate';
 
 export const meta: V2_MetaFunction = () => [{ title: 'Login | Glossify' }];
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader: LoaderFunction = async ({ request }) => {
   const userId = await getUserId(request);
 
   if (userId) {
@@ -26,7 +26,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   return null;
 };
 
-export const action = async ({ request }: ActionArgs) => {
+export const action: ActionFunction = async ({ request }) => {
   const data = await validate(request, {
     email: z.string().email(),
     password: z.string(),

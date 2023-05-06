@@ -1,4 +1,4 @@
-import type { DialoogProps} from 'dialoog';
+import type { DialoogProps } from 'dialoog';
 import { useDialoog } from 'dialoog';
 
 import styles from './Notification.module.css';

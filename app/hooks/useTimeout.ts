@@ -1,4 +1,4 @@
-import type { DependencyList} from 'react';
+import type { DependencyList } from 'react';
 import { useCallback, useEffect } from 'react';
 
 export function useTimeout(ms: number, fn: () => void, deps: DependencyList) {

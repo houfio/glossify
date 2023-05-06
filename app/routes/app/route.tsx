@@ -6,7 +6,7 @@ import {
   faUser as faUserActive
 } from '@fortawesome/pro-solid-svg-icons';
 import { Outlet } from '@remix-run/react';
-import type { LoaderArgs } from '@vercel/remix';
+import type { LoaderFunction } from '@vercel/remix';
 import { json } from '@vercel/remix';
 
 import { Navigation } from './Navigation';
@@ -14,7 +14,7 @@ import styles from './route.module.css';
 
 import { requireUser } from '~/session.server';
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader: LoaderFunction = async ({ request }) => {
   return json({ user: await requireUser(request) });
 };
 
@@ -28,7 +28,7 @@ export default function App() {
         items={[{
           label: 'Words',
           icon: [faFolders, faFoldersActive],
-          to: '/app'
+          to: '/app/words'
         }, {
           label: 'Practise',
           icon: [faGraduationCap, faGraduationCapActive],
