@@ -8,6 +8,7 @@
   height: 5.5rem;
   padding: 0 1rem;
   background-color: var(--surface-container);
+  z-index: 100;
 }
 
 .header::before {

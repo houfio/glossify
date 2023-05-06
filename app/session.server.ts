@@ -1,5 +1,7 @@
 import type { User } from '@prisma/client';
 import { createCookieSessionStorage, redirect } from '@vercel/remix';
+import { createTypedSessionStorage } from 'remix-utils';
+import { z } from 'zod';
 
 import { prisma } from '~/db.server';
 
@@ -14,13 +16,20 @@ const sessionStorage = createCookieSessionStorage({
   }
 });
 
+const typedSessionStorage = createTypedSessionStorage({
+  sessionStorage,
+  schema: z.object({
+    userId: z.string().optional()
+  })
+});
+
 function getSession(request: Request) {
   const cookie = request.headers.get('Cookie');
 
-  return sessionStorage.getSession(cookie);
+  return typedSessionStorage.getSession(cookie);
 }
 
-export async function getUserId(request: Request): Promise<User['id'] | undefined> {
+export async function getUserId(request: Request) {
   const session = await getSession(request);
 
   return session.get('userId');
@@ -60,7 +69,7 @@ export async function createUserSession(request: Request, userId: string, rememb
 
   return redirect(redirectTo, {
     headers: {
-      'Set-Cookie': await sessionStorage.commitSession(session, {
+      'Set-Cookie': await typedSessionStorage.commitSession(session, {
         maxAge: remember ? 60 * 60 * 24 * 7 : undefined
       })
     }
@@ -72,7 +81,7 @@ export async function logout(request: Request) {
 
   return redirect('/', {
     headers: {
-      'Set-Cookie': await sessionStorage.destroySession(session)
+      'Set-Cookie': await typedSessionStorage.destroySession(session)
     }
   });
 }
