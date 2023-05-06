@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { cssBundleHref } from '@remix-run/css-bundle';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import type { LinksFunction } from '@vercel/remix';
+import { Dialoog, DialoogProvider } from 'dialoog';
 
 import styles from './root.css';
 
@@ -32,7 +33,10 @@ export default function Root() {
         <Links/>
       </head>
       <body>
-        <Outlet/>
+        <DialoogProvider>
+          <Outlet/>
+          <Dialoog/>
+        </DialoogProvider>
         <ScrollRestoration/>
         <Scripts/>
         <LiveReload/>

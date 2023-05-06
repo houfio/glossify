@@ -15,6 +15,7 @@ module.exports = {
           'order': 'asc'
         }
       }
-    ]
+    ],
+    'react-hooks/exhaustive-deps': 'off'
   }
 };

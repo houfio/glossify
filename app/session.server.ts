@@ -20,10 +20,10 @@ function getSession(request: Request) {
   return sessionStorage.getSession(cookie);
 }
 
-export async function getUserId(request: Request) {
+export async function getUserId(request: Request): Promise<User['id'] | undefined> {
   const session = await getSession(request);
 
-  return session.get('userId') as User['id'] | undefined;
+  return session.get('userId');
 }
 
 export async function requireUserId(request: Request, redirectTo = new URL(request.url).pathname) {

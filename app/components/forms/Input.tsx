@@ -2,12 +2,13 @@ import type { HTMLProps } from 'react';
 
 import styles from './Input.module.css';
 
+import type { FormErrors } from '~/types';
 import { cs } from '~/utils/cs';
 
 type Props = {
   name: string,
   label: string,
-  errors?: { field?: string, message: string }[]
+  errors?: FormErrors
 };
 
 export function Input({ name, label, errors, ...props }: Props & HTMLProps<HTMLInputElement>) {

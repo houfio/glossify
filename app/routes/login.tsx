@@ -1,6 +1,6 @@
 import { Link, useActionData, useSearchParams } from '@remix-run/react';
 import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@vercel/remix';
-import { json, redirect } from '@vercel/remix';
+import { redirect } from '@vercel/remix';
 import { compare } from 'bcryptjs';
 import { z } from 'zod';
 
@@ -9,7 +9,9 @@ import { Button } from '~/components/forms/Button';
 import { Checkbox } from '~/components/forms/Checkbox';
 import { Input } from '~/components/forms/Input';
 import { prisma } from '~/db.server';
+import { useFormErrors } from '~/hooks/useFormErrors';
 import { createUserSession, getUserId } from '~/session.server';
+import { errors } from '~/utils/errors.server';
 import { validate } from '~/utils/validate';
 
 export const meta: V2_MetaFunction = () => [{ title: 'Login | Glossify' }];
@@ -41,10 +43,7 @@ export const action = async ({ request }: ActionArgs) => {
   });
 
   if (!user || !await compare(data.data.password, user.password)) {
-    return json(
-      { errors: [{ message: 'Invalid email or password' }] },
-      400
-    );
+    return errors('Invalid email or password');
   }
 
   return createUserSession(
@@ -59,6 +58,8 @@ export default function Login() {
   const actionData = useActionData<typeof action>();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get('redirect') || '/';
+
+  useFormErrors(actionData?.errors);
 
   return (
     <Auth
