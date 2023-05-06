@@ -1,5 +1,5 @@
 import { faFilePlus, faFolderPlus } from '@fortawesome/pro-regular-svg-icons';
-import { useActionData, useLoaderData } from '@remix-run/react';
+import { Link, useActionData, useLoaderData } from '@remix-run/react';
 import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@vercel/remix';
 import { redirect } from '@vercel/remix';
 import { useDialoog } from 'dialoog';
@@ -86,6 +86,8 @@ export default function Words() {
     }
   }, [actionSuccess, close]);
 
+  const folders = loaderSuccess === 'root' ? loaderData : loaderData.children;
+
   return (
     <Page
       actions={[{
@@ -105,13 +107,17 @@ export default function Words() {
       {loaderSuccess === 'root' ? (
         <>
           Welcome back, {user.username}
-          {JSON.stringify(loaderData)}
         </>
       ) : (
         <>
           {loaderData.name}
         </>
       )}
+      {folders.map((folder) => (
+        <Link key={folder.id} to={`/app/words/${folder.id}`}>
+          {folder.name}
+        </Link>
+      ))}
     </Page>
   );
 }
