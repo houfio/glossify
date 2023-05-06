@@ -22,10 +22,14 @@ import { validate } from '~/utils/validate';
 
 export const meta: V2_MetaFunction = () => [{ title: 'Words | Glossify' }];
 
-export const loader = async ({ params }: LoaderArgs) => {
+export const loader = async ({ request, params }: LoaderArgs) => {
   if (!params.id) {
+    const userId = await requireUserId(request);
     const folders = await prisma.folder.findMany({
-      where: { parentId: null },
+      where: {
+        userId,
+        parentId: null
+      },
       include: {
         _count: {
           select: { words: true, children: true }
