@@ -23,8 +23,9 @@ import { validate } from '~/utils/validate';
 export const meta: V2_MetaFunction = () => [{ title: 'Words | Glossify' }];
 
 export const loader = async ({ request, params }: LoaderArgs) => {
+  const userId = await requireUserId(request);
+
   if (!params.id) {
-    const userId = await requireUserId(request);
     const folders = await prisma.folder.findMany({
       where: {
         userId,
@@ -60,7 +61,7 @@ export const loader = async ({ request, params }: LoaderArgs) => {
     }
   });
 
-  if (!folder) {
+  if (!folder || folder.userId !== userId) {
     return redirect('/app/words');
   }
 
