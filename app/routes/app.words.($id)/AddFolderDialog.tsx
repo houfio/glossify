@@ -9,7 +9,7 @@ import { Input } from '~/components/forms/Input';
 import type { FormErrors } from '~/types';
 
 type Props = {
-  errors?: FormErrors
+  errors?: { errors: FormErrors } | object
 };
 
 export function AddFolderDialog({ errors, ...props }: Props & DialoogProps) {

@@ -73,15 +73,15 @@ export default function Login() {
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get('redirect') || '/';
 
-  useFormErrors(actionData?.errors);
+  useFormErrors(actionData);
 
   return (
     <Auth
       inputs={(
         <>
-          <Input name="username" label="Username" errors={actionData?.errors}/>
-          <Input name="email" label="Email" type="email" errors={actionData?.errors}/>
-          <Input name="password" label="Password" type="password" errors={actionData?.errors}/>
+          <Input name="username" label="Username" errors={actionData}/>
+          <Input name="email" label="Email" type="email" errors={actionData}/>
+          <Input name="password" label="Password" type="password" errors={actionData}/>
           <input type="hidden" name="redirect" value={redirectTo}/>
         </>
       )}

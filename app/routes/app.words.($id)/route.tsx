@@ -8,10 +8,12 @@ import { z } from 'zod';
 
 import { Page } from '~/components/Page';
 import { prisma } from '~/db.server';
+import { useFormErrors } from '~/hooks/useFormErrors';
 import { useUser } from '~/hooks/useUser';
 import { AddFolderDialog } from '~/routes/app.words.($id)/AddFolderDialog';
 import { requireUserId } from '~/session.server';
-import { successResponse } from '~/utils/successResponse';
+import { errorResponse } from '~/utils/errorResponse.server';
+import { successResponse } from '~/utils/successResponse.server';
 import { validate } from '~/utils/validate';
 
 export const meta: V2_MetaFunction = () => [{ title: 'Words | Glossify' }];
@@ -40,27 +42,34 @@ export const loader = async ({ params }: LoaderArgs) => {
 export const action = async ({ params, request }: ActionArgs) => {
   const userId = await requireUserId(request);
   const data = await validate(request, {
-    name: z.string(),
-    leftFlag: z.string(),
-    rightFlag: z.string()
+    name: z.string().min(2),
+    leftFlag: z.string().length(2),
+    rightFlag: z.string().length(2)
   });
 
   if (!data.success) {
     return data.response;
   }
 
-  const folder = await prisma.folder.create({
-    data: {
-      user: {
-        connect: { id: userId }
-      },
-      name: data.data.name,
-      leftFlag: data.data.leftFlag,
-      rightFlag: data.data.rightFlag
-    }
-  });
+  try {
+    const folder = await prisma.folder.create({
+      data: {
+        user: {
+          connect: { id: userId }
+        },
+        parent: !params.id ? undefined : {
+          connect: { id: params.id }
+        },
+        name: data.data.name,
+        leftFlag: data.data.leftFlag,
+        rightFlag: data.data.rightFlag
+      }
+    });
 
-  return successResponse(folder);
+    return successResponse(folder);
+  } catch {
+    return errorResponse();
+  }
 };
 
 export default function Words() {
@@ -69,6 +78,7 @@ export default function Words() {
   const user = useUser();
   const [, { open, close }] = useDialoog();
 
+  useFormErrors(actionData, true);
   useEffect(() => {
     if (actionData?.success) {
       close();
@@ -87,7 +97,7 @@ export default function Words() {
         icon: faFolderPlus,
         iconOnly: 'laptop',
         onClick: open.c((props) => (
-          <AddFolderDialog errors={actionData?.success === false ? actionData.errors : undefined} {...props}/>
+          <AddFolderDialog errors={actionData} {...props}/>
         ))
       }]}
     >

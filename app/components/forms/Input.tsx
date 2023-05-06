@@ -8,11 +8,11 @@ import { cs } from '~/utils/cs';
 type Props = {
   name: string,
   label: string,
-  errors?: FormErrors
+  errors?: { errors: FormErrors } | object
 };
 
 export function Input({ name, label, errors, ...props }: Props & HTMLProps<HTMLInputElement>) {
-  const error = errors?.find((e) => e.field === name);
+  const error = errors && 'errors' in errors && errors.errors?.find((e) => e.field === name);
 
   return (
     <label htmlFor={name} className={styles.wrapper}>
