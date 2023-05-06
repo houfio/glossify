@@ -5,7 +5,7 @@ import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@vercel/remix';
 import { redirect } from '@vercel/remix';
 import { useDialoog } from 'dialoog';
 import { useEffect } from 'react';
-import { ClientOnly } from 'remix-utils';
+import { ClientOnly, namedAction } from 'remix-utils';
 import { z } from 'zod';
 
 import { Page } from '~/components/Page';
@@ -30,7 +30,8 @@ export const loader = async ({ params }: LoaderArgs) => {
         _count: {
           select: { words: true, children: true }
         }
-      }
+      },
+      orderBy: { name: 'asc' }
     });
 
     return successResponse(folders, 'root' as const);
@@ -44,7 +45,8 @@ export const loader = async ({ params }: LoaderArgs) => {
           _count: {
             select: { words: true, children: true }
           }
-        }
+        },
+        orderBy: { name: 'asc' }
       },
       parent: {
         select: {
@@ -62,36 +64,40 @@ export const loader = async ({ params }: LoaderArgs) => {
 };
 
 export const action = async ({ params, request }: ActionArgs) => {
-  const userId = await requireUserId(request);
-  const data = await validate(request, {
-    name: z.string().min(2),
-    leftFlag: z.string().length(2).toUpperCase(),
-    rightFlag: z.string().length(2).toUpperCase()
-  });
+  return namedAction(request, {
+    async create() {
+      const userId = await requireUserId(request);
+      const data = await validate(request, {
+        name: z.string().min(2),
+        leftFlag: z.string().length(2).toUpperCase(),
+        rightFlag: z.string().length(2).toUpperCase()
+      });
 
-  if (!data.success) {
-    return data.response;
-  }
-
-  try {
-    const folder = await prisma.folder.create({
-      data: {
-        user: {
-          connect: { id: userId }
-        },
-        parent: !params.id ? undefined : {
-          connect: { id: params.id }
-        },
-        name: data.data.name,
-        leftFlag: data.data.leftFlag,
-        rightFlag: data.data.rightFlag
+      if (!data.success) {
+        return data.response;
       }
-    });
 
-    return successResponse(folder);
-  } catch {
-    return errorResponse();
-  }
+      try {
+        const folder = await prisma.folder.create({
+          data: {
+            user: {
+              connect: { id: userId }
+            },
+            parent: !params.id ? undefined : {
+              connect: { id: params.id }
+            },
+            name: data.data.name,
+            leftFlag: data.data.leftFlag,
+            rightFlag: data.data.rightFlag
+          }
+        });
+
+        return successResponse(folder);
+      } catch {
+        return errorResponse();
+      }
+    }
+  })
 };
 
 export default function Words() {
