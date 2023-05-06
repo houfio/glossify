@@ -1,0 +1,51 @@
+.wrapper {
+  position: relative;
+  display: block;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  padding: 1.4rem 1rem .6rem;
+  border: 2px solid var(--outline);
+  border-radius: .25rem;
+  transition: border-color .25s ease;
+}
+
+.input:focus {
+  border-color: var(--primary);
+}
+
+.input:focus ~ .label {
+  color: var(--primary);
+}
+
+.input:not(:placeholder-shown) ~ .label, .input:focus ~ .label {
+  top: .5rem;
+  font-size: .75rem;
+}
+
+.input.error {
+  border-color: var(--error);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.label {
+  position: absolute;
+  left: .6rem;
+  top: 1.1rem;
+  padding: 0 .5rem;
+  color: var(--on-surface-variant);
+  pointer-events: none;
+  transition: top .25s ease, font-size .25s ease;
+}
+
+.errorWrapper {
+  padding: .2rem 1rem .4rem;
+  color: var(--on-error);
+  background-color: var(--error);
+  border-bottom-left-radius: .25rem;
+  border-bottom-right-radius: .25rem;
+}

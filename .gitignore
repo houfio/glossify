@@ -1,5 +1,13 @@
-.idea/
-node_modules/
-.npmrc
+node_modules
+
+.idea
+.cache
 .env
-*.iml
+.npmrc
+.vercel
+.output
+
+/build/
+/public/build
+/api/index.js
+/api/index.js.map

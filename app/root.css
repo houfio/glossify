@@ -1,0 +1,133 @@
+:root {
+  --fa-fw-width: 1em;
+
+  --primary: #695f00;
+  --on-primary: #ffffff;
+  --primary-container: #f5e568;
+  --on-primary-container: #201c00;
+  --secondary: #645f41;
+  --on-secondary: #ffffff;
+  --secondary-container: #ebe3bd;
+  --on-secondary-container: #1f1c05;
+  --tertiary: #416652;
+  --on-tertiary: #ffffff;
+  --tertiary-container: #c2ecd2;
+  --on-tertiary-container: #002113;
+  --error: #ba1a1a;
+  --on-error: #ffffff;
+  --error-container: #ffdad6;
+  --on-error-container: #410002;
+  --background: #fffbff;
+  --on-background: #201a17;
+  --surface: #fef9f0;
+  --on-surface: #1d1c16;
+  --surface-variant: #e8e2d0;
+  --on-surface-variant: #4a473a;
+  --surface-container: #f2ede4;
+  --outline: #7b7768;
+  --shadow: #000000;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary: #d8c84f;
+    --on-primary: #373100;
+    --primary-container: #4f4700;
+    --on-primary-container: #f5e568;
+    --secondary: #cec7a2;
+    --on-secondary: #353117;
+    --secondary-container: #4c472b;
+    --on-secondary-container: #ebe3bd;
+    --tertiary: #a7d0b7;
+    --on-tertiary: #113726;
+    --tertiary-container: #294e3b;
+    --on-tertiary-container: #c2ecd2;
+    --error: #ffb4ab;
+    --on-error: #690005;
+    --error-container: #93000a;
+    --on-error-container: #ffdad6;
+    --background: #1d1c16;
+    --on-background: #e7e2d9;
+    --surface: #14130e;
+    --on-surface: #cac6bd;
+    --surface-variant: #4a473a;
+    --on-surface-variant: #ccc6b5;
+    --surface-container: #21201a;
+    --outline: #959181;
+    --shadow: #000000;
+  }
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  outline: none;
+}
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address,
+big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl,
+dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside,
+canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time,
+mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  color: var(--on-background);
+  background-color: var(--background);
+  font-family: "Open Sans", sans-serif;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  line-height: 1.25;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote::before, q::before, blockquote::after, q::after {
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+select, button, input {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: none;
+  font: inherit;
+  appearance: none;
+}
+
+button:not(:disabled):hover {
+  cursor: pointer;
+}
+
+svg, img {
+  vertical-align: middle;
+}
+
+.error-boundary {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
+  height: 100vh;
+}
