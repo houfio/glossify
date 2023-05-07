@@ -17,6 +17,7 @@ import { useUser } from '~/hooks/useUser';
 import { AddFolderDialog } from '~/routes/app.words.($id)/AddFolderDialog';
 import { AddWordDialog } from '~/routes/app.words.($id)/AddWordDialog';
 import { Folder } from '~/routes/app.words.($id)/Folder';
+import { Header } from '~/routes/app.words.($id)/Header';
 import { Word } from '~/routes/app.words.($id)/Word';
 import { requireUserId } from '~/session.server';
 import { prismaResponse } from '~/utils/prismaResponse.server';
@@ -174,9 +175,7 @@ export default function Words() {
       }]}
     >
       {loaderSuccess === 'root' && (
-        <>
-          Welcome back, {user.username}
-        </>
+        <Header/>
       )}
       <ClientOnly>
         {() => (

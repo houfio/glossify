@@ -1,3 +1,5 @@
+import * as process from 'process';
+
 import { faBolt, faFolders, faGraduationCap, faUser } from '@fortawesome/pro-regular-svg-icons';
 import {
   faBolt as faBoltActive,
@@ -15,7 +17,10 @@ import styles from './route.module.css';
 import { requireUser } from '~/session.server';
 
 export const loader = async ({ request }: LoaderArgs) => {
-  return json({ user: await requireUser(request) });
+  return json({
+    user: await requireUser(request),
+    specialName: process.env.SPECIAL_NAME
+  });
 };
 
 export default function App() {

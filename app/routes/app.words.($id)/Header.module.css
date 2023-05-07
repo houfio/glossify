@@ -1,0 +1,10 @@
+.header {
+  margin: 2rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.emoji {
+  padding-left: .5rem;
+  font-family: "Noto Color Emoji", sans-serif;
+}

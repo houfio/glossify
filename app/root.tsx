@@ -6,8 +6,12 @@ import { cssBundleHref } from '@remix-run/css-bundle';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import type { LinksFunction } from '@vercel/remix';
 import { Dialoog, DialoogProvider } from 'dialoog';
+import Confetti from 'react-confetti';
+import { ClientOnly } from 'remix-utils';
 
 import styles from './root.css';
+
+import { useWindowSize } from '~/hooks/useWindowSize';
 
 config.autoAddCss = false;
 
@@ -46,6 +50,8 @@ export default function Root() {
 }
 
 export function ErrorBoundary() {
+  const { width, height } = useWindowSize();
+
   return (
     <html>
       <head>
@@ -54,6 +60,11 @@ export function ErrorBoundary() {
         <Links/>
       </head>
       <body>
+        <ClientOnly>
+          {() => (
+            <Confetti width={width} height={height}/>
+          )}
+        </ClientOnly>
         <div className="error-boundary">
           <FontAwesomeIcon icon={faExplosion} size="xl"/>
           Whoops, something went wrong
