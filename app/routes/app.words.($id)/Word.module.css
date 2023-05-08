@@ -26,4 +26,5 @@
 
 .handle {
   cursor: grab;
+  touch-action: none;
 }
