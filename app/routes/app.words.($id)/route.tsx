@@ -24,7 +24,7 @@ import { prismaResponse } from '~/utils/prismaResponse.server';
 import { successResponse } from '~/utils/successResponse.server';
 import { validate } from '~/utils/validate';
 
-export const meta: V2_MetaFunction = () => [{ title: 'WordList | Glossify' }];
+export const meta: V2_MetaFunction = () => [{ title: 'Words | Glossify' }];
 
 export const loader = async ({ request, params }: LoaderArgs) => {
   const userId = await requireUserId(request);
