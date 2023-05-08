@@ -18,11 +18,14 @@ type Props = {
 export function Folder({ folder, parentId }: Props) {
   const { setNodeRef: setDraggableRef, isDragging, attributes, listeners, transform, active } = useDraggable({
     id: folder.id,
-    disabled: parentId !== undefined
+    disabled: parentId !== undefined,
+    data: {
+      kind: 'folder'
+    }
   });
   const { setNodeRef: setDroppableRef, isOver } = useDroppable({
     id: parentId !== undefined ? (parentId ?? 'root') : folder.id,
-    disabled: active?.id === folder.id
+    disabled: active?.id === folder.id || (parentId === null && active?.data.current?.kind === 'word')
   });
 
   const targetId = parentId !== undefined ? parentId : folder.id;

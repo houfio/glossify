@@ -13,7 +13,10 @@ type Props = {
 
 export function Word({ word }: Props) {
   const { setNodeRef, isDragging, attributes, listeners, transform } = useDraggable({
-    id: word.id
+    id: word.id,
+    data: {
+      kind: 'word'
+    }
   });
 
   return (

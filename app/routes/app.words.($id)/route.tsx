@@ -1,7 +1,8 @@
+import type { DragEndEvent } from '@dnd-kit/core';
 import { DndContext } from '@dnd-kit/core';
 import { faFilePlus, faFolderPlus } from '@fortawesome/pro-regular-svg-icons';
 import { WordType } from '@prisma/client';
-import { useActionData, useLoaderData } from '@remix-run/react';
+import { useActionData, useLoaderData, useSubmit } from '@remix-run/react';
 import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@vercel/remix';
 import { redirect } from '@vercel/remix';
 import { useDialoog } from 'dialoog';
@@ -17,7 +18,6 @@ import { AddFolderDialog } from '~/routes/app.words.($id)/AddFolderDialog';
 import { AddWordDialog } from '~/routes/app.words.($id)/AddWordDialog';
 import { Folder } from '~/routes/app.words.($id)/Folder';
 import { Header } from '~/routes/app.words.($id)/Header';
-import { Word } from '~/routes/app.words.($id)/Word';
 import { WordList } from '~/routes/app.words.($id)/WordList';
 import { requireUserId } from '~/session.server';
 import { prismaResponse } from '~/utils/prismaResponse.server';
@@ -135,11 +135,51 @@ export const action = async ({ params, request }: ActionArgs) => {
       } catch (e) {
         return prismaResponse(e);
       }
+    },
+    async completeDrag() {
+      const data = await validate(request, {
+        id: z.string(),
+        kind: z.enum(['folder', 'word'] as const),
+        targetId: z.string()
+      });
+
+      if (!data.success) {
+        throw data.response;
+      }
+
+      try {
+        if (data.data.kind === 'folder') {
+          await prisma.folder.update({
+            where: { id: data.data.id },
+            data: {
+              parent: data.data.targetId === 'root' ? {
+                disconnect: true
+              } : {
+                connect: { id: data.data.targetId }
+              }
+            }
+          });
+        } else {
+          await prisma.word.update({
+            where: { id: data.data.id },
+            data: {
+              folder: {
+                connect: { id: data.data.targetId }
+              }
+            }
+          });
+        }
+
+        return successResponse({});
+      } catch (e) {
+        return prismaResponse(e);
+      }
     }
   });
 };
 
 export default function Words() {
+  const submit = useSubmit();
   const [, { open, close }] = useDialoog();
 
   const [loaderSuccess, loaderData] = useLoaderData<typeof loader>();
@@ -153,6 +193,18 @@ export default function Words() {
   }, [actionSuccess, close]);
 
   const folders = loaderSuccess === 'root' ? loaderData : loaderData.children;
+  const handleDrop = (e: DragEndEvent) => {
+    if (!e.over) {
+      return;
+    }
+
+    submit({
+      id: String(e.active.id),
+      kind: e.active.data.current?.kind,
+      targetId: String(e.over.id),
+      action: 'completeDrag'
+    }, { method: 'post' });
+  };
 
   return (
     <Page
@@ -178,7 +230,7 @@ export default function Words() {
       )}
       <ClientOnly>
         {() => (
-          <DndContext>
+          <DndContext onDragEnd={handleDrop}>
             <Row gap={1}>
               {loaderSuccess === 'parent' && (
                 <Folder parentId={loaderData.parent?.id ?? null} folder={loaderData}/>
