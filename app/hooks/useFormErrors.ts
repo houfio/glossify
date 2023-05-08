@@ -4,13 +4,13 @@ import { useNotifications } from '~/hooks/useNotifications';
 import type { FormErrors } from '~/types';
 
 export function useFormErrors(errors?: FormErrors, all = false) {
-  const notifications = useNotifications();
+  const notify = useNotifications();
 
   useEffect(() => {
     for (const error of errors?.filter((e) => all || !e.field) ?? []) {
       const prefix = error.field ? `${error.field}: ` : '';
 
-      notifications(`${prefix}${error.message}`);
+      notify(`${prefix}${error.message}`);
     }
-  }, [errors, all, notifications]);
+  }, [errors, all, notify]);
 }

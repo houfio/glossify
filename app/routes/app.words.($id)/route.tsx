@@ -14,6 +14,7 @@ import { Page } from '~/components/Page';
 import { Row } from '~/components/Row';
 import { prisma } from '~/db.server';
 import { useFormErrors } from '~/hooks/useFormErrors';
+import { useNotifications } from '~/hooks/useNotifications';
 import { AddFolderDialog } from '~/routes/app.words.($id)/AddFolderDialog';
 import { AddWordDialog } from '~/routes/app.words.($id)/AddWordDialog';
 import { Folder } from '~/routes/app.words.($id)/Folder';
@@ -103,7 +104,7 @@ export const action = async ({ params, request }: ActionArgs) => {
           }
         });
 
-        return successResponse({});
+        return successResponse('Successfully created folder');
       } catch (e) {
         return prismaResponse(e);
       }
@@ -131,7 +132,7 @@ export const action = async ({ params, request }: ActionArgs) => {
           }
         });
 
-        return successResponse({});
+        return successResponse('Successfully created word');
       } catch (e) {
         return prismaResponse(e);
       }
@@ -170,7 +171,7 @@ export const action = async ({ params, request }: ActionArgs) => {
           });
         }
 
-        return successResponse({});
+        return successResponse(`Successfully moved ${data.data.kind}`);
       } catch (e) {
         return prismaResponse(e);
       }
@@ -180,17 +181,22 @@ export const action = async ({ params, request }: ActionArgs) => {
 
 export default function Words() {
   const submit = useSubmit();
+  const notify = useNotifications();
   const [, { open, close }] = useDialoog();
 
   const [loaderSuccess, loaderData] = useLoaderData<typeof loader>();
-  const [actionSuccess, , actionErrors] = useActionData<typeof action>() ?? [];
+  const [actionSuccess, actionData, actionErrors] = useActionData<typeof action>() ?? [];
 
   useFormErrors(actionErrors, true);
   useEffect(() => {
     if (actionSuccess) {
       close();
     }
-  }, [actionSuccess, close]);
+
+    if (actionData) {
+      notify(actionData);
+    }
+  }, [actionSuccess, actionData, close, notify]);
 
   const folders = loaderSuccess === 'root' ? loaderData : loaderData.children;
   const handleDrop = (e: DragEndEvent) => {

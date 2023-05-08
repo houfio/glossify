@@ -77,25 +77,12 @@ export function ErrorBoundary() {
         </ClientOnly>
         <div className="error-boundary">
           <FontAwesomeIcon icon={faExplosion} size="xl"/>
-          {isRouteErrorResponse(error) ? (
-            <>
-              <span>
-                {error.status} {error.statusText}
-              </span>
-              <pre className="error-boundary-info">
-                {JSON.stringify(error.data, undefined, 2)}
-              </pre>
-            </>
-          ) : error instanceof Error ? (
-            <>
-              <span>
-                {error.message}
-              </span>
-              <pre className="error-boundary-info">
-                {error.stack}
-              </pre>
-            </>
-          ) : 'Something went wrong'}
+          <span>
+            Whoops, something went wrong
+          </span>
+          <pre className="error-boundary-info">
+            {isRouteErrorResponse(error) ? JSON.stringify(error.data, undefined, 2) : error instanceof Error && error.stack}
+          </pre>
         </div>
         <Scripts/>
       </body>
