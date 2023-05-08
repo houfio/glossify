@@ -5,6 +5,7 @@ import type { Word as WordType } from '@prisma/client';
 
 import styles from './Word.module.css';
 
+import { useDropped } from '~/hooks/useDropped';
 import { cs } from '~/utils/cs';
 
 type Props = {
@@ -18,6 +19,11 @@ export function Word({ word }: Props) {
       kind: 'word'
     }
   });
+  const dropped = useDropped(word.id);
+
+  if (dropped) {
+    return null;
+  }
 
   return (
     <button
