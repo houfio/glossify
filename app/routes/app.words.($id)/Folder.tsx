@@ -6,7 +6,6 @@ import { Link } from '@remix-run/react';
 
 import styles from './Folder.module.css';
 
-import { useDropped } from '~/hooks/useDropped';
 import { cs } from '~/utils/cs';
 
 type Props = {
@@ -28,11 +27,6 @@ export function Folder({ folder, parentId }: Props) {
     id: parentId !== undefined ? (parentId ?? 'root') : folder.id,
     disabled: active?.id === folder.id || (parentId === null && active?.data.current?.kind === 'word')
   });
-  const dropped = useDropped(folder.id);
-
-  if (dropped) {
-    return null;
-  }
 
   const targetId = parentId !== undefined ? parentId : folder.id;
 
