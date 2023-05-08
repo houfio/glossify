@@ -5,6 +5,15 @@
   gap: .5rem;
   width: 100%;
   border-bottom: 1px solid var(--surface-variant);
+  transition: opacity .25s ease;
+}
+
+.wrapper:not(.dragging):hover {
+  opacity: .6;
+}
+
+.wrapper:not(.dragging):hover {
+  opacity: .4;
 }
 
 .word {

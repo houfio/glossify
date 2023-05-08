@@ -2,9 +2,12 @@ import { useDraggable } from '@dnd-kit/core';
 import { faArrowRight, faGripDotsVertical } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { Word as WordType } from '@prisma/client';
+import { useDialoog } from 'dialoog';
 
 import styles from './Word.module.css';
 
+import { Chip } from '~/components/Chip';
+import { EditWordDialog } from '~/routes/app.words.($id)/dialogs/EditWordDialog';
 import { cs } from '~/utils/cs';
 
 type Props = {
@@ -12,6 +15,7 @@ type Props = {
 };
 
 export function Word({ word }: Props) {
+  const [, { open }] = useDialoog();
   const { setNodeRef, isDragging, attributes, listeners, transform } = useDraggable({
     id: word.id,
     data: {
@@ -24,7 +28,9 @@ export function Word({ word }: Props) {
       className={cs(styles.wrapper, {
         [styles.dragging]: isDragging
       })}
-      onClick={console.log}
+      onClick={open.c((props) => (
+        <EditWordDialog word={word} {...props}/>
+      ))}
     >
       <div
         ref={setNodeRef}
@@ -42,7 +48,7 @@ export function Word({ word }: Props) {
         <FontAwesomeIcon icon={faArrowRight}/>
         {word.right}
       </div>
-      {word.type}
+      <Chip text={word.type}/>
     </button>
   );
 }

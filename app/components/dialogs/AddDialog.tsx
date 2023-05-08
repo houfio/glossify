@@ -7,7 +7,7 @@ import type { ReactNode } from 'react';
 
 import styles from './AddDialog.module.css';
 
-import { Dialog } from '~/components/dialogs/Dialoog';
+import { Dialog } from '~/components/dialogs/Dialog';
 import { Button } from '~/components/forms/Button';
 
 type Props = DialoogProps & {
