@@ -18,12 +18,13 @@ import { AddWordDialog } from '~/routes/app.words.($id)/AddWordDialog';
 import { Folder } from '~/routes/app.words.($id)/Folder';
 import { Header } from '~/routes/app.words.($id)/Header';
 import { Word } from '~/routes/app.words.($id)/Word';
+import { WordList } from '~/routes/app.words.($id)/WordList';
 import { requireUserId } from '~/session.server';
 import { prismaResponse } from '~/utils/prismaResponse.server';
 import { successResponse } from '~/utils/successResponse.server';
 import { validate } from '~/utils/validate';
 
-export const meta: V2_MetaFunction = () => [{ title: 'Words | Glossify' }];
+export const meta: V2_MetaFunction = () => [{ title: 'WordList | Glossify' }];
 
 export const loader = async ({ request, params }: LoaderArgs) => {
   const userId = await requireUserId(request);
@@ -182,17 +183,12 @@ export default function Words() {
               {loaderSuccess === 'parent' && (
                 <Folder parentId={loaderData.parent?.id ?? null} folder={loaderData}/>
               )}
-              {folders?.map((folder) => (
+              {folders.map((folder) => (
                 <Folder key={folder.id} folder={folder}/>
               ))}
             </Row>
             {loaderSuccess === 'parent' && Boolean(loaderData.words.length) && (
-              <>
-                WORDS
-                {loaderData.words.map((word) => (
-                  <Word key={word.id} word={word}/>
-                ))}
-              </>
+              <WordList words={loaderData.words}/>
             )}
           </DndContext>
         )}
