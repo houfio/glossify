@@ -21,9 +21,8 @@ import { Folder } from '~/routes/app.words.($id)/Folder';
 import { Header } from '~/routes/app.words.($id)/Header';
 import { WordList } from '~/routes/app.words.($id)/WordList';
 import { requireUserId } from '~/session.server';
-import { prismaResponse } from '~/utils/prismaResponse.server';
 import { successResponse } from '~/utils/successResponse.server';
-import { validate } from '~/utils/validate';
+import { withData } from '~/utils/withData.server';
 
 export const meta: V2_MetaFunction = () => [{ title: 'Words | Glossify' }];
 
@@ -78,104 +77,74 @@ export const action = async ({ params, request }: ActionArgs) => {
   const userId = await requireUserId(request);
 
   return namedAction(request, {
-    async createFolder() {
-      const data = await validate(request, {
-        name: z.string().min(2),
-        leftFlag: z.string().length(2).toUpperCase(),
-        rightFlag: z.string().length(2).toUpperCase()
+    createFolder: withData(request, {
+      name: z.string().min(2),
+      leftFlag: z.string().length(2).toUpperCase(),
+      rightFlag: z.string().length(2).toUpperCase()
+    }, async (data) => {
+      await prisma.folder.create({
+        data: {
+          user: {
+            connect: { id: userId }
+          },
+          parent: !params.id ? undefined : {
+            connect: { id: params.id }
+          },
+          name: data.name,
+          leftFlag: data.leftFlag,
+          rightFlag: data.rightFlag
+        }
       });
 
-      if (!data.success) {
-        return data.response;
-      }
+      return 'Successfully created folder';
+    }),
+    createWork: withData(request, {
+      left: z.string().min(2),
+      right: z.string().min(2),
+      type: z.nativeEnum(WordType)
+    }, async (data) => {
+      await prisma.word.create({
+        data: {
+          folder: {
+            connect: { id: params.id }
+          },
+          left: data.left,
+          right: data.right,
+          type: data.type
+        }
+      });
 
-      try {
-        await prisma.folder.create({
+      return 'Successfully created word';
+    }),
+    completeDrag: withData(request, {
+      id: z.string(),
+      kind: z.enum(['folder', 'word'] as const),
+      targetId: z.string()
+    }, async (data) => {
+      if (data.kind === 'folder') {
+        await prisma.folder.update({
+          where: { id: data.id },
           data: {
-            user: {
-              connect: { id: userId }
-            },
-            parent: !params.id ? undefined : {
-              connect: { id: params.id }
-            },
-            name: data.data.name,
-            leftFlag: data.data.leftFlag,
-            rightFlag: data.data.rightFlag
+            parent: data.targetId === 'root' ? {
+              disconnect: true
+            } : {
+              connect: { id: data.targetId }
+            }
           }
         });
-
-        return successResponse('Successfully created folder');
-      } catch (e) {
-        return prismaResponse(e);
-      }
-    },
-    async createWord() {
-      const data = await validate(request, {
-        left: z.string().min(2),
-        right: z.string().min(2),
-        type: z.nativeEnum(WordType)
-      });
-
-      if (!data.success) {
-        return data.response;
-      }
-
-      try {
-        await prisma.word.create({
+      } else {
+        await prisma.word.update({
+          where: { id: data.id },
           data: {
             folder: {
-              connect: { id: params.id }
-            },
-            left: data.data.left,
-            right: data.data.right,
-            type: data.data.type
+              connect: { id: data.targetId }
+            }
           }
         });
-
-        return successResponse('Successfully created word');
-      } catch (e) {
-        return prismaResponse(e);
-      }
-    },
-    async completeDrag() {
-      const data = await validate(request, {
-        id: z.string(),
-        kind: z.enum(['folder', 'word'] as const),
-        targetId: z.string()
-      });
-
-      if (!data.success) {
-        throw data.response;
       }
 
-      try {
-        if (data.data.kind === 'folder') {
-          await prisma.folder.update({
-            where: { id: data.data.id },
-            data: {
-              parent: data.data.targetId === 'root' ? {
-                disconnect: true
-              } : {
-                connect: { id: data.data.targetId }
-              }
-            }
-          });
-        } else {
-          await prisma.word.update({
-            where: { id: data.data.id },
-            data: {
-              folder: {
-                connect: { id: data.data.targetId }
-              }
-            }
-          });
-        }
-
-        return successResponse(`Successfully moved ${data.data.kind}`);
-      } catch (e) {
-        return prismaResponse(e);
-      }
-    }
+      return `Successfully moved ${data.kind}`;
+    })
   });
 };
 

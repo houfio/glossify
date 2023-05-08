@@ -4,7 +4,9 @@ import { errorResponse } from '~/utils/errorResponse.server';
 
 export function prismaResponse(e: unknown) {
   if (!(e instanceof Prisma.PrismaClientKnownRequestError)) {
-    return errorResponse();
+    const message = typeof e === 'string' ? e : e instanceof Error ? e.message : 'Something went wrong';
+
+    return errorResponse(message);
   }
 
   const target = e.meta?.target;

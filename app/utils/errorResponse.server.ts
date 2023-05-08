@@ -4,10 +4,6 @@ import { json } from '@vercel/remix';
 import type { FormErrors } from '~/types';
 
 export function errorResponse(...errors: (string | readonly [string, string])[]): TypedResponse<[success: false, data: undefined, errors: FormErrors]> {
-  if (!errors.length) {
-    errors = ['Something went wrong'];
-  }
-
   return json([
     false,
     undefined,
