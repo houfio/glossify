@@ -13,7 +13,6 @@ import { Page } from '~/components/Page';
 import { Row } from '~/components/Row';
 import { prisma } from '~/db.server';
 import { useFormErrors } from '~/hooks/useFormErrors';
-import { useUser } from '~/hooks/useUser';
 import { AddFolderDialog } from '~/routes/app.words.($id)/AddFolderDialog';
 import { AddWordDialog } from '~/routes/app.words.($id)/AddWordDialog';
 import { Folder } from '~/routes/app.words.($id)/Folder';
@@ -140,7 +139,6 @@ export const action = async ({ params, request }: ActionArgs) => {
 };
 
 export default function Words() {
-  const user = useUser();
   const [, { open, close }] = useDialoog();
 
   const [loaderSuccess, loaderData] = useLoaderData<typeof loader>();

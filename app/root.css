@@ -131,3 +131,10 @@ svg, img {
   gap: .5rem;
   height: 100vh;
 }
+
+.error-boundary-info {
+  padding: 1rem;
+  color: var(--on-surface);
+  background-color: var(--surface);
+  font-family: monospace;
+}

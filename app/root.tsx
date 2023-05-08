@@ -3,7 +3,16 @@ import stylesheet from '@fortawesome/fontawesome-svg-core/styles.css';
 import { faExplosion } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { cssBundleHref } from '@remix-run/css-bundle';
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
+import {
+  isRouteErrorResponse,
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useRouteError
+} from '@remix-run/react';
 import type { LinksFunction } from '@vercel/remix';
 import { Dialoog, DialoogProvider } from 'dialoog';
 import Confetti from 'react-confetti';
@@ -51,6 +60,7 @@ export default function Root() {
 
 export function ErrorBoundary() {
   const { width, height } = useWindowSize();
+  const error = useRouteError();
 
   return (
     <html>
@@ -67,7 +77,25 @@ export function ErrorBoundary() {
         </ClientOnly>
         <div className="error-boundary">
           <FontAwesomeIcon icon={faExplosion} size="xl"/>
-          Whoops, something went wrong
+          {isRouteErrorResponse(error) ? (
+            <>
+              <span>
+                {error.status} {error.statusText}
+              </span>
+              <pre className="error-boundary-info">
+                {JSON.stringify(error.data, undefined, 2)}
+              </pre>
+            </>
+          ) : error instanceof Error ? (
+            <>
+              <span>
+                {error.message}
+              </span>
+              <pre className="error-boundary-info">
+                {error.stack}
+              </pre>
+            </>
+          ) : 'Something went wrong'}
         </div>
         <Scripts/>
       </body>
