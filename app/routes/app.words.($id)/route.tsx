@@ -182,7 +182,7 @@ export default function Words() {
               {loaderSuccess === 'parent' && (
                 <Folder parentId={loaderData.parent?.id ?? null} folder={loaderData}/>
               )}
-              {folders.map((folder) => (
+              {folders?.map((folder) => (
                 <Folder key={folder.id} folder={folder}/>
               ))}
             </Row>
