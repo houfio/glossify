@@ -1,4 +1,4 @@
-import { config as fa } from '@fortawesome/fontawesome-svg-core';
+import { config } from '@fortawesome/fontawesome-svg-core';
 import stylesheet from '@fortawesome/fontawesome-svg-core/styles.css';
 import { faExplosion } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,7 +22,7 @@ import styles from './root.css';
 
 import { useWindowSize } from '~/hooks/useWindowSize';
 
-fa.autoAddCss = false;
+config.autoAddCss = false;
 
 export const links: LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -35,8 +35,6 @@ export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: stylesheet },
   ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : [])
 ];
-
-export const config = { runtime: 'edge' };
 
 export default function Root() {
   return (
