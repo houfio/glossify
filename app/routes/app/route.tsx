@@ -1,5 +1,3 @@
-import * as process from 'process';
-
 import { faBolt, faFolders, faGraduationCap, faUser } from '@fortawesome/pro-regular-svg-icons';
 import {
   faBolt as faBoltActive,
