@@ -14,12 +14,10 @@ import styles from './route.module.css';
 
 import { requireUser } from '~/session.server';
 
-export const loader = async ({ request }: LoaderArgs) => {
-  return json({
-    user: await requireUser(request),
-    specialName: process.env.SPECIAL_NAME
-  });
-};
+export const loader = async ({ request }: LoaderArgs) => json({
+  user: await requireUser(request),
+  specialName: process.env.SPECIAL_NAME
+})
 
 export default function App() {
   return (

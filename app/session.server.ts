@@ -1,4 +1,3 @@
-import type { User } from '@prisma/client';
 import { createCookieSessionStorage, redirect } from '@vercel/remix';
 import { createTypedSessionStorage } from 'remix-utils';
 import { z } from 'zod';
