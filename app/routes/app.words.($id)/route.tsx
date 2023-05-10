@@ -98,7 +98,7 @@ export const action = async ({ params, request }: ActionArgs) => {
 
       return 'Successfully created folder';
     }),
-    createWork: withData(request, {
+    createWord: withData(request, {
       left: z.string().min(2),
       right: z.string().min(2),
       type: z.nativeEnum(WordType)
