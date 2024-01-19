@@ -1,7 +1,7 @@
 import type { objectOutputType, ZodError, ZodRawShape, ZodTypeAny } from 'zod';
 import { z } from 'zod';
 
-import { errorResponse } from '~/utils/errorResponse.server';
+import { errorResponse } from './errorResponse.server';
 
 type Validate<T extends ZodRawShape> =
   { success: false, response: ReturnType<typeof errorResponse> } |

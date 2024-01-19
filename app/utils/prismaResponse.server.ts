@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 
-import { errorResponse } from '~/utils/errorResponse.server';
+import { errorResponse } from './errorResponse.server';
 
 export function prismaResponse(e: unknown) {
   if (!(e instanceof Prisma.PrismaClientKnownRequestError)) {

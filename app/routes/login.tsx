@@ -1,22 +1,15 @@
-import { Link, useActionData, useNavigation, useSearchParams } from '@remix-run/react';
-import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@vercel/remix';
-import { redirect } from '@vercel/remix';
-import { compare } from 'bcryptjs';
+import type { ActionFunctionArgs, LoaderFunctionArgs} from '@remix-run/node';
+import { redirect } from '@remix-run/node';
+import { Form, useSearchParams } from '@remix-run/react';
+import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 
-import { Auth } from '~/components/Auth';
-import { Button } from '~/components/forms/Button';
-import { Checkbox } from '~/components/forms/Checkbox';
-import { Input } from '~/components/forms/Input';
-import { prisma } from '~/db.server';
-import { useFormErrors } from '~/hooks/useFormErrors';
-import { createUserSession, getUserId } from '~/session.server';
-import { errorResponse } from '~/utils/errorResponse.server';
-import { validate } from '~/utils/validate';
+import { prisma } from '../db.server';
+import { createUserSession, getUserId } from '../session.server';
+import { errorResponse } from '../utils/errorResponse.server';
+import { validate } from '../utils/validate';
 
-export const meta: V2_MetaFunction = () => [{ title: 'Login | Glossify' }];
-
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
 
   if (userId) {
@@ -26,7 +19,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   return null;
 };
 
-export const action = async ({ request }: ActionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
   const data = await validate(request, {
     email: z.string().email(),
     password: z.string(),
@@ -42,7 +35,7 @@ export const action = async ({ request }: ActionArgs) => {
     where: { email: data.data.email }
   });
 
-  if (!user || !await compare(data.data.password, user.password)) {
+  if (!user || !await bcrypt.compare(data.data.password, user.password)) {
     return errorResponse('Invalid email or password');
   }
 
@@ -55,36 +48,16 @@ export const action = async ({ request }: ActionArgs) => {
 };
 
 export default function Login() {
-  const navigation = useNavigation();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get('redirect') || '/';
 
-  const [, , actionErrors] = useActionData<typeof action>() ?? [];
-
-  useFormErrors(actionErrors);
-
   return (
-    <Auth
-      inputs={(
-        <>
-          <Input name="email" label="Email" type="email" errors={actionErrors}/>
-          <Input name="password" label="Password" type="password" errors={actionErrors}/>
-          <input type="hidden" name="redirect" value={redirectTo}/>
-        </>
-      )}
-      actions={(
-        <>
-          <Checkbox name="remember" label="Remember me"/>
-          <Button text="Login" type="submit" loading={navigation.state == 'submitting'}/>
-        </>
-      )}
-    >
-      <span>
-        Don't have an account?{' '}
-        <Link to={{ pathname: '/register', search: searchParams.toString() }}>
-          Register here
-        </Link>
-      </span>
-    </Auth>
+    <Form method="post">
+      <input name="email" type="email"/>
+      <input name="password" type="password"/>
+      <input name="remember" type="checkbox"/>
+      <input name="redirect" type="hidden" value={redirectTo}/>
+      <input type="submit"/>
+    </Form>
   );
 }

@@ -1,7 +1,7 @@
-import type { TypedResponse } from '@vercel/remix';
-import { json } from '@vercel/remix';
+import type { TypedResponse } from '@remix-run/node';
+import { json } from '@remix-run/node';
 
-import type { FormErrors } from '~/types';
+import type { FormErrors } from '../types';
 
 export function errorResponse(...errors: (string | readonly [string, string])[]): TypedResponse<[success: false, data: undefined, errors: FormErrors]> {
   return json([

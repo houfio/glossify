@@ -1,7 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client/edge';
+import { withAccelerate } from '@prisma/extension-accelerate';
 
 declare global {
-  var __db__: PrismaClient;
+  var __db__: ReturnType<typeof getClient>;
 }
 
 let prisma = global.__db__;
@@ -13,11 +14,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 function getClient() {
-  const client = new PrismaClient();
-
-  client.$connect();
-
-  return client;
+  return new PrismaClient()
+    .$extends(withAccelerate());
 }
 
 export { prisma };
