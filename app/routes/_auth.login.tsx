@@ -1,24 +1,32 @@
 import { unstable_defineAction } from '@remix-run/node';
-import { Form, useActionData } from '@remix-run/react';
+import { Form, Link, useActionData } from '@remix-run/react';
 import bcrypt from 'bcryptjs';
+import { z } from 'zod';
 
 import { db } from '~/db.server';
 import { login } from '~/session.server';
+import { respond } from '~/utils/respond.server';
+import { validate } from '~/utils/validate.server';
 
 export const action = unstable_defineAction(async ({ request, response }) => {
-  const data = await request.formData();
-  const username = String(data.get('username'));
-  const password = String(data.get('password'));
-
-  const user = await db.user.findUnique({
-    where: { username }
+  const data = await validate(request, {
+    username: z.string().min(3),
+    password: z.string().min(3)
   });
 
-  if (user && await bcrypt.compare(password, user.password)) {
+  if (!data.success) {
+    return data;
+  }
+
+  const user = await db.user.findUnique({
+    where: { username: data.data.username }
+  });
+
+  if (user && await bcrypt.compare(data.data.password, user.password)) {
     throw await login(request, response, user.id);
   }
 
-  return { ok: false };
+  return respond(false, ['Invalid credentials']);
 });
 
 export default function Login() {
@@ -28,9 +36,10 @@ export default function Login() {
     <div>
       Login
       <Form method="post">
-        <input name="username"/>
-        <input name="password"/>
-        <button type="submit">Submit</button>
+        <input name="username" required={true}/>
+        <input name="password" type="password" required={true}/>
+        <button type="submit">Login</button>
+        <Link to="/register">Register</Link>
       </Form>
       <pre>
         {JSON.stringify(data, undefined, 2)}
