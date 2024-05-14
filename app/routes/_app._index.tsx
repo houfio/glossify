@@ -1,6 +1,8 @@
+import { faArrowRightFromBracket } from '@fortawesome/pro-regular-svg-icons';
 import { unstable_defineLoader } from '@remix-run/node';
 import { Form, useLoaderData } from '@remix-run/react';
 
+import { Button } from '~/components/Button';
 import { requireUser } from '~/session.server';
 
 export const loader = unstable_defineLoader(async ({ request, response }) => {
@@ -18,7 +20,7 @@ export default function Index() {
         {JSON.stringify(user, undefined, 2)}
       </pre>
       <Form method="post" action="/logout">
-        <button type="submit">Logout</button>
+        <Button type="submit" icon={faArrowRightFromBracket}>Logout</Button>
       </Form>
     </>
   );

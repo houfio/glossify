@@ -1,5 +1,26 @@
 @import "modern-normalize";
 
+:root {
+  --background: #fff;
+  --on-background: #121212;
+  --surface: #e1e1e1;
+  --on-surface: var(--on-background);
+  --outline: #b1b1b1;
+  --accent: dodgerblue;
+  --on-accent: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #121212;
+    --on-background: #fff;
+    --surface: #292929;
+    --outline: #4e4e4e;
+  }
+}
+
 body {
+  color: var(--on-background);
+  background-color: var(--background);
   font-family: "Noto Sans", sans-serif;
 }

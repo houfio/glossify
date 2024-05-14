@@ -3,6 +3,7 @@ import { Form, Link, useActionData } from '@remix-run/react';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 
+import { Button } from '~/components/Button';
 import { db } from '~/db.server';
 import { login } from '~/session.server';
 import { respond } from '~/utils/respond.server';
@@ -38,7 +39,7 @@ export default function Login() {
       <Form method="post">
         <input name="username" required={true}/>
         <input name="password" type="password" required={true}/>
-        <button type="submit">Login</button>
+        <Button type="submit">Login</Button>
         <Link to="/register">Register</Link>
       </Form>
       <pre>
