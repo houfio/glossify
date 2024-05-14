@@ -1,4 +1,4 @@
-export type FormErrors = null | Array<{
-  field?: string,
-  message: string
-}>;
+export type ResponseStub = {
+  status: number | undefined;
+  headers: Headers;
+};

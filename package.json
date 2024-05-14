@@ -3,34 +3,34 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "prebuild": "prisma generate --no-engine && prisma migrate deploy",
+    "prebuild": "prisma generate && prisma migrate deploy",
     "build": "remix vite:build",
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@fortawesome/pro-regular-svg-icons": "^6.5.1",
+    "@fortawesome/pro-regular-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "@prisma/client": "^5.8.1",
-    "@prisma/extension-accelerate": "^0.6.2",
-    "@remix-run/dev": "^2.5.1",
-    "@remix-run/node": "^2.5.1",
-    "@remix-run/react": "^2.5.1",
+    "@prisma/client": "^5.14.0",
+    "@remix-run/node": "^2.9.2",
+    "@remix-run/react": "^2.9.2",
     "bcryptjs": "^2.4.3",
-    "isbot": "^4.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "zod": "^3.22.4"
+    "isbot": "^5.1.6",
+    "modern-normalize": "^2.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@remix-run/eslint-config": "^2.5.1",
-    "@remix-run/serve": "^2.5.1",
+    "@remix-run/dev": "^2.9.2",
+    "@remix-run/eslint-config": "^2.9.2",
     "@types/bcryptjs": "^2.4.6",
-    "@types/react": "^18.2.48",
-    "@types/react-dom": "^18.2.18",
-    "prisma": "^5.8.1",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.11"
+    "@types/react": "^18.3.2",
+    "@types/react-dom": "^18.3.0",
+    "prisma": "^5.14.0",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11",
+    "vite-tsconfig-paths": "^4.3.2"
   }
 }

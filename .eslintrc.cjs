@@ -7,6 +7,8 @@ module.exports = {
     'plugin:import/typescript'
   ],
   rules: {
+    'array-bracket-spacing': ['error', 'never'],
+    'comma-dangle': ['error', 'never'],
     'import/order': [
       'error',
       {
@@ -16,6 +18,24 @@ module.exports = {
         }
       }
     ],
-    'react-hooks/exhaustive-deps': 'off'
+    'object-curly-spacing': ['error', 'always'],
+    'quotes': ['error', 'single', { 'avoidEscape': true }],
+    'react/display-name': 'off',
+    'react/jsx-curly-spacing': [
+      'error',
+      {
+        'when': 'never',
+        'children': true
+      }
+    ],
+    'react/jsx-tag-spacing': [
+      'error',
+      {
+        'beforeSelfClosing': 'never',
+        'beforeClosing': 'proportional-always'
+      }
+    ],
+    'react-hooks/exhaustive-deps': 'off',
+    'template-curly-spacing': ['error', 'never']
   }
 };

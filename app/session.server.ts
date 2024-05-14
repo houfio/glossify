@@ -1,6 +1,7 @@
-import { createCookieSessionStorage, redirect } from '@remix-run/node';
+import { createCookieSessionStorage } from '@remix-run/node';
 
-import { prisma } from './db.server';
+import { db } from '~/db.server';
+import type { ResponseStub } from '~/types';
 
 type SessionData = {
   userId?: string
@@ -29,53 +30,48 @@ export async function getUserId(request: Request) {
   return session.get('userId');
 }
 
-export async function requireUserId(request: Request, redirectTo = new URL(request.url).pathname) {
+export async function requireUserId(request: Request, response: ResponseStub) {
   const userId = await getUserId(request);
 
   if (!userId) {
-    const searchParams = new URLSearchParams([['redirect', redirectTo]]);
-
-    throw redirect(`/login?${searchParams}`);
+    throw await logout(request, response);
   }
 
   return userId;
 }
 
-export async function requireUser(request: Request, redirectTo?: string) {
-  const userId = await requireUserId(request, redirectTo);
-  const user = await prisma.user.findUnique({
-    where: { id: userId }
+export async function requireUser(request: Request, response: ResponseStub) {
+  const userId = await requireUserId(request, response);
+  const user = await db.user.findUnique({
+    where: { id: userId },
+    omit: { password: true }
   });
 
   if (!user) {
-    throw await logout(request);
+    throw await logout(request, response);
   }
 
-  const { password, ...userWithoutPassword } = user;
-
-  return userWithoutPassword;
+  return user;
 }
 
-export async function createUserSession(request: Request, userId: string, remember: boolean, redirectTo: string) {
+export async function login(request: Request, response: ResponseStub, userId: string) {
   const session = await getSession(request);
 
   session.set('userId', userId);
 
-  return redirect(redirectTo, {
-    headers: {
-      'Set-Cookie': await storage.commitSession(session, {
-        maxAge: remember ? 60 * 60 * 24 * 7 : undefined
-      })
-    }
-  });
+  response.status = 302;
+  response.headers.set('Location', '/');
+  response.headers.set('Set-Cookie', await storage.commitSession(session));
+
+  return response;
 }
 
-export async function logout(request: Request) {
+export async function logout(request: Request, response: ResponseStub) {
   const session = await getSession(request);
 
-  return redirect('/', {
-    headers: {
-      'Set-Cookie': await storage.destroySession(session)
-    }
-  });
+  response.status = 302;
+  response.headers.set('Location', '/login');
+  response.headers.set('Set-Cookie', await storage.destroySession(session));
+
+  return response;
 }
