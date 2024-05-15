@@ -1,0 +1,17 @@
+@use "modern-normalize";
+@use "@fortawesome/fontawesome-svg-core/styles.css";
+@use "utils";
+
+:root {
+  @include utils.with-colors(light);
+
+  @media (prefers-color-scheme: dark) {
+    @include utils.with-colors(dark);
+  }
+}
+
+body {
+  color: var(--on-background);
+  background-color: var(--background);
+  font-family: "Noto Sans", sans-serif;
+}

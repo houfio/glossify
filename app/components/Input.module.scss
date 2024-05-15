@@ -1,0 +1,21 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin: 0 .5rem;
+  color: var(--on-surface-subtle);
+  font-size: .75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.input {
+  padding: .5rem;
+  color: var(--on-input);
+  background-color: var(--input);
+  border: 1px solid var(--input-outline);
+  border-radius: .5rem;
+  appearance: none;
+}

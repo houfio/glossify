@@ -1,13 +1,20 @@
-import { unstable_defineAction } from '@remix-run/node';
+import { faArrowRightToBracket } from '@fortawesome/pro-regular-svg-icons';
+import { type MetaFunction, unstable_defineAction } from '@remix-run/node';
 import { Form, Link, useActionData } from '@remix-run/react';
 import bcrypt from 'bcryptjs';
+import { useEffect } from 'react';
 import { z } from 'zod';
 
 import { Button } from '~/components/Button';
+import { Input } from '~/components/Input';
 import { db } from '~/db.server';
 import { login } from '~/session.server';
 import { respond } from '~/utils/respond.server';
 import { validate } from '~/utils/validate.server';
+
+export const meta: MetaFunction = () => [
+  { title: 'Glossify / Login' }
+];
 
 export const action = unstable_defineAction(async ({ request, response }) => {
   const data = await validate(request, {
@@ -33,18 +40,20 @@ export const action = unstable_defineAction(async ({ request, response }) => {
 export default function Login() {
   const data = useActionData<typeof action>();
 
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+    }
+  }, [data]);
+
   return (
-    <div>
-      Login
+    <>
       <Form method="post">
-        <input name="username" required={true}/>
-        <input name="password" type="password" required={true}/>
-        <Button type="submit">Login</Button>
-        <Link to="/register">Register</Link>
+        <Input label="Username" name="username" required={true}/>
+        <Input label="Password" name="password" type="password" required={true}/>
+        <Button text="Login" icon={faArrowRightToBracket} type="submit"/>
       </Form>
-      <pre>
-        {JSON.stringify(data, undefined, 2)}
-      </pre>
-    </div>
+      <Link to="/register">Register</Link>
+    </>
   );
 }

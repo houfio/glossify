@@ -20,7 +20,7 @@ export default function Index() {
         {JSON.stringify(user, undefined, 2)}
       </pre>
       <Form method="post" action="/logout">
-        <Button type="submit" icon={faArrowRightFromBracket}>Logout</Button>
+        <Button text="Logout" type="submit" icon={faArrowRightFromBracket}/>
       </Form>
     </>
   );

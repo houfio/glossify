@@ -1,6 +1,8 @@
 import { unstable_defineLoader } from '@remix-run/node';
 import { Outlet } from '@remix-run/react';
 
+import styles from './route.module.scss';
+
 import { getUserId } from '~/session.server';
 
 export const loader = unstable_defineLoader(async ({ request, response }) => {
@@ -18,9 +20,9 @@ export const loader = unstable_defineLoader(async ({ request, response }) => {
 
 export default function Auth() {
   return (
-    <>
-      auth
+    <div className={styles.wrapper}>
+      Glossify :)
       <Outlet/>
-    </>
+    </div>
   );
 }

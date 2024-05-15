@@ -1,7 +1,15 @@
+import { config } from '@fortawesome/fontawesome-svg-core';
+import type { MetaFunction } from '@remix-run/node';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, useRouteError } from '@remix-run/react';
 import type { PropsWithChildren } from 'react';
 
-import './root.css';
+import './root.scss';
+
+config.autoAddCss = false;
+
+export const meta: MetaFunction = () => [
+  { title: 'Glossify' }
+];
 
 export function Layout({ children }: PropsWithChildren) {
   return (
