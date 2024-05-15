@@ -1,6 +1,6 @@
 import { faArrowRightFromBracket } from '@fortawesome/pro-regular-svg-icons';
-import { unstable_defineLoader } from '@remix-run/node';
 import { Form, useLoaderData } from '@remix-run/react';
+import { unstable_defineLoader } from '@vercel/remix';
 
 import { Button } from '~/components/Button';
 import { requireUser } from '~/session.server';

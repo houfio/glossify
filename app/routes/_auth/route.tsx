@@ -1,5 +1,7 @@
-import { unstable_defineLoader } from '@remix-run/node';
+import { faFolders } from '@fortawesome/pro-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Outlet } from '@remix-run/react';
+import { unstable_defineLoader } from '@vercel/remix';
 
 import styles from './route.module.scss';
 
@@ -21,8 +23,12 @@ export const loader = unstable_defineLoader(async ({ request, response }) => {
 export default function Auth() {
   return (
     <div className={styles.wrapper}>
-      Glossify :)
-      <Outlet/>
+      <div className={styles.box}>
+        <span className={styles.title}>
+          <FontAwesomeIcon icon={faFolders}/> Glossify
+        </span>
+        <Outlet/>
+      </div>
     </div>
   );
 }

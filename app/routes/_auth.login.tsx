@@ -1,6 +1,7 @@
 import { faArrowRightToBracket } from '@fortawesome/pro-regular-svg-icons';
-import { type MetaFunction, unstable_defineAction } from '@remix-run/node';
 import { Form, Link, useActionData } from '@remix-run/react';
+import type { MetaFunction } from '@vercel/remix';
+import { unstable_defineAction } from '@vercel/remix';
 import bcrypt from 'bcryptjs';
 import { useEffect } from 'react';
 import { z } from 'zod';

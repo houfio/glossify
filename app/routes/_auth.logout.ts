@@ -1,4 +1,4 @@
-import { unstable_defineAction } from '@remix-run/node';
+import { unstable_defineAction } from '@vercel/remix';
 
 import { logout } from '~/session.server';
 

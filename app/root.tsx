@@ -1,6 +1,6 @@
 import { config } from '@fortawesome/fontawesome-svg-core';
-import type { MetaFunction } from '@remix-run/node';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, useRouteError } from '@remix-run/react';
+import type { MetaFunction } from '@vercel/remix';
 import type { PropsWithChildren } from 'react';
 
 import './root.scss';
