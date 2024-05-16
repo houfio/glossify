@@ -28,13 +28,22 @@ $tokens: (
     dark: gray 500
   ),
   on-background: (
-    light: gray 500,
+    light: gray 400,
     dark: gray 0
   ),
   on-background-subtle: (
-    light: gray 200,
+    light: gray 100,
     dark: gray 300
   ),
+  background-hover: (
+    light: gray 50,
+    dark: gray 450
+  ),
+  background-click: (
+    light: gray 100,
+    dark: gray 400
+  ),
+  background-outline: background-hover,
 
   accent: yellow 300,
   on-accent: gray 500,
@@ -45,27 +54,34 @@ $tokens: (
     dark: yellow 100
   ),
 
-  surface: (
-    light: gray 50,
-    dark: gray 450
-  ),
+  surface: background-hover,
   on-surface: on-background,
   on-surface-subtle: (
-    light: gray 300,
-    dark: gray 200
+    light: gray 200,
+    dark: gray 300
   ),
-  surface-hover: (
-    light: gray 100,
-    dark: gray 400
-  ),
+  surface-hover: background-click,
   surface-click: (
     light: gray 200,
     dark: gray 300
   ),
-  surface-outline: (
-    light: gray 100,
-    dark: gray 400
+  surface-outline: surface-hover,
+
+  surface-variant: background-click,
+  on-surface-variant: on-background,
+  on-surface-variant-subtle: (
+    light: gray 200,
+    dark: gray 300
   ),
+  surface-variant-hover: (
+    light: gray 200,
+    dark: gray 300
+  ),
+  surface-variant-click: (
+    light: gray 300,
+    dark: gray 200
+  ),
+  surface-variant-outline: surface-variant-hover,
 
   input: gray 0,
   on-input: gray 500,
