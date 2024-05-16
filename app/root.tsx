@@ -1,19 +1,28 @@
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { useStore } from '@nanostores/react';
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, useRouteError } from '@remix-run/react';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useRouteError } from '@remix-run/react';
 import type { MetaFunction } from '@vercel/remix';
+import { unstable_defineLoader } from '@vercel/remix';
 import type { PropsWithChildren } from 'react';
+import { useEffect } from 'react';
 
 import './root.scss';
 
 import { Toast } from '~/components/popovers/Toast';
-import { $toasts } from '~/stores/toasts';
+import { getMessage } from '~/session.server';
+import { $toasts, openToast } from '~/stores/toasts';
 
 config.autoAddCss = false;
 
 export const meta: MetaFunction = () => [
   { title: 'Glossify' }
 ];
+
+export const loader = unstable_defineLoader(async ({ request, response }) => {
+  const message = await getMessage(request, response);
+
+  return { message };
+});
 
 export function Layout({ children }: PropsWithChildren) {
   return (
@@ -23,8 +32,7 @@ export function Layout({ children }: PropsWithChildren) {
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link rel="preconnect" href="https://fonts.googleapis.com"/>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
-        <link rel="stylesheet"
-              href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&family=Noto+Sans:wght@100..900&display=swap"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&family=Noto+Sans:wght@100..900&display=swap"/>
         <Meta/>
         <Links/>
       </head>
@@ -38,7 +46,14 @@ export function Layout({ children }: PropsWithChildren) {
 }
 
 export default function Root() {
+  const { message } = useLoaderData<typeof loader>();
   const toasts = useStore($toasts);
+
+  useEffect(() => {
+    if (message) {
+      openToast(message);
+    }
+  }, [message]);
 
   return (
     <>
@@ -46,9 +61,8 @@ export default function Root() {
       {toasts.map((toast, i) => (
         <Toast
           key={toast.id}
-          id={toast.id}
           message={toast.message}
-          index={i}
+          index={toasts.length - i - 1}
         />
       ))}
     </>

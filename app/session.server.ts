@@ -4,7 +4,8 @@ import { db } from '~/db.server';
 import type { ResponseStub } from '~/types';
 
 type SessionData = {
-  userId?: string
+  userId?: string,
+  message?: string
 };
 
 const storage = createCookieSessionStorage<SessionData>({
@@ -22,6 +23,23 @@ function getSession(request: Request) {
   const cookie = request.headers.get('Cookie');
 
   return storage.getSession(cookie);
+}
+
+export async function setMessage(request: Request, response: ResponseStub, message: string) {
+  const session = await getSession(request);
+
+  session.flash('message', message);
+
+  response.headers.set('Set-Cookie', await storage.commitSession(session));
+}
+
+export async function getMessage(request: Request, response: ResponseStub) {
+  const session = await getSession(request);
+  const message = session.get('message');
+
+  response.headers.set('Set-Cookie', await storage.commitSession(session));
+
+  return message;
 }
 
 export async function getUserId(request: Request) {
@@ -58,6 +76,7 @@ export async function login(request: Request, response: ResponseStub, userId: st
   const session = await getSession(request);
 
   session.set('userId', userId);
+  session.flash('message', 'Successfully logged in');
 
   response.status = 302;
   response.headers.set('Location', '/');
@@ -69,9 +88,12 @@ export async function login(request: Request, response: ResponseStub, userId: st
 export async function logout(request: Request, response: ResponseStub) {
   const session = await getSession(request);
 
+  session.unset('userId');
+  session.flash('message', 'Successfully logged out');
+
   response.status = 302;
   response.headers.set('Location', '/login');
-  response.headers.set('Set-Cookie', await storage.destroySession(session));
+  response.headers.set('Set-Cookie', await storage.commitSession(session));
 
   return response;
 }
