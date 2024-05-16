@@ -29,6 +29,9 @@ export default function Auth() {
         </span>
         <Outlet/>
       </div>
+      <span className={styles.version}>
+        {__VERSION__}
+      </span>
     </div>
   );
 }

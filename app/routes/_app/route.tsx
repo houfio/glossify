@@ -25,37 +25,51 @@ export default function App() {
   return (
     <>
       <nav className={styles.navigation}>
-        <Container className={styles.inner}>
-          <div className={styles.title}>
-            <FontAwesomeIcon icon={faFolders}/> Glossify
+        <Container asChild={true}>
+          <div className={styles.inner}>
+            <div className={styles.title}>
+              <FontAwesomeIcon icon={faFolders}/> Glossify
+            </div>
+            <Navigation
+              items={[{
+                title: 'Words',
+                to: '/',
+                end: true
+              }, {
+                title: 'Practise',
+                to: '/practise'
+              }]}
+              orientation="horizontal"
+            />
+            <Dropdown
+              items={[{
+                title: 'Settings',
+                icon: faGear,
+                to: '/settings'
+              }, {
+                title: 'Log out',
+                icon: faArrowRightFromBracket,
+                onClick: prompt
+              }]}
+            >
+              <FontAwesomeIcon icon={faCircleUser} className={styles.avatar}/>
+            </Dropdown>
           </div>
-          <Navigation
-            items={[{
-              title: 'Words',
-              to: '/',
-              end: true
-            }, {
-              title: 'Practise',
-              to: '/practise'
-            }]}
-            orientation="horizontal"
-          />
-          <Dropdown
-            items={[{
-              title: 'Settings',
-              icon: faGear,
-              to: '/settings'
-            }, {
-              title: 'Log out',
-              icon: faArrowRightFromBracket,
-              onClick: prompt
-            }]}
-          >
-            <FontAwesomeIcon icon={faCircleUser} className={styles.avatar}/>
-          </Dropdown>
         </Container>
       </nav>
-      <Outlet/>
+      <main className={styles.main}>
+        <Outlet/>
+      </main>
+      <Container asChild={true}>
+        <footer className={styles.footer}>
+          <span>
+            Glossify
+          </span>
+          <span>
+            {__VERSION__}
+          </span>
+        </footer>
+      </Container>
       {component}
     </>
   );

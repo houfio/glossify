@@ -30,3 +30,16 @@
     background-color: var(--surface-variant-click);
   }
 }
+
+.main {
+  flex: 1;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: .5rem;
+  padding: .5rem 0;
+  color: var(--on-background-subtle);
+  border-top: 1px solid var(--background-outline);
+}

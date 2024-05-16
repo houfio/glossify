@@ -15,6 +15,9 @@ export default defineConfig({
     }),
     tsconfigPaths()
   ],
+  define: {
+    __VERSION__: JSON.stringify(process.env.VERCEL_GIT_COMMIT_SHA?.substring(0, 7) ?? 'develop')
+  },
   css: {
     modules: {
       localsConvention: 'camelCase'

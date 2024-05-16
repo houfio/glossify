@@ -1,10 +1,18 @@
-import { clsx } from 'clsx';
-import type { ComponentPropsWithoutRef } from 'react';
+import { Slot } from '@radix-ui/react-slot';
+import type { PropsWithChildren } from 'react';
 
 import styles from './Container.module.scss';
 
-export function Container({ className, ...props }: ComponentPropsWithoutRef<'div'>) {
+type Props = {
+  asChild?: boolean
+};
+
+export function Container({ asChild, children }: PropsWithChildren<Props>) {
+  const Component = asChild ? Slot : 'div';
+
   return (
-    <div className={clsx(styles.container, className)} {...props}/>
+    <Component className={styles.container}>
+      {children}
+    </Component>
   );
 }
