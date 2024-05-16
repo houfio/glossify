@@ -1,3 +1,5 @@
+import { faCheck, faXmark } from '@fortawesome/pro-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { PropsWithChildren } from 'react';
 
 import styles from './ConfirmModal.module.scss';
@@ -20,12 +22,12 @@ export function ConfirmModal({ onClose, children }: PropsWithChildren<Props>) {
         <div>
           {children}
         </div>
-        <ItemList direction="horizontal" className={styles.items}>
+        <ItemList orientation="horizontal" className={styles.items}>
           <button type="submit" autofocus="true">
-            No
+            <FontAwesomeIcon icon={faXmark} fixedWidth={true}/> No
           </button>
           <button type="submit" value="confirm">
-            Yes
+            <FontAwesomeIcon icon={faCheck} fixedWidth={true}/> Yes
           </button>
         </ItemList>
       </form>

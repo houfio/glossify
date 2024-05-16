@@ -1,3 +1,5 @@
+import type { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Slot } from '@radix-ui/react-slot';
 import { Link } from '@remix-run/react';
 import type { To } from '@remix-run/router';
@@ -11,6 +13,7 @@ import { Popover } from '~/components/popovers/Popover';
 type Props = {
   items: {
     title: string,
+    icon: IconProp,
     to?: To,
     onClick?: () => void
   }[]
@@ -21,7 +24,7 @@ export function Dropdown({ items, children }: PropsWithChildren<Props>) {
     <Popover
       content={(ref) => (
         <div className={styles.dropdown}>
-          <ItemList direction="vertical">
+          <ItemList orientation="vertical">
             {items.map((item, i) => (
               <Slot
                 key={i}
@@ -33,11 +36,11 @@ export function Dropdown({ items, children }: PropsWithChildren<Props>) {
               >
                 {item.to ? (
                   <Link to={item.to}>
-                    {item.title}
+                    <FontAwesomeIcon icon={item.icon} fixedWidth={true}/> {item.title}
                   </Link>
                 ) : (
                   <button>
-                    {item.title}
+                    <FontAwesomeIcon icon={item.icon} fixedWidth={true}/> {item.title}
                   </button>
                 )}
               </Slot>

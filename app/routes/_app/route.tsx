@@ -1,13 +1,13 @@
-import { faCircleUser, faFolders } from '@fortawesome/pro-regular-svg-icons';
+import { faArrowRightFromBracket, faCircleUser, faFolders, faGear } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link, Outlet } from '@remix-run/react';
+import { Outlet } from '@remix-run/react';
 import { unstable_defineLoader } from '@vercel/remix';
 import { useNavigate } from 'react-router';
 
 import styles from './route.module.scss';
 
 import { Container } from '~/components/Container';
-import { ItemList } from '~/components/ItemList';
+import { Navigation } from '~/components/Navigation';
 import { Dropdown } from '~/components/popovers/Dropdown';
 import { useConfirmation } from '~/hooks/useConfirmation';
 import { requireUser } from '~/session.server';
@@ -29,20 +29,25 @@ export default function App() {
           <div className={styles.title}>
             <FontAwesomeIcon icon={faFolders}/> Glossify
           </div>
-          <ItemList direction="horizontal">
-            <Link to="/">
-              Words
-            </Link>
-            <Link to="/practise">
-              Practise
-            </Link>
-          </ItemList>
+          <Navigation
+            items={[{
+              title: 'Words',
+              to: '/',
+              end: true
+            }, {
+              title: 'Practise',
+              to: '/practise'
+            }]}
+            orientation="horizontal"
+          />
           <Dropdown
             items={[{
               title: 'Settings',
+              icon: faGear,
               to: '/settings'
             }, {
               title: 'Log out',
+              icon: faArrowRightFromBracket,
               onClick: prompt
             }]}
           >

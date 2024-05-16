@@ -1,6 +1,17 @@
 import { config } from '@fortawesome/fontawesome-svg-core';
+import { faExplosion } from '@fortawesome/pro-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useStore } from '@nanostores/react';
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useRouteError } from '@remix-run/react';
+import {
+  isRouteErrorResponse,
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useLoaderData,
+  useRouteError
+} from '@remix-run/react';
 import type { MetaFunction } from '@vercel/remix';
 import { unstable_defineLoader } from '@vercel/remix';
 import type { PropsWithChildren } from 'react';
@@ -72,9 +83,32 @@ export default function Root() {
 export function ErrorBoundary() {
   const error = useRouteError();
 
+  console.error(error);
+
   return (
-    <pre>
-      {JSON.stringify(error, undefined, 2)}
-    </pre>
+    <div className="error-boundary">
+      <FontAwesomeIcon icon={faExplosion}/>
+      {isRouteErrorResponse(error) ? (
+        <>
+          <span>
+            {error.status} {error.statusText}
+          </span>
+          <pre className="error-boundary-info">
+            {JSON.stringify(error.data, undefined, 2)}
+          </pre>
+        </>
+      ) : error instanceof Error ? (
+        <>
+          {error.message}
+          <pre className="error-boundary-info">
+            {error.stack}
+          </pre>
+        </>
+      ) : (
+        <>
+          Oh no, something went very wrong
+        </>
+      )}
+    </div>
   );
 }

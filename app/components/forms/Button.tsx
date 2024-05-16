@@ -21,7 +21,6 @@ export function Button({ text, icon, loading, className, ...props }: Props) {
 
   return (
     <button
-      title={text}
       disabled={disabled}
       className={clsx(styles.button, className)}
       {...props}
