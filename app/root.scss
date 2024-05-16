@@ -15,3 +15,23 @@ body {
   background-color: var(--background);
   font-family: "Noto Sans", sans-serif;
 }
+
+input, select, button {
+  padding: 0;
+  background: none;
+  border: none;
+  appearance: none;
+}
+
+button {
+  text-align: start;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:disabled {
+    pointer-events: none;
+    opacity: .5;
+  }
+}

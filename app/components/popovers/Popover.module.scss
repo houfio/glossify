@@ -1,14 +1,3 @@
-.anchor {
-  padding: 0;
-  background-color: transparent;
-  border: none;
-  appearance: none;
-
-  &:hover {
-    cursor: pointer;
-  }
-}
-
 .popover {
   inset: unset;
   position-try-options: flip-block, flip-inline, flip-block flip-inline;

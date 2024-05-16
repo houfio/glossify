@@ -6,22 +6,14 @@
   background-color: var(--accent);
   border: 1px solid var(--accent-outline);
   border-radius: .5rem;
-  appearance: none;
   text-align: center;
-  text-decoration: none;
 
   &:hover {
-    cursor: pointer;
     background-color: var(--accent-hover);
   }
 
   &:active {
     background-color: var(--accent-click);
-  }
-
-  &.disabled {
-    pointer-events: none;
-    opacity: .5;
   }
 }
 

@@ -23,11 +23,7 @@ export function Button({ text, icon, loading, className, ...props }: Props) {
     <button
       title={text}
       disabled={disabled}
-      className={clsx(
-        styles.button,
-        disabled && styles.disabled,
-        className
-      )}
+      className={clsx(styles.button, className)}
       {...props}
     >
       <div className={clsx(isLoading && styles.loading)}>

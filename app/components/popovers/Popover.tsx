@@ -1,5 +1,4 @@
 import { Slot } from '@radix-ui/react-slot';
-import { clsx } from 'clsx';
 import type { ReactNode, RefObject } from 'react';
 import { useId, useRef } from 'react';
 
@@ -27,7 +26,6 @@ export function Popover({ content, position, offset, type = 'auto', asChild, chi
       <Component
         tabIndex={0}
         style={{ anchorName: `--${id}-anchor` }}
-        className={clsx(styles.anchor)}
         {...type === 'auto' && {
           popovertarget: `${id}-popover`,
           popovertargetaction: 'toggle'

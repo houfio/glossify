@@ -7,14 +7,9 @@
   & > button, & > a {
     padding: .5rem;
     color: inherit;
-    background-color: transparent;
-    border: none;
-    appearance: none;
-    text-align: start;
     text-decoration: none;
 
     &:hover {
-      cursor: pointer;
       background-color: var(--surface-hover);
     }
 

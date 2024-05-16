@@ -31,13 +31,10 @@
   padding: .25rem .5rem;
   color: var(--on-surface);
   background-color: var(--surface);
-  border: none;
   border-radius: .5rem;
-  appearance: none;
 
   &:hover {
     background-color: var(--surface-hover);
-    cursor: pointer;
   }
 
   &:active {
