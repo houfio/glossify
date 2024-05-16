@@ -1,23 +1,37 @@
+import { Link } from '@remix-run/react';
+import type { To } from '@remix-run/router';
 import type { PropsWithChildren } from 'react';
 
 import styles from './Dropdown.module.scss';
 
+import { ItemList } from '~/components/ItemList';
 import { Popover } from '~/components/popovers/Popover';
 
 type Props = {
-  items: string[]
+  items: {
+    title: string,
+    to: To
+  }[]
 };
 
 export function Dropdown({ items, children }: PropsWithChildren<Props>) {
   return (
     <Popover
-      content={(
+      content={(ref) => (
         <div className={styles.dropdown}>
-          {items.map((item) => (
-            <button key={item} autoFocus={true} className={styles.item}>
-              {item}
-            </button>
-          ))}
+          <ItemList direction="vertical">
+            {items.map((item, i) => (
+              <Link
+                key={i}
+                to={item.to}
+                autoFocus={true}
+                className={styles.item}
+                onClick={() => ref.current?.hidePopover()}
+              >
+                {item.title}
+              </Link>
+            ))}
+          </ItemList>
         </div>
       )}
       position="bottom span-left"

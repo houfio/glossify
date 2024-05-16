@@ -1,4 +1,4 @@
-.header {
+.navigation {
   padding: .75rem 0;
   color: var(--on-surface);
   background-color: var(--surface);
@@ -7,15 +7,26 @@
 
 .inner {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: .5rem;
+}
+
+.title {
+  flex: 1;
 }
 
 .avatar {
-  width: 1.5rem;
-  height: 1.5rem;
-  background-color: var(--on-surface);
-  border: none;
+  padding: .5rem;
+  color: var(--on-surface-variant);
+  background-color: var(--surface-variant);
   border-radius: 50%;
-  appearance: none;
+  vertical-align: middle;
+
+  &:hover {
+    background-color: var(--surface-variant-hover);
+  }
+
+  &:active {
+    background-color: var(--surface-variant-click);
+  }
 }

@@ -57,7 +57,7 @@ export default function Login() {
       <Form method="post">
         <Input label="Username" name="username" required={true}/>
         <Input label="Password" name="password" type="password" required={true}/>
-        <Button text="Login" icon={faArrowRightToBracket} type="submit"/>
+        <Button text="Log in" icon={faArrowRightToBracket} type="submit"/>
       </Form>
       <Link to="/register">Register</Link>
     </>

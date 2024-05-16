@@ -1,7 +1,7 @@
-import { unstable_defineAction } from '@vercel/remix';
+import { unstable_defineLoader } from '@vercel/remix';
 
 import { logout } from '~/session.server';
 
-export const action = unstable_defineAction(async ({ request, response }) => {
+export const loader = unstable_defineLoader(async ({ request, response }) => {
   throw await logout(request, response);
 });

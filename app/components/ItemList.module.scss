@@ -1,0 +1,62 @@
+.list {
+  display: flex;
+  color: var(--on-surface);
+  background-color: var(--surface);
+  border-radius: .5rem;
+
+  & > button, & > a {
+    padding: .5rem;
+    color: inherit;
+    background-color: transparent;
+    border: none;
+    appearance: none;
+    text-align: start;
+    text-decoration: none;
+
+    &:hover {
+      cursor: pointer;
+      background-color: var(--surface-hover);
+    }
+
+    &:active {
+      background-color: var(--surface-click);
+    }
+
+    &:first-child {
+      border-bottom-left-radius: .5rem;
+      border-top-left-radius: .5rem;
+    }
+
+    &:last-child {
+      border-bottom-right-radius: .5rem;
+      border-top-right-radius: .5rem;
+    }
+
+    &:not(:last-child) {
+      border-right: 1px solid var(--surface-outline);
+    }
+  }
+
+  &.vertical {
+    flex-direction: column;
+
+    & > button, & > a {
+      border-radius: 0;
+      border-right: none;
+
+      &:first-child {
+        border-top-left-radius: .5rem;
+        border-top-right-radius: .5rem;
+      }
+
+      &:last-child {
+        border-bottom-left-radius: .5rem;
+        border-bottom-right-radius: .5rem;
+      }
+
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--surface-outline);
+      }
+    }
+  }
+}

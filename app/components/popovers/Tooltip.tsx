@@ -22,11 +22,11 @@ export function Tooltip({ content, asChild, children }: PropsWithChildren<Props>
       )}
       position="top"
       offset="0 0 .25rem 0"
+      type="manual"
+      asChild={true}
     >
-      {(ref, style) => (
+      {(ref) => (
         <Component
-          style={style}
-          tabIndex={0}
           onMouseEnter={() => ref.current?.showPopover()}
           onMouseLeave={() => ref.current?.hidePopover()}
           onFocus={() => ref.current?.showPopover()}

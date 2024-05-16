@@ -1,40 +1,44 @@
+import { Slot } from '@radix-ui/react-slot';
 import { clsx } from 'clsx';
+import type { ReactNode, RefObject } from 'react';
 import { useId, useRef } from 'react';
-import type { ComponentPropsWithoutRef, CSSProperties, ReactNode  , RefObject } from 'react';
 
 import styles from './Popover.module.scss';
 
-type Props = Omit<ComponentPropsWithoutRef<'button'>, 'content' | 'children'> & {
-  content: ReactNode,
+type Node = ReactNode | ((ref: RefObject<HTMLDivElement>) => ReactNode);
+
+type Props = {
+  content: Node,
   position: string,
   offset?: string,
-  children: ReactNode | ((ref: RefObject<HTMLDivElement>, style: CSSProperties) => ReactNode)
+  type?: 'auto' | 'manual',
+  asChild?: boolean,
+  children: Node
 };
 
-export function Popover({ content, position, offset, className, children, ...props }: Props) {
+export function Popover({ content, position, offset, type = 'auto', asChild, children }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const id = useId().replaceAll(':', '');
 
-  const style = { anchorName: `--${id}-anchor` };
-  const manual = typeof children === 'function';
+  const Component = asChild ? Slot : 'button';
 
   return (
     <>
-      {manual ? children(ref, style) : (
-        <button
-          popovertarget={`${id}-popover`}
-          popovertargetaction="toggle"
-          style={style}
-          className={clsx(styles.anchor, className)}
-          {...props}
-        >
-          {children}
-        </button>
-      )}
+      <Component
+        tabIndex={0}
+        style={{ anchorName: `--${id}-anchor` }}
+        className={clsx(styles.anchor)}
+        {...type === 'auto' && {
+          popovertarget: `${id}-popover`,
+          popovertargetaction: 'toggle'
+        }}
+      >
+        {typeof children === 'function' ? children(ref) : children}
+      </Component>
       <div
         ref={ref}
         id={`${id}-popover`}
-        popover={manual ? 'manual' : 'auto'}
+        popover={type}
         style={{
           positionAnchor: `--${id}-anchor`,
           insetArea: position,
@@ -42,7 +46,7 @@ export function Popover({ content, position, offset, className, children, ...pro
         }}
         className={styles.popover}
       >
-        {content}
+        {typeof content === 'function' ? content(ref) : content}
       </div>
     </>
   );
