@@ -1,7 +1,7 @@
 import { faArrowRightFromBracket } from '@fortawesome/pro-regular-svg-icons';
 import { Form } from '@remix-run/react';
 
-import { Button } from '~/components/Button';
+import { Button } from '~/components/forms/Button';
 import { useUser } from '~/hooks/useUser';
 
 export default function Index() {

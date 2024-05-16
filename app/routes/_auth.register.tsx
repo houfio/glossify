@@ -6,8 +6,8 @@ import bcrypt from 'bcryptjs';
 import { useEffect } from 'react';
 import { z } from 'zod';
 
-import { Button } from '~/components/Button';
-import { Input } from '~/components/Input';
+import { Button } from '~/components/forms/Button';
+import { Input } from '~/components/forms/Input';
 import { db } from '~/db.server';
 import { login } from '~/session.server';
 import { validate } from '~/utils/validate.server';
