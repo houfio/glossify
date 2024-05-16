@@ -1,8 +1,8 @@
 import { faArrowRightFromBracket } from '@fortawesome/pro-regular-svg-icons';
 import { Form } from '@remix-run/react';
 
-import { Tooltip } from '~/components/Tooltip';
 import { Button } from '~/components/forms/Button';
+import { Tooltip } from '~/components/popovers/Tooltip';
 import { useUser } from '~/hooks/useUser';
 
 export default function Index() {

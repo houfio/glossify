@@ -10,6 +10,7 @@ import { Button } from '~/components/forms/Button';
 import { Input } from '~/components/forms/Input';
 import { db } from '~/db.server';
 import { login } from '~/session.server';
+import { openToast } from '~/stores/toasts';
 import { respond } from '~/utils/respond.server';
 import { validate } from '~/utils/validate.server';
 
@@ -42,8 +43,12 @@ export default function Login() {
   const data = useActionData<typeof action>();
 
   useEffect(() => {
-    if (data) {
-      console.log(data);
+    const issues = data?.issues.filter((issue) => !issue.field);
+
+    if (issues) {
+      for (const issue of issues) {
+        openToast(issue.message);
+      }
     }
   }, [data]);
 

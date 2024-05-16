@@ -12,6 +12,7 @@
   "dependencies": {
     "@fortawesome/pro-regular-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@nanostores/react": "^0.7.2",
     "@prisma/client": "^5.14.0",
     "@radix-ui/react-slot": "^1.0.2",
     "@remix-run/node": "^2.9.2",
@@ -21,6 +22,7 @@
     "clsx": "^2.1.1",
     "isbot": "^5.1.6",
     "modern-normalize": "^2.0.0",
+    "nanostores": "^0.10.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "zod": "^3.23.8"

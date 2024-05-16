@@ -1,0 +1,13 @@
+.toast {
+  display: flex;
+  align-items: center;
+  inset: unset;
+  right: .5rem;
+  height: 2.5rem;
+  padding: 0 .5rem;
+  color: var(--on-surface-bariant);
+  background-color: var(--surface-variant);
+  border: 1px solid var(--surface-variant-outline);
+  border-radius: .5rem;
+  transition: bottom .1s ease;
+}

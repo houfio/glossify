@@ -11,7 +11,7 @@
 
 .popover {
   inset: unset;
-  position-try-options: flip-block;
+  position-try-options: flip-block, flip-inline, flip-block flip-inline;
   position-visibility: anchors-visible;
   padding: 0;
   background-color: transparent;

@@ -3,7 +3,7 @@ import type { PropsWithChildren, ReactNode } from 'react';
 
 import styles from './Tooltip.module.scss';
 
-import { Popover } from '~/components/Popover';
+import { Popover } from '~/components/popovers/Popover';
 
 type Props = {
   content: ReactNode,
@@ -20,7 +20,7 @@ export function Tooltip({ content, asChild, children }: PropsWithChildren<Props>
           {content}
         </div>
       )}
-      position="top span-all"
+      position="top"
       offset="0 0 .25rem 0"
     >
       {(ref, style) => (

@@ -6,7 +6,7 @@ import { unstable_defineLoader } from '@vercel/remix';
 import styles from './route.module.scss';
 
 import { Container } from '~/components/Container';
-import { Dropdown } from '~/components/Dropdown';
+import { Dropdown } from '~/components/popovers/Dropdown';
 import { requireUser } from '~/session.server';
 
 export const loader = unstable_defineLoader(async ({ request, response }) => {

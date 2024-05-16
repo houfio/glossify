@@ -2,7 +2,7 @@ import type { PropsWithChildren } from 'react';
 
 import styles from './Dropdown.module.scss';
 
-import { Popover } from '~/components/Popover';
+import { Popover } from '~/components/popovers/Popover';
 
 type Props = {
   items: string[]

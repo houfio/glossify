@@ -4,6 +4,10 @@ import type { MetaFunction } from '@vercel/remix';
 import type { PropsWithChildren } from 'react';
 
 import './root.scss';
+import { useStore } from '@nanostores/react';
+
+import { Toast } from '~/components/popovers/Toast';
+import { $toasts } from '~/stores/toasts';
 
 config.autoAddCss = false;
 
@@ -19,7 +23,8 @@ export function Layout({ children }: PropsWithChildren) {
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link rel="preconnect" href="https://fonts.googleapis.com"/>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&family=Noto+Sans:wght@100..900&display=swap"/>
+        <link rel="stylesheet"
+              href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&family=Noto+Sans:wght@100..900&display=swap"/>
         <Meta/>
         <Links/>
       </head>
@@ -33,8 +38,20 @@ export function Layout({ children }: PropsWithChildren) {
 }
 
 export default function Root() {
+  const toasts = useStore($toasts);
+
   return (
-    <Outlet/>
+    <>
+      <Outlet/>
+      {toasts.map((toast, i) => (
+        <Toast
+          key={toast.id}
+          id={toast.id}
+          message={toast.message}
+          index={i}
+        />
+      ))}
+    </>
   );
 }
 

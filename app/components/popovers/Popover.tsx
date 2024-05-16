@@ -11,25 +11,6 @@ type Props = Omit<ComponentPropsWithoutRef<'button'>, 'content' | 'children'> & 
   children: ReactNode | ((ref: RefObject<HTMLDivElement>, style: CSSProperties) => ReactNode)
 };
 
-declare module 'react' {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface HTMLAttributes<T> {
-    popover?: 'auto' | 'manual' | undefined;
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface ButtonHTMLAttributes<T> {
-    popovertarget?: string | undefined;
-    popovertargetaction?: 'hide' | 'show' | 'toggle' | undefined;
-  }
-
-  interface CSSProperties {
-    anchorName?: string | undefined;
-    positionAnchor?: string | undefined;
-    insetArea?: string | undefined;
-  }
-}
-
 export function Popover({ content, position, offset, className, children, ...props }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const id = useId().replaceAll(':', '');
