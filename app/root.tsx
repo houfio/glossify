@@ -1,10 +1,10 @@
 import { config } from '@fortawesome/fontawesome-svg-core';
+import { useStore } from '@nanostores/react';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, useRouteError } from '@remix-run/react';
 import type { MetaFunction } from '@vercel/remix';
 import type { PropsWithChildren } from 'react';
 
 import './root.scss';
-import { useStore } from '@nanostores/react';
 
 import { Toast } from '~/components/popovers/Toast';
 import { $toasts } from '~/stores/toasts';

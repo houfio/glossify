@@ -1,3 +1,4 @@
+import { Slot } from '@radix-ui/react-slot';
 import { Link } from '@remix-run/react';
 import type { To } from '@remix-run/router';
 import type { PropsWithChildren } from 'react';
@@ -10,7 +11,8 @@ import { Popover } from '~/components/popovers/Popover';
 type Props = {
   items: {
     title: string,
-    to: To
+    to?: To,
+    onClick?: () => void
   }[]
 };
 
@@ -21,15 +23,24 @@ export function Dropdown({ items, children }: PropsWithChildren<Props>) {
         <div className={styles.dropdown}>
           <ItemList direction="vertical">
             {items.map((item, i) => (
-              <Link
+              <Slot
                 key={i}
-                to={item.to}
                 autoFocus={true}
-                className={styles.item}
-                onClick={() => ref.current?.hidePopover()}
+                onClick={() => {
+                  item.onClick?.();
+                  ref.current?.hidePopover();
+                }}
               >
-                {item.title}
-              </Link>
+                {item.to ? (
+                  <Link to={item.to}>
+                    {item.title}
+                  </Link>
+                ) : (
+                  <button>
+                    {item.title}
+                  </button>
+                )}
+              </Slot>
             ))}
           </ItemList>
         </div>
