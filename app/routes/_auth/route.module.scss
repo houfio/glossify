@@ -12,29 +12,30 @@
   flex-direction: column;
   align-items: center;
   width: 20rem;
+  padding: .5rem;
   color: var(--on-surface);
   background-color: var(--surface);
   border: 1px solid var(--surface-outline);
-  border-radius: .5rem;
+  border-radius: 1rem;
 
   & > form {
     display: flex;
     flex-direction: column;
     align-self: stretch;
     gap: 1rem;
-    padding: .5rem;
+    padding: .5rem 0;
     border: 1px solid var(--surface-outline);
     border-left: none;
     border-right: none;
   }
 
   & > a {
-    padding: .5rem;
+    padding-top: .5rem;
     color: var(--on-surface-subtle);
   }
 }
 
 .title {
-  padding: 1.5rem;
+  padding: 1rem 0 1.5rem;
   font-size: 1.5rem;
 }

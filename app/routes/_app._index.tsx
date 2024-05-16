@@ -1,18 +1,11 @@
 import { faArrowRightFromBracket } from '@fortawesome/pro-regular-svg-icons';
-import { Form, useLoaderData } from '@remix-run/react';
-import { unstable_defineLoader } from '@vercel/remix';
+import { Form } from '@remix-run/react';
 
 import { Button } from '~/components/Button';
-import { requireUser } from '~/session.server';
-
-export const loader = unstable_defineLoader(async ({ request, response }) => {
-  const user = await requireUser(request, response);
-
-  return { user };
-});
+import { useUser } from '~/hooks/useUser';
 
 export default function Index() {
-  const { user } = useLoaderData<typeof loader>();
+  const user = useUser();
 
   return (
     <>

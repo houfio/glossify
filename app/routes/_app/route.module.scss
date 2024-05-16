@@ -1,0 +1,21 @@
+.header {
+  padding: .75rem 0;
+  color: var(--on-surface);
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--surface-outline);
+}
+
+.inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.avatar {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: var(--on-surface);
+  border: none;
+  border-radius: 50%;
+  appearance: none;
+}

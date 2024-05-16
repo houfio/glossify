@@ -4,6 +4,13 @@
 @use "sass:math";
 @use "sass:meta";
 
+$breakpoints: (
+  phone: 0rem,
+  tablet: 37.5rem,
+  laptop: 56.25rem,
+  desktop: 75rem
+);
+
 $colors: (
   gray: (
     colors: #ffffff #121212,
@@ -47,6 +54,14 @@ $tokens: (
     light: gray 300,
     dark: gray 200
   ),
+  surface-hover: (
+    light: gray 100,
+    dark: gray 400
+  ),
+  surface-click: (
+    light: gray 200,
+    dark: gray 300
+  ),
   surface-outline: (
     light: gray 100,
     dark: gray 400
@@ -56,6 +71,18 @@ $tokens: (
   on-input: gray 500,
   input-outline: on-background-subtle
 );
+
+@mixin with-breakpoint($breakpoint) {
+  $width: map.get($breakpoints, $breakpoint);
+
+  @if $width > 0 {
+    @media (min-width: #{$width}) {
+      @content
+    }
+  } @else {
+    @content
+  }
+}
 
 @function generate-shades($start, $end, $shades) {
   $result: ();
