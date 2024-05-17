@@ -9,8 +9,7 @@ import { z } from 'zod';
 import { Button } from '~/components/forms/Button';
 import { Input } from '~/components/forms/Input';
 import { db } from '~/db.server';
-import { login } from '~/session.server';
-import { openToast } from '~/stores/toasts';
+import { login, setMessage } from '~/session.server';
 import { respond } from '~/utils/respond.server';
 import { validate } from '~/utils/validate.server';
 
@@ -36,19 +35,17 @@ export const action = unstable_defineAction(async ({ request, response }) => {
     throw await login(request, response, user.id);
   }
 
-  return respond(false, ['Invalid credentials']);
+  await setMessage(request, response, 'Invalid credentials');
+
+  return respond(false);
 });
 
 export default function Login() {
   const data = useActionData<typeof action>();
 
   useEffect(() => {
-    const issues = data?.issues.filter((issue) => !issue.field);
-
-    if (issues) {
-      for (const issue of issues) {
-        openToast(issue.message);
-      }
+    if (data) {
+      console.log(data);
     }
   }, [data]);
 

@@ -57,14 +57,14 @@ export function Layout({ children }: PropsWithChildren) {
 }
 
 export default function Root() {
-  const { message } = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>();
   const toasts = useStore($toasts);
 
   useEffect(() => {
-    if (message) {
-      openToast(message);
+    if (data.message) {
+      openToast(data.message);
     }
-  }, [message]);
+  }, [data]);
 
   return (
     <>
