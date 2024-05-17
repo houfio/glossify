@@ -1,0 +1,24 @@
+@use "../../utils";
+
+$columns: 6;
+$gaps: 3;
+
+.grid {
+  display: grid;
+}
+
+@each $breakpoint, $width in utils.$breakpoints {
+  @include utils.with-breakpoint($breakpoint) {
+    @for $column from 1 through $columns {
+      .columns-#{$breakpoint}-#{$column} {
+        grid-template-columns: repeat(#{$column}, 1fr);
+      }
+    }
+
+    @for $gap from 1 through $gaps {
+      .gaps-#{$breakpoint}-#{$gap} {
+        gap: #{$gap}rem;
+      }
+    }
+  }
+}

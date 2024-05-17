@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router';
 
 import styles from './route.module.scss';
 
-import { Container } from '~/components/Container';
 import { Navigation } from '~/components/Navigation';
+import { Container } from '~/components/layout/Container';
 import { Dropdown } from '~/components/popovers/Dropdown';
 import { useConfirmation } from '~/hooks/useConfirmation';
 import { requireUser } from '~/session.server';

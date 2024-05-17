@@ -1,4 +1,4 @@
-import { Container } from '~/components/Container';
+import { Container } from '~/components/layout/Container';
 import { Tooltip } from '~/components/popovers/Tooltip';
 import { useUser } from '~/hooks/useUser';
 
