@@ -18,7 +18,7 @@ export const meta: MetaFunction = () => [
 ];
 
 export const action = unstable_defineAction(async ({ request, response }) => {
-  const data = await validate(request, {
+  const data = await validate(request, response, {
     username: z.string().min(3),
     password: z.string().min(3)
   });
@@ -35,7 +35,7 @@ export const action = unstable_defineAction(async ({ request, response }) => {
     throw await login(request, response, user.id);
   }
 
-  await setMessage(request, response, 'Invalid credentials');
+  await setMessage(request, response, 'Invalid credentials', 'error');
 
   return respond(false);
 });

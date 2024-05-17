@@ -62,7 +62,9 @@ export default function Root() {
 
   useEffect(() => {
     if (data.message) {
-      openToast(data.message);
+      const [type, msg] = data.message;
+
+      openToast(msg, type);
     }
   }, [data]);
 
@@ -73,6 +75,7 @@ export default function Root() {
         <Toast
           key={toast.id}
           message={toast.message}
+          type={toast.type}
           index={toasts.length - i - 1}
         />
       ))}

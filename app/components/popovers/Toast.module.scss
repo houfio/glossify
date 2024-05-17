@@ -5,9 +5,24 @@
   right: .5rem;
   height: 2.5rem;
   padding: 0 .5rem;
-  color: var(--on-surface-bariant);
-  background-color: var(--surface-variant);
-  border: 1px solid var(--surface-variant-outline);
   border-radius: .5rem;
   transition: bottom .1s ease;
+
+  &.info {
+    color: var(--on-surface-variant);
+    background-color: var(--surface-variant);
+    border: 1px solid var(--surface-variant-outline);
+  }
+
+  &.success {
+    color: var(--on-accent);
+    background-color: var(--accent);
+    border: 1px solid var(--accent-outline);
+  }
+
+  &.error {
+    color: var(--on-error);
+    background-color: var(--error);
+    border: 1px solid var(--error-outline);
+  }
 }

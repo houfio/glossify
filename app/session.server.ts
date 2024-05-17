@@ -1,7 +1,7 @@
 import { createCookieSessionStorage } from '@vercel/remix';
 
 import { db } from '~/db.server';
-import type { ResponseStub } from '~/types';
+import type { MessageType, ResponseStub } from '~/types';
 
 type SessionData = {
   userId?: string,
@@ -25,10 +25,10 @@ function getSession(request: Request) {
   return storage.getSession(cookie);
 }
 
-export async function setMessage(request: Request, response: ResponseStub, message: string) {
+export async function setMessage(request: Request, response: ResponseStub, message: string, type: MessageType = 'info') {
   const session = await getSession(request);
 
-  session.flash('message', message);
+  session.flash('message', `${type};${message}`);
 
   response.headers.set('Set-Cookie', await storage.commitSession(session));
 }
@@ -39,7 +39,13 @@ export async function getMessage(request: Request, response: ResponseStub) {
 
   response.headers.set('Set-Cookie', await storage.commitSession(session));
 
-  return message;
+  if (!message) {
+    return;
+  }
+
+  const [type, msg] = message.split(';');
+
+  return [type, msg] as [MessageType, string];
 }
 
 export async function getUserId(request: Request) {

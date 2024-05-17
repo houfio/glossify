@@ -20,10 +20,6 @@ $colors: (
     colors: #eea83b #ca763b,
     shades: 100 200 300 400 500
   ),
-  green: (
-    colors: #939b74 #646333,
-    shades: 100 200 300
-  ),
   red: (
     colors: #ab5243 #8a3329,
     shades: 100 200 300
@@ -95,12 +91,12 @@ $tokens: (
     dark: yellow 100
   ),
 
-  issue: red 200,
-  on-issue: grey 0,
-  issue-outline: (
+  error: red 200,
+  on-error: grey 0,
+  error-outline: (
     light: red 300,
     dark: red 100
-  ),
+  )
 );
 
 @mixin with-breakpoint($breakpoint) {

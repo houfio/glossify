@@ -17,7 +17,7 @@ export const meta: MetaFunction = () => [
 ];
 
 export const action = unstable_defineAction(async ({ request, response }) => {
-  const data = await validate(request, {
+  const data = await validate(request, response, {
     email: z.string().email(),
     username: z.string().min(3),
     password: z.string().min(3)

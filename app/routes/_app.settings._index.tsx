@@ -12,7 +12,7 @@ import { respond } from '~/utils/respond.server';
 import { validate } from '~/utils/validate.server';
 
 export const action = unstable_defineAction(async ({ request, response }) => {
-  const data = await validate(request, {
+  const data = await validate(request, response, {
     username: z.string().min(3)
   });
 
@@ -29,7 +29,7 @@ export const action = unstable_defineAction(async ({ request, response }) => {
     }
   });
 
-  await setMessage(request, response, 'Successfully updated profile');
+  await setMessage(request, response, 'Successfully updated profile', 'success');
 
   return respond(true);
 });

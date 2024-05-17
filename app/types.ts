@@ -7,3 +7,5 @@ export type Issue = {
   field: string,
   message: string
 };
+
+export type MessageType = 'info' | 'success' | 'error';
