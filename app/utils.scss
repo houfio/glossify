@@ -19,6 +19,14 @@ $colors: (
   yellow: (
     colors: #eea83b #ca763b,
     shades: 100 200 300 400 500
+  ),
+  green: (
+    colors: #939b74 #646333,
+    shades: 100 200 300
+  ),
+  red: (
+    colors: #ab5243 #8a3329,
+    shades: 100 200 300
   )
 );
 
@@ -44,15 +52,6 @@ $tokens: (
     dark: gray 400
   ),
   background-outline: background-hover,
-
-  accent: yellow 300,
-  on-accent: gray 500,
-  accent-hover: yellow 200,
-  accent-click: yellow 400,
-  accent-outline: (
-    light: yellow 500,
-    dark: yellow 100
-  ),
 
   surface: background-hover,
   on-surface: on-background,
@@ -85,7 +84,23 @@ $tokens: (
 
   input: gray 0,
   on-input: gray 500,
-  input-outline: on-background-subtle
+  input-outline: on-background-subtle,
+
+  accent: yellow 300,
+  on-accent: gray 500,
+  accent-hover: yellow 200,
+  accent-click: yellow 400,
+  accent-outline: (
+    light: yellow 500,
+    dark: yellow 100
+  ),
+
+  issue: red 200,
+  on-issue: grey 0,
+  issue-outline: (
+    light: red 300,
+    dark: red 100
+  ),
 );
 
 @mixin with-breakpoint($breakpoint) {

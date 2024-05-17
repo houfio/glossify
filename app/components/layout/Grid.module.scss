@@ -5,6 +5,7 @@ $gaps: 3;
 
 .grid {
   display: grid;
+  align-items: start;
 }
 
 @each $breakpoint, $width in utils.$breakpoints {

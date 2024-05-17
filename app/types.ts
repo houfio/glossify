@@ -4,6 +4,6 @@ export type ResponseStub = {
 };
 
 export type Issue = {
-  field?: string,
+  field: string,
   message: string
 };

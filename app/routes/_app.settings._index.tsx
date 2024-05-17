@@ -1,9 +1,9 @@
-import { Form, useActionData } from '@remix-run/react';
+import { useActionData } from '@remix-run/react';
 import { unstable_defineAction } from '@vercel/remix';
-import { useEffect } from 'react';
 import { z } from 'zod';
 
 import { Button } from '~/components/forms/Button';
+import { Form } from '~/components/forms/Form';
 import { Input } from '~/components/forms/Input';
 import { db } from '~/db.server';
 import { useUser } from '~/hooks/useUser';
@@ -38,15 +38,9 @@ export default function Profile() {
   const data = useActionData<typeof action>();
   const { username } = useUser();
 
-  useEffect(() => {
-    if (data) {
-      console.log(data);
-    }
-  }, [data]);
-
   return (
     <span>
-      <Form method="post">
+      <Form method="post" issues={data?.issues}>
         <Input label="Username" name="username" defaultValue={username}/>
         <Button text="Save" type="submit"/>
       </Form>

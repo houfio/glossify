@@ -1,12 +1,12 @@
 import { faArrowRightToBracket } from '@fortawesome/pro-regular-svg-icons';
-import { Form, Link, useActionData } from '@remix-run/react';
+import { Link, useActionData } from '@remix-run/react';
 import type { MetaFunction } from '@vercel/remix';
 import { unstable_defineAction } from '@vercel/remix';
 import bcrypt from 'bcryptjs';
-import { useEffect } from 'react';
 import { z } from 'zod';
 
 import { Button } from '~/components/forms/Button';
+import { Form } from '~/components/forms/Form';
 import { Input } from '~/components/forms/Input';
 import { db } from '~/db.server';
 import { login } from '~/session.server';
@@ -41,15 +41,9 @@ export const action = unstable_defineAction(async ({ request, response }) => {
 export default function Register() {
   const data = useActionData<typeof action>();
 
-  useEffect(() => {
-    if (data) {
-      console.log(data);
-    }
-  }, [data]);
-
   return (
     <>
-      <Form method="post">
+      <Form method="post" issues={data?.issues}>
         <Input label="Email" name="email" type="email" required={true}/>
         <Input label="Username" name="username" required={true}/>
         <Input label="Password" name="password" type="password" required={true}/>

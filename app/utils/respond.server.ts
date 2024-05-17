@@ -1,7 +1,7 @@
 import type { Issue } from '~/types';
 
-export function respond<T = undefined>(success: true, data?: T): { success: true, data: T };
-export function respond(success: false, issues?: Issue[]): { success: false, issues: Issue[] };
+export function respond<T = undefined>(success: true, data?: T): { success: true, data: T, issues: undefined };
+export function respond(success: false, issues?: Issue[]): { success: false, data: undefined, issues: Issue[] };
 
 export function respond(success: boolean, dataOrIssues?: unknown) {
   if (success) {
