@@ -1,8 +1,7 @@
-import type { ZodRawShape } from 'zod';
-import { z } from 'zod';
+import type { ZodType } from 'zod';
 
-export async function validate<T extends ZodRawShape>(data: FormData, shape: T) {
+export async function validate<T extends ZodType>(data: FormData, shape: T) {
   const values = Object.fromEntries(data);
 
-  return await z.object(shape).parseAsync(values);
+  return await shape.parseAsync(values);
 }

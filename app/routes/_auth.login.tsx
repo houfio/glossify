@@ -19,13 +19,14 @@ export const meta: MetaFunction = () => [
 
 export const action = createActions({
   login: async (data, request, response) => {
-    const { username, password } = await validate(data, {
+    const { username, password } = await validate(data, z.object({
       username: z.string().min(3),
       password: z.string().min(3)
-    });
+    }));
 
     const user = await db.user.findUnique({
-      where: { username }
+      where: { username },
+      select: { id: true, password: true }
     });
 
     if (user && await bcrypt.compare(password, user.password)) {

@@ -71,6 +71,10 @@ $tokens: (
 
   input: gray 0,
   on-input: gray 500,
+  input-label: (
+    light: gray 300,
+    dark: gray 200
+  ),
   input-outline: on-background-subtle,
 
   accent: yellow 300,

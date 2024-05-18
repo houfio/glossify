@@ -38,12 +38,12 @@ export const loader = unstable_defineLoader(async ({ request, response }) => {
   let theme: Theme = Theme.AUTOMATIC;
 
   if (userId) {
-    const user = await db.user.findUnique({
+    const user = await db.user.findUniqueOrThrow({
       where: { id: userId },
       select: { theme: true }
     });
 
-    theme = user?.theme ?? Theme.AUTOMATIC;
+    theme = user.theme;
   }
 
   return {

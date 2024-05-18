@@ -1,0 +1,25 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin: 0 .5rem .25rem .5rem;
+  color: var(--input-label);
+  font-size: .75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.select {
+  padding: .5rem 2rem .5rem .5rem;
+  color: var(--on-input);
+  background-color: var(--input);
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><path d="M239 401c9.4 9.4 24.6 9.4 33.9 0L465 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-175 175L81 175c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9L239 401z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: calc(100% - .5rem) center;
+  border: 1px solid var(--input-outline);
+  border-radius: .5rem;
+  appearance: none;
+}
