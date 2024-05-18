@@ -13,4 +13,11 @@ model User {
   email    String @unique
   username String @unique
   password String
+  theme    Theme  @default(AUTOMATIC)
+}
+
+enum Theme {
+  AUTOMATIC
+  LIGHT
+  DARK
 }

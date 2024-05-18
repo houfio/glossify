@@ -7,10 +7,8 @@ export default function Index() {
 
   return (
     <Container>
-      <Tooltip content="This is your user data" asChild={true}>
-        <pre>
-          {JSON.stringify(user, undefined, 2)}
-        </pre>
+      <Tooltip content="This is your ID">
+        {user.id}
       </Tooltip>
     </Container>
   );

@@ -2,6 +2,8 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import { faExplosion } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useStore } from '@nanostores/react';
+import { Theme } from '@prisma/client';
+import { Slot } from '@radix-ui/react-slot';
 import {
   isRouteErrorResponse,
   Links,
@@ -20,7 +22,8 @@ import { useEffect } from 'react';
 import './root.scss';
 
 import { Toast } from '~/components/popovers/Toast';
-import { getMessage } from '~/session.server';
+import { db } from '~/db.server';
+import { getMessage, getUserId } from '~/session.server';
 import { $toasts, openToast } from '~/stores/toasts';
 
 config.autoAddCss = false;
@@ -30,9 +33,23 @@ export const meta: MetaFunction = () => [
 ];
 
 export const loader = unstable_defineLoader(async ({ request, response }) => {
+  const userId = await getUserId(request);
   const message = await getMessage(request, response);
+  let theme: Theme = Theme.AUTOMATIC;
 
-  return { message };
+  if (userId) {
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { theme: true }
+    });
+
+    theme = user?.theme ?? Theme.AUTOMATIC;
+  }
+
+  return {
+    message,
+    theme: theme.toLowerCase()
+  };
 });
 
 export function Layout({ children }: PropsWithChildren) {
@@ -47,11 +64,9 @@ export function Layout({ children }: PropsWithChildren) {
         <Meta/>
         <Links/>
       </head>
-      <body>
+      <Slot>
         {children}
-        <ScrollRestoration/>
-        <Scripts/>
-      </body>
+      </Slot>
     </html>
   );
 }
@@ -69,7 +84,7 @@ export default function Root() {
   }, [data]);
 
   return (
-    <>
+    <body className={data.theme}>
       <Outlet/>
       {toasts.map((toast, i) => (
         <Toast
@@ -79,7 +94,9 @@ export default function Root() {
           index={toasts.length - i - 1}
         />
       ))}
-    </>
+      <ScrollRestoration/>
+      <Scripts/>
+    </body>
   );
 }
 
@@ -89,8 +106,8 @@ export function ErrorBoundary() {
   console.error(error);
 
   return (
-    <div className="error-boundary">
-      <FontAwesomeIcon icon={faExplosion}/>
+    <body className="error-boundary">
+      <FontAwesomeIcon icon={faExplosion} size="xl"/>
       {isRouteErrorResponse(error) ? (
         <>
           <span>
@@ -100,18 +117,17 @@ export function ErrorBoundary() {
             {JSON.stringify(error.data, undefined, 2)}
           </pre>
         </>
-      ) : error instanceof Error ? (
-        <>
-          {error.message}
-          <pre className="error-boundary-info">
-            {error.stack}
-          </pre>
-        </>
       ) : (
         <>
-          Oh no, something went very wrong
+          Oh no, something went wrong
+          {error instanceof Error && (
+            <pre className="error-boundary-info">
+              {error.stack}
+            </pre>
+          )}
         </>
       )}
-    </div>
+      <Scripts/>
+    </body>
   );
 }
