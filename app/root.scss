@@ -3,11 +3,9 @@
 @use "utils";
 
 :root {
-  @include utils.with-colors(light);
+  color-scheme: light dark;
 
-  @media (prefers-color-scheme: dark) {
-    @include utils.with-colors(dark);
-  }
+  @include utils.with-colors();
 }
 
 body {

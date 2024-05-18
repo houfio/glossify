@@ -56,26 +56,17 @@ $tokens: (
     dark: gray 300
   ),
   surface-hover: background-click,
-  surface-click: (
-    light: gray 200,
-    dark: gray 300
-  ),
+  surface-click: on-surface-subtle,
   surface-outline: surface-hover,
 
   surface-variant: background-click,
   on-surface-variant: on-background,
-  on-surface-variant-subtle: (
-    light: gray 200,
-    dark: gray 300
-  ),
+  on-surface-variant-subtle: on-surface-subtle,
   surface-variant-hover: (
     light: gray 200,
     dark: gray 300
   ),
-  surface-variant-click: (
-    light: gray 300,
-    dark: gray 200
-  ),
+  surface-variant-click: on-surface-variant-subtle,
   surface-variant-outline: surface-variant-hover,
 
   input: gray 0,
@@ -125,13 +116,15 @@ $tokens: (
   @return $result;
 }
 
-@function generate-palette($colors) {
+@function generate-palette() {
   $result: ();
 
   @each $color, $config in $colors {
     $colors: map.get($config, colors);
+    $start: list.nth($colors, 1);
+    $end: list.nth($colors, 2);
     $shades: map.get($config, shades);
-    $result: map.set($result, $color, generate-shades(list.nth($colors, 1), list.nth($colors, 2), $shades));
+    $result: map.set($result, $color, generate-shades($start, $end, $shades));
   }
 
   @return $result;
@@ -148,12 +141,20 @@ $tokens: (
   @return $color;
 }
 
-@mixin with-colors($theme) {
-  $palette: generate-palette($colors);
+@function from-palette($color, $palette) {
+  $name: list.nth($color, 1);
+  $shade: list.nth($color, 2);
+
+  @return map.get(map.get($palette, $name), $shade);
+}
+
+@mixin with-colors() {
+  $palette: generate-palette();
 
   @each $token in map.keys($tokens) {
-    $color: get-color($token, $theme);
+    $light: get-color($token, light);
+    $dark: get-color($token, dark);
 
-    --#{$token}: #{map.get(map.get($palette, list.nth($color, 1)), list.nth($color, 2))};
+    --#{$token}: light-dark(#{from-palette($light, $palette)}, #{from-palette($dark, $palette)});
   }
 }
