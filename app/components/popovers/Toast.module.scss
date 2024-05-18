@@ -6,7 +6,7 @@
   height: 2.5rem;
   padding: 0 .5rem;
   border-radius: .5rem;
-  transition: bottom .1s ease;
+  transition: all .1s allow-discrete;
 
   &.info {
     color: var(--on-surface-variant);
@@ -24,5 +24,9 @@
     color: var(--on-error);
     background-color: var(--error);
     border: 1px solid var(--error-outline);
+  }
+
+  @starting-style {
+    transform: translateY(calc(100% + .5rem));
   }
 }

@@ -48,8 +48,6 @@ export function Dropdown({ items, children }: PropsWithChildren<Props>) {
           </ItemList>
         </div>
       )}
-      position="bottom span-left"
-      offset=".5rem -.5rem 0 0"
     >
       {children}
     </Popover>

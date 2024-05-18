@@ -20,6 +20,5 @@ declare module 'react' {
   interface CSSProperties {
     anchorName?: string | undefined;
     positionAnchor?: string | undefined;
-    insetArea?: string | undefined;
   }
 }

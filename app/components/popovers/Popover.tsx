@@ -8,14 +8,12 @@ type Node = ReactNode | ((ref: RefObject<HTMLDivElement>) => ReactNode);
 
 type Props = {
   content: Node,
-  position: string,
-  offset?: string,
   type?: 'auto' | 'manual',
   asChild?: boolean,
   children: Node
 };
 
-export function Popover({ content, position, offset, type = 'auto', asChild, children }: Props) {
+export function Popover({ content, type = 'auto', asChild, children }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const id = useId().replaceAll(':', '');
 
@@ -33,19 +31,15 @@ export function Popover({ content, position, offset, type = 'auto', asChild, chi
       >
         {typeof children === 'function' ? children(ref) : children}
       </Component>
-      <div
+      <Slot
         ref={ref}
         id={`${id}-popover`}
         popover={type}
-        style={{
-          positionAnchor: `--${id}-anchor`,
-          insetArea: position,
-          margin: offset
-        }}
+        style={{ positionAnchor: `--${id}-anchor` }}
         className={styles.popover}
       >
         {typeof content === 'function' ? content(ref) : content}
-      </div>
+      </Slot>
     </>
   );
 }

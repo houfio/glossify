@@ -1,7 +1,17 @@
 .dropdown {
+  inset-area: bottom span-left;
+  margin: .5rem -.5rem 0 0;
   padding: .5rem;
   color: var(--on-surface);
   background-color: var(--surface);
   border: 1px solid var(--surface-outline);
   border-radius: 1rem;
+
+  &:popover-open {
+    transition: all 0.1s allow-discrete;
+
+    @starting-style {
+      transform: translateY(-.25rem);
+    }
+  }
 }

@@ -35,8 +35,6 @@ export function Tooltip({ content, asChild, children }: PropsWithChildren<Props>
           {content}
         </div>
       )}
-      position="top"
-      offset="0 0 .25rem 0"
       type="manual"
       asChild={true}
     >
