@@ -1,7 +1,6 @@
 import { faArrowRightToBracket } from '@fortawesome/pro-regular-svg-icons';
 import { Link, useActionData } from '@remix-run/react';
 import type { MetaFunction } from '@vercel/remix';
-import { unstable_defineAction } from '@vercel/remix';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 
@@ -10,33 +9,32 @@ import { Form } from '~/components/forms/Form';
 import { Input } from '~/components/forms/Input';
 import { db } from '~/db.server';
 import { login } from '~/session.server';
+import { createActions } from '~/utils/createActions.server';
 import { validate } from '~/utils/validate.server';
 
 export const meta: MetaFunction = () => [
   { title: 'Glossify / Register' }
 ];
 
-export const action = unstable_defineAction(async ({ request, response }) => {
-  const data = await validate(request, response, {
-    email: z.string().email(),
-    username: z.string().min(3),
-    password: z.string().min(3)
-  });
+export const action = createActions({
+  register: async (data, request, response) => {
+    const { email, username, password } = await validate(data, {
+      email: z.string().email(),
+      username: z.string().min(3),
+      password: z.string().min(3)
+    });
 
-  if (!data.success) {
-    return data;
+    const user = await db.user.create({
+      data: {
+        email,
+        username,
+        password: await bcrypt.hash(password, 10)
+      }
+    });
+
+    throw await login(request, response, user.id);
   }
-
-  const user = await db.user.create({
-    data: {
-      email: data.data.email,
-      username: data.data.username,
-      password: await bcrypt.hash(data.data.password, 10)
-    }
-  });
-
-  throw await login(request, response, user.id);
-});
+})
 
 export default function Register() {
   const data = useActionData<typeof action>();
@@ -47,7 +45,7 @@ export default function Register() {
         <Input label="Email" name="email" type="email" required={true}/>
         <Input label="Username" name="username" required={true}/>
         <Input label="Password" name="password" type="password" required={true}/>
-        <Button text="Register" icon={faArrowRightToBracket} type="submit"/>
+        <Button text="Register" icon={faArrowRightToBracket} type="submit" name="intent" value="register"/>
       </Form>
       <Link to="/login">Login</Link>
     </>

@@ -1,7 +1,8 @@
+import type { ResponseStub } from '@remix-run/server-runtime/dist/single-fetch';
 import { createCookieSessionStorage } from '@vercel/remix';
 
 import { db } from '~/db.server';
-import type { MessageType, ResponseStub } from '~/types';
+import type { MessageType } from '~/types';
 
 type SessionData = {
   userId?: string,
@@ -82,7 +83,7 @@ export async function login(request: Request, response: ResponseStub, userId: st
   const session = await getSession(request);
 
   session.set('userId', userId);
-  session.flash('message', 'Successfully logged in');
+  session.flash('message', 'info;Successfully logged in');
 
   response.status = 302;
   response.headers.set('Location', '/');
@@ -95,7 +96,7 @@ export async function logout(request: Request, response: ResponseStub) {
   const session = await getSession(request);
 
   session.unset('userId');
-  session.flash('message', 'Successfully logged out');
+  session.flash('message', 'info;Successfully logged out');
 
   response.status = 302;
   response.headers.set('Location', '/login');

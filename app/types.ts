@@ -1,6 +1,13 @@
-export type ResponseStub = {
-  status: number | undefined;
-  headers: Headers;
+export type SuccessfulResponse<T> = {
+  success: true,
+  data: T,
+  issues: undefined
+};
+
+export type UnsuccessfulResponse = {
+  success: false,
+  data: undefined,
+  issues: Issue[]
 };
 
 export type Issue = {
