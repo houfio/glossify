@@ -19,10 +19,6 @@
   border-radius: 1rem;
 
   & > form {
-    display: flex;
-    flex-direction: column;
-    align-self: stretch;
-    gap: 1rem;
     padding: .5rem 0;
     border: 1px solid var(--surface-outline);
     border-left: none;

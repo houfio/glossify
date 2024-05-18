@@ -43,10 +43,7 @@ $tokens: (
     light: gray 50,
     dark: gray 450
   ),
-  background-click: (
-    light: gray 100,
-    dark: gray 400
-  ),
+  background-click: on-background-subtle,
   background-outline: background-hover,
 
   surface: background-hover,
@@ -71,11 +68,10 @@ $tokens: (
 
   input: gray 0,
   on-input: gray 500,
-  input-label: (
-    light: gray 300,
+  input-outline: (
+    light: gray 100,
     dark: gray 200
   ),
-  input-outline: on-background-subtle,
 
   accent: yellow 300,
   on-accent: gray 500,

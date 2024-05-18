@@ -38,7 +38,9 @@ export default function Settings() {
           orientation="vertical"
         />
         <Span span={{ laptop: 2, desktop: 3 }}>
-          <Outlet/>
+          <div className={styles.box}>
+            <Outlet/>
+          </div>
         </Span>
       </Grid>
     </Container>
