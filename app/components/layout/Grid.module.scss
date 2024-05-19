@@ -1,3 +1,4 @@
+@use "sass:math";
 @use "../../utils";
 
 $columns: 6;
@@ -18,7 +19,7 @@ $gaps: 3;
 
     @for $gap from 1 through $gaps {
       .gaps-#{$breakpoint}-#{$gap} {
-        gap: #{$gap / 2}rem;
+        gap: #{math.div($gap, 2)}rem;
       }
     }
   }

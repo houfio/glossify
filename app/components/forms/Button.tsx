@@ -7,13 +7,16 @@ import { useNavigation } from 'react-router';
 
 import styles from './Button.module.scss';
 
+import { withPalette } from '~/utils/withPalette';
+
 type Props = ComponentPropsWithoutRef<'button'> & {
   text: string,
   icon?: IconProp,
-  loading?: boolean
+  loading?: boolean,
+  palette?: string
 };
 
-export function Button({ text, icon, loading, className, ...props }: Props) {
+export function Button({ text, icon, loading, palette = 'accent', style, className, ...props }: Props) {
   const { state } = useNavigation();
 
   const isLoading = loading ?? (props.type === 'submit' && state === 'submitting');
@@ -22,6 +25,7 @@ export function Button({ text, icon, loading, className, ...props }: Props) {
   return (
     <button
       disabled={disabled}
+      style={withPalette(palette, style)}
       className={clsx(styles.button, className)}
       {...props}
     >

@@ -2,9 +2,9 @@
   inset-area: bottom span-left;
   margin: .5rem -.5rem 0 0;
   padding: .5rem;
-  color: var(--on-surface);
-  background-color: var(--surface);
-  border: 1px solid var(--surface-outline);
+  color: var(--on-color);
+  background-color: var(--color);
+  border: 1px solid var(--color-outline);
   border-radius: 1rem;
 
   &:popover-open {

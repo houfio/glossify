@@ -15,34 +15,40 @@ export const meta: MetaFunction = () => [
 
 export default function Settings() {
   return (
-    <Container>
+    <>
       <div className={styles.title}>
-        Settings
+        <Container>
+          Settings
+        </Container>
       </div>
-      <Grid columns={{ laptop: 3, desktop: 4 }} gaps={{ phone: 1 }}>
-        <Navigation
-          items={[{
-            title: 'Profile',
-            icon: faUser,
-            to: '/settings',
-            end: true
-          }, {
-            title: 'Security',
-            icon: faShieldHalved,
-            to: '/settings/security'
-          }, {
-            title: 'Friends',
-            icon: faUserGroup,
-            to: '/settings/friends'
-          }]}
-          orientation="vertical"
-        />
-        <Span span={{ laptop: 2, desktop: 3 }}>
-          <div className={styles.box}>
-            <Outlet/>
-          </div>
-        </Span>
-      </Grid>
-    </Container>
-  );
+      <Container>
+        <Grid columns={{ laptop: 3, desktop: 4 }} gaps={{ phone: 2 }}>
+          <Navigation
+            items={[{
+              title: 'Profile',
+              icon: faUser,
+              to: '/settings',
+              end: true
+            }, {
+              title: 'Security',
+              icon: faShieldHalved,
+              to: '/settings/security'
+            }, {
+              title: 'Friends',
+              icon: faUserGroup,
+              to: '/settings/friends'
+            }]}
+            orientation="vertical"
+            palette="background"
+          />
+          <Span span={{ laptop: 2, desktop: 3 }}>
+            <div className={styles.box}>
+              <Outlet/>
+            </div>
+          </Span>
+        </Grid>
+      </Container>
+    </>
+  )
+    ;
 }

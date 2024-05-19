@@ -5,13 +5,15 @@ import { useState } from 'react';
 import styles from './Tooltip.module.scss';
 
 import { Popover } from '~/components/popovers/Popover';
+import { withPalette } from '~/utils/withPalette';
 
 type Props = {
   content: ReactNode,
+  palette?: string,
   asChild?: boolean
 };
 
-export function Tooltip({ content, asChild, children }: PropsWithChildren<Props>) {
+export function Tooltip({ content, palette = 'surface-variant', asChild, children }: PropsWithChildren<Props>) {
   const [hover, setHover] = useState(false);
   const [focus, setFocus] = useState(false);
 
@@ -31,7 +33,7 @@ export function Tooltip({ content, asChild, children }: PropsWithChildren<Props>
   return (
     <Popover
       content={(
-        <div className={styles.tooltip}>
+        <div style={withPalette(palette)} className={styles.tooltip}>
           {content}
         </div>
       )}

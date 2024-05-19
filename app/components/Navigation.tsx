@@ -15,12 +15,13 @@ type Props = {
     to: To,
     end?: boolean
   }[],
-  orientation: 'horizontal' | 'vertical'
+  orientation: 'horizontal' | 'vertical',
+  palette?: string
 };
 
-export function Navigation({ items, orientation }: Props) {
+export function Navigation({ items, orientation, palette }: Props) {
   return (
-    <ItemList orientation={orientation} className={clsx(orientation === 'vertical' && styles.vertical)}>
+    <ItemList orientation={orientation} palette={palette}>
       {items.map((item, i) => (
         <NavLink
           key={i}

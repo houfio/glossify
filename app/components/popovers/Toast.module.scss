@@ -5,26 +5,11 @@
   right: .5rem;
   height: 2.5rem;
   padding: 0 .5rem;
+  color: var(--on-color);
+  background-color: var(--color);
+  border: 1px solid var(--color-outline);
   border-radius: .5rem;
   transition: all .1s allow-discrete;
-
-  &.info {
-    color: var(--on-surface-variant);
-    background-color: var(--surface-variant);
-    border: 1px solid var(--surface-variant-outline);
-  }
-
-  &.success {
-    color: var(--on-accent);
-    background-color: var(--accent);
-    border: 1px solid var(--accent-outline);
-  }
-
-  &.error {
-    color: var(--on-error);
-    background-color: var(--error);
-    border: 1px solid var(--error-outline);
-  }
 
   @starting-style {
     transform: translateY(calc(100% + .5rem));

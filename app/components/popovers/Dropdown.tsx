@@ -9,6 +9,7 @@ import styles from './Dropdown.module.scss';
 
 import { ItemList } from '~/components/ItemList';
 import { Popover } from '~/components/popovers/Popover';
+import { withPalette } from '~/utils/withPalette';
 
 type Props = {
   items: {
@@ -16,15 +17,16 @@ type Props = {
     icon: IconProp,
     to?: To,
     onClick?: () => void
-  }[]
+  }[],
+  palette?: string
 };
 
-export function Dropdown({ items, children }: PropsWithChildren<Props>) {
+export function Dropdown({ items, palette = 'surface', children }: PropsWithChildren<Props>) {
   return (
     <Popover
       content={(ref) => (
-        <div className={styles.dropdown}>
-          <ItemList orientation="vertical">
+        <div style={withPalette(palette)} className={styles.dropdown}>
+          <ItemList orientation="vertical" palette={palette}>
             {items.map((item, i) => (
               <Slot
                 key={i}

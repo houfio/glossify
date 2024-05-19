@@ -1,7 +1,7 @@
 .list {
   display: flex;
-  color: var(--on-surface);
-  background-color: var(--surface);
+  color: var(--on-color);
+  background-color: var(--color);
   border-radius: .5rem;
 
   & > button, & > a {
@@ -11,11 +11,11 @@
     text-decoration: none;
 
     &:hover {
-      background-color: var(--surface-hover);
+      background-color: var(--color-hover);
     }
 
     &:active {
-      background-color: var(--surface-click);
+      background-color: var(--color-click);
     }
 
     &:first-child {
@@ -29,7 +29,7 @@
     }
 
     &:not(:last-child) {
-      border-right: 1px solid var(--surface-outline);
+      border-right: 1px solid var(--color-outline);
     }
   }
 
@@ -51,7 +51,7 @@
       }
 
       &:not(:last-child) {
-        border-bottom: 1px solid var(--surface-outline);
+        border-bottom: 1px solid var(--color-outline);
       }
     }
   }
