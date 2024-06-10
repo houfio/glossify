@@ -1,44 +1,63 @@
 import { Slot } from '@radix-ui/react-slot';
 import type { ReactNode, RefObject } from 'react';
-import { useId, useRef } from 'react';
+import { useEffect, useId, useImperativeHandle, useRef } from 'react';
 
 import styles from './Popover.module.scss';
 
-type Node = ReactNode | ((ref: RefObject<HTMLDivElement | null>) => ReactNode);
+import type { PopoverRef } from '~/types';
 
 type Props = {
-  content: Node,
-  type?: 'auto' | 'manual',
+  ref?: RefObject<PopoverRef | null>,
+  open?: boolean,
+  content: ReactNode,
   asChild?: boolean,
-  children: Node
+  children: ReactNode
 };
 
-export function Popover({ content, type = 'auto', asChild, children }: Props) {
-  const ref = useRef<HTMLDivElement>(null);
+export function Popover({ ref, open, content, asChild, children }: Props) {
+  const popoverRef = useRef<HTMLElement>(null);
   const id = useId().replaceAll(':', '');
 
+  useImperativeHandle(ref, () => ({
+    show: () => popoverRef.current?.showPopover(),
+    hide: () => popoverRef.current?.hidePopover()
+  }), []);
+
+  useEffect(() => {
+    if (open === undefined) {
+      return;
+    }
+
+    if (open) {
+      popoverRef.current?.showPopover();
+    } else {
+      popoverRef.current?.hidePopover();
+    }
+  }, [open]);
+
   const Component = asChild ? Slot : 'button';
+  const auto = open === undefined;
 
   return (
     <>
       <Component
         tabIndex={0}
         style={{ anchorName: `--${id}-anchor` }}
-        {...type === 'auto' && {
+        {...auto && {
           popoverTarget: `${id}-popover`,
           popoverTargetAction: 'toggle'
         }}
       >
-        {typeof children === 'function' ? children(ref) : children}
+        {children}
       </Component>
       <Slot
-        ref={ref}
+        ref={popoverRef}
         id={`${id}-popover`}
-        popover={type}
+        popover={auto ? 'auto' : 'manual'}
         style={{ positionAnchor: `--${id}-anchor` }}
         className={styles.popover}
       >
-        {typeof content === 'function' ? content(ref) : content}
+        {content}
       </Slot>
     </>
   );

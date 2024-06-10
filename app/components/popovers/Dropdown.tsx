@@ -4,11 +4,13 @@ import { Slot } from '@radix-ui/react-slot';
 import { Link } from '@remix-run/react';
 import type { To } from '@remix-run/router';
 import type { PropsWithChildren } from 'react';
+import { useRef } from 'react';
 
 import styles from './Dropdown.module.scss';
 
 import { ItemList } from '~/components/ItemList';
 import { Popover } from '~/components/popovers/Popover';
+import type { PopoverRef } from '~/types';
 import { withPalette } from '~/utils/withPalette';
 
 type Props = {
@@ -23,9 +25,12 @@ type Props = {
 };
 
 export function Dropdown({ items, palette = 'surface', asChild, children }: PropsWithChildren<Props>) {
+  const ref = useRef<PopoverRef>(null);
+
   return (
     <Popover
-      content={(ref) => (
+      ref={ref}
+      content={(
         <div style={withPalette(palette)} className={styles.dropdown}>
           <ItemList orientation="vertical" palette={palette}>
             {items.map((item, i) => (
@@ -34,7 +39,7 @@ export function Dropdown({ items, palette = 'surface', asChild, children }: Prop
                 autoFocus={true}
                 onClick={() => {
                   item.onClick?.();
-                  ref.current?.hidePopover();
+                  ref.current?.hide();
                 }}
               >
                 {item.to ? (

@@ -1,5 +1,5 @@
 import { Slot } from '@radix-ui/react-slot';
-import type { PropsWithChildren, ReactNode, RefObject } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
 import { useState } from 'react';
 
 import styles from './Tooltip.module.scss';
@@ -14,20 +14,16 @@ type Props = {
 };
 
 export function Tooltip({ content, palette = 'surface-variant', asChild, children }: PropsWithChildren<Props>) {
+  const [open, setOpen] = useState(false);
   const [hover, setHover] = useState(false);
   const [focus, setFocus] = useState(false);
 
   const Component = asChild ? Slot : 'span';
 
-  const updatePopover = (ref: RefObject<HTMLDivElement | null>, hover: boolean, focus: boolean) => {
+  const updatePopover = (hover: boolean, focus: boolean) => {
     setHover(hover);
     setFocus(focus);
-
-    if (hover || focus) {
-      ref.current?.showPopover();
-    } else {
-      ref.current?.hidePopover();
-    }
+    setOpen(hover || focus);
   };
 
   return (
@@ -37,19 +33,17 @@ export function Tooltip({ content, palette = 'surface-variant', asChild, childre
           {content}
         </div>
       )}
-      type="manual"
+      open={open}
       asChild={true}
     >
-      {(ref) => (
-        <Component
-          onMouseEnter={() => updatePopover(ref, true, focus)}
-          onMouseLeave={() => updatePopover(ref, false, focus)}
-          onFocus={() => updatePopover(ref, hover, true)}
-          onBlur={() => updatePopover(ref, hover, false)}
-        >
-          {children}
-        </Component>
-      )}
+      <Component
+        onMouseEnter={() => updatePopover(true, focus)}
+        onMouseLeave={() => updatePopover(false, focus)}
+        onFocus={() => updatePopover(hover, true)}
+        onBlur={() => updatePopover(hover, false)}
+      >
+        {children}
+      </Component>
     </Popover>
   );
 }

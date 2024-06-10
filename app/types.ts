@@ -16,3 +16,8 @@ export type Issue = {
 };
 
 export type MessageType = 'info' | 'success' | 'error';
+
+export type PopoverRef = {
+  show: () => void;
+  hide: () => void;
+};
