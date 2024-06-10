@@ -1,10 +1,10 @@
 import type { PropsWithChildren } from 'react';
-import { createContext, useContext } from 'react';
+import { createContext, use } from 'react';
 
 export function createProvidableHook<T, P>(fn: (props: P) => T, fallback?: T) {
-  const context = createContext<T>(fallback as T);
-  const useHook = () => {
-    const value = useContext(context);
+  const Context = createContext<T>(fallback!);
+  const hook = () => {
+    const value = use(Context);
 
     if (value === undefined) {
       throw new Error('Context not defined');
@@ -13,11 +13,11 @@ export function createProvidableHook<T, P>(fn: (props: P) => T, fallback?: T) {
     return value;
   };
 
-  useHook.Provider = (props: PropsWithChildren<P>) => (
-    <context.Provider value={fn(props)}>
+  hook.Provider = (props: PropsWithChildren<P>) => (
+    <Context value={fn(props)}>
       {props.children}
-    </context.Provider>
+    </Context>
   );
 
-  return useHook;
+  return hook;
 }

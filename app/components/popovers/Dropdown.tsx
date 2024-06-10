@@ -18,10 +18,11 @@ type Props = {
     to?: To,
     onClick?: () => void
   }[],
-  palette?: string
+  palette?: string,
+  asChild?: boolean
 };
 
-export function Dropdown({ items, palette = 'surface', children }: PropsWithChildren<Props>) {
+export function Dropdown({ items, palette = 'surface', asChild, children }: PropsWithChildren<Props>) {
   return (
     <Popover
       content={(ref) => (
@@ -50,6 +51,7 @@ export function Dropdown({ items, palette = 'surface', children }: PropsWithChil
           </ItemList>
         </div>
       )}
+      asChild={asChild}
     >
       {children}
     </Popover>

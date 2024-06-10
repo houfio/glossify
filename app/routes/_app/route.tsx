@@ -51,8 +51,11 @@ export default function App() {
                 icon: faArrowRightFromBracket,
                 onClick: prompt
               }]}
+              asChild={true}
             >
-              <FontAwesomeIcon icon={faCircleUser} className={styles.avatar}/>
+              <button title="Profile" className={styles.profile}>
+                <FontAwesomeIcon icon={faCircleUser}/>
+              </button>
             </Dropdown>
           </div>
         </Container>

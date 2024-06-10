@@ -1,4 +1,4 @@
-import { faShieldHalved, faUser, faUserGroup } from '@fortawesome/pro-regular-svg-icons';
+import { faShieldHalved, faUser } from '@fortawesome/pro-regular-svg-icons';
 import { Outlet } from '@remix-run/react';
 import type { MetaFunction } from '@vercel/remix';
 
@@ -33,22 +33,15 @@ export default function Settings() {
               title: 'Security',
               icon: faShieldHalved,
               to: '/settings/security'
-            }, {
-              title: 'Friends',
-              icon: faUserGroup,
-              to: '/settings/friends'
             }]}
             orientation="vertical"
             palette="background"
           />
           <Span span={{ laptop: 2, desktop: 3 }}>
-            <div className={styles.box}>
-              <Outlet/>
-            </div>
+            <Outlet/>
           </Span>
         </Grid>
       </Container>
     </>
-  )
-    ;
+  );
 }
