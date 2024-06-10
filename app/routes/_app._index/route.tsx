@@ -1,14 +1,17 @@
-import { faPlus, faTimes } from '@fortawesome/pro-regular-svg-icons';
+import { faPenToSquare, faPlus, faTimes } from '@fortawesome/pro-regular-svg-icons';
+import type { Word } from '@prisma/client';
 import { Form, useLoaderData } from '@remix-run/react';
 import { unstable_defineLoader } from '@vercel/remix';
 import { useState } from 'react';
 import { z } from 'zod';
 
+import styles from './route.module.scss';
+
 import { Table } from '~/components/Table';
 import { Button } from '~/components/forms/Button';
 import { Container } from '~/components/layout/Container';
 import { Header } from '~/components/layout/Header';
-import { AddWordModal } from '~/components/modals/AddWordModal';
+import { UpsertWordModal } from '~/components/modals/UpsertWordModal';
 import { Tooltip } from '~/components/popovers/Tooltip';
 import { db } from '~/db.server';
 import { useUser } from '~/hooks/useUser';
@@ -29,22 +32,41 @@ export const loader = unstable_defineLoader(async ({ request, response }) => {
 });
 
 export const action = createActions({
-  createWord: async (data, request, response) => {
+  upsertWord: async (data, request, response) => {
     const userId = await requireUserId(request, response);
-    const { word, definition } = await validate(data, z.object({
-      word: z.string(),
-      definition: z.string()
+    const { id, word, definition } = await validate(data, z.object({
+      id: z.string().optional(),
+      word: z.string().min(1),
+      definition: z.string().min(1)
     }));
 
-    await db.word.create({
-      data: {
-        userId,
-        word,
-        definition
-      }
-    });
+    if (id) {
+      const value = await db.word.update({
+        where: { id, userId },
+        data: {
+          word,
+          definition
+        }
+      });
 
-    await setMessage(request, response, 'Successfully added word', 'success');
+      if (!value) {
+        await setMessage(request, response, 'Unable to update word', 'error');
+
+        return respond(false);
+      }
+
+      await setMessage(request, response, 'Successfully updated word', 'success');
+    } else {
+      await db.word.create({
+        data: {
+          userId,
+          word,
+          definition
+        }
+      });
+
+      await setMessage(request, response, 'Successfully added word', 'success');
+    }
 
     return respond(true);
   },
@@ -73,7 +95,7 @@ export const action = createActions({
 export default function Index() {
   const { words } = useLoaderData<typeof loader>();
   const user = useUser();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean | Omit<Word, 'userId'>>(false);
 
   return (
     <>
@@ -98,26 +120,38 @@ export default function Index() {
             },
             id: {
               title: '',
-              render: (value) => (
-                <Form method="post">
-                  <input name="id" value={value} type="hidden"/>
+              render: (value, row) => (
+                <div className={styles.actions}>
                   <Button
-                    text="Remove"
-                    icon={faTimes}
+                    text="Edit"
+                    icon={faPenToSquare}
                     palette="background"
                     small={true}
-                    type="submit"
-                    name="intent"
-                    value="deleteWord"
+                    onClick={() => setOpen(row)}
                   />
-                </Form>
+                  <Form method="post">
+                    <input name="id" value={value} type="hidden"/>
+                    <Button
+                      text="Remove"
+                      icon={faTimes}
+                      palette="background"
+                      small={true}
+                      type="submit"
+                      name="intent"
+                      value="deleteWord"
+                    />
+                  </Form>
+                </div>
               )
             }
           }}
         />
       </Container>
       {open && (
-        <AddWordModal onClose={() => setOpen(false)}/>
+        <UpsertWordModal
+          word={typeof open === 'object' ? open : undefined}
+          onClose={() => setOpen(false)}
+        />
       )}
     </>
   );
