@@ -5,7 +5,7 @@ import { ZodError } from 'zod';
 
 import { setMessage } from '~/session.server';
 import type { UnsuccessfulResponse } from '~/types';
-import { defineResponse } from '~/utils/defineResponse.server';
+import { respond } from '~/utils/respond.server';
 
 type ActionHandler<T> = (data: FormData, request: Request, response: ResponseStub) => Promise<T>;
 
@@ -26,13 +26,13 @@ export function createActions<A extends Actions>(actions: A) {
       throw new Error(`Action not found: ${intent}`);
     }
 
-    const respond = (response: object) => ({
+    const defineResponse = (response: object) => ({
       ...response,
       action: intent
     } as unknown as Responses<A>[keyof A]);
 
     try {
-      return respond(await actions[intent](data, request, response));
+      return defineResponse(await actions[intent](data, request, response));
     } catch (e) {
       if (isResponseStub(e)) {
         throw e;
@@ -44,14 +44,14 @@ export function createActions<A extends Actions>(actions: A) {
 
         await setMessage(request, response, 'The submitted data was invalid');
 
-        return respond(defineResponse(false, issues));
+        return defineResponse(respond(false, issues));
       }
 
       await setMessage(request, response, 'An unknown error occurred', 'error');
 
       console.error(e);
 
-      return respond(defineResponse(false));
+      return defineResponse(respond(false));
     }
   });
 }

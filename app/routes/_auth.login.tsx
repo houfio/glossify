@@ -10,7 +10,7 @@ import { Input } from '~/components/forms/Input';
 import { db } from '~/db.server';
 import { login, setMessage } from '~/session.server';
 import { createActions } from '~/utils/createActions.server';
-import { defineResponse } from '~/utils/defineResponse.server';
+import { respond } from '~/utils/respond.server';
 import { validate } from '~/utils/validate.server';
 
 export const meta: MetaFunction = () => [
@@ -35,7 +35,7 @@ export const action = createActions({
 
     await setMessage(request, response, 'Invalid credentials', 'error');
 
-    return defineResponse(false);
+    return respond(false);
   }
 });
 

@@ -1,9 +1,9 @@
 import type { Issue, SuccessfulResponse, UnsuccessfulResponse } from '~/types';
 
-export function defineResponse<T = undefined>(success: true, data?: T): SuccessfulResponse<T>;
-export function defineResponse(success: false, issues?: Issue[]): UnsuccessfulResponse;
+export function respond<T = undefined>(success: true, data?: T): SuccessfulResponse<T>;
+export function respond(success: false, issues?: Issue[]): UnsuccessfulResponse;
 
-export function defineResponse(success: boolean, dataOrIssues?: unknown) {
+export function respond(success: boolean, dataOrIssues?: unknown) {
   if (success) {
     return {
       success,

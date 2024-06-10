@@ -10,7 +10,7 @@ import { db } from '~/db.server';
 import { useUser } from '~/hooks/useUser';
 import { requireUserId, setMessage } from '~/session.server';
 import { createActions } from '~/utils/createActions.server';
-import { defineResponse } from '~/utils/defineResponse.server';
+import { respond } from '~/utils/respond.server';
 import { validate } from '~/utils/validate.server';
 
 export const action = createActions({
@@ -32,7 +32,7 @@ export const action = createActions({
 
     await setMessage(request, response, 'Successfully updated profile', 'success');
 
-    return defineResponse(true);
+    return respond(true);
   }
 });
 
