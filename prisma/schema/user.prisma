@@ -4,6 +4,7 @@ model User {
   username String @unique
   password String
   theme    Theme  @default(AUTOMATIC)
+  words    Word[]
 }
 
 enum Theme {
