@@ -1,11 +1,5 @@
 @use "../../utils";
 
-.title {
-  padding: 2.5rem 0;
-  border-bottom: 1px solid var(--background-outline);
-  font-size: 2rem;
-}
-
 .content {
   @include utils.with-breakpoint(laptop) {
     padding-top: 1rem;

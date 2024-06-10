@@ -7,6 +7,7 @@ import styles from './route.module.scss';
 import { Navigation } from '~/components/Navigation';
 import { Container } from '~/components/layout/Container';
 import { Grid } from '~/components/layout/Grid';
+import { Header } from '~/components/layout/Header';
 import { Span } from '~/components/layout/Span';
 
 export const meta: MetaFunction = () => [
@@ -16,11 +17,9 @@ export const meta: MetaFunction = () => [
 export default function Settings() {
   return (
     <>
-      <div className={styles.title}>
-        <Container>
-          Settings
-        </Container>
-      </div>
+      <Header>
+        Settings
+      </Header>
       <Container>
         <Grid columns={{ laptop: 3, desktop: 4 }} gaps={{ phone: 2 }}>
           <div className={styles.separator}>

@@ -1,9 +1,9 @@
-import { Container } from '~/components/layout/Container';
+import { Header } from '~/components/layout/Header';
 
 export default function Settings() {
   return (
-    <Container>
-      practise
-    </Container>
+    <Header>
+      Practise
+    </Header>
   );
 }
