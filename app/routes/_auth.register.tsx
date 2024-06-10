@@ -34,7 +34,7 @@ export const action = createActions({
 
     throw await login(request, response, user.id);
   }
-})
+});
 
 export default function Register() {
   const data = useActionData<typeof action>();

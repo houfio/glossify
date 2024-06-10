@@ -6,8 +6,12 @@ module.exports = {
     'plugin:import/recommended',
     'plugin:import/typescript'
   ],
+  plugins: [
+    'eslint-plugin-react-compiler'
+  ],
   rules: {
     'array-bracket-spacing': ['error', 'never'],
+    'arrow-parens': ['error', 'always'],
     'comma-dangle': ['error', 'never'],
     'import/order': [
       'error',
@@ -35,7 +39,9 @@ module.exports = {
         'beforeClosing': 'proportional-always'
       }
     ],
+    'react-compiler/react-compiler': 'error',
     'react-hooks/exhaustive-deps': 'off',
+    'semi': ['error', 'always'],
     'template-curly-spacing': ['error', 'never']
   }
 };

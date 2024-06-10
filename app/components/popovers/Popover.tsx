@@ -4,7 +4,7 @@ import { useId, useRef } from 'react';
 
 import styles from './Popover.module.scss';
 
-type Node = ReactNode | ((ref: RefObject<HTMLDivElement>) => ReactNode);
+type Node = ReactNode | ((ref: RefObject<HTMLDivElement | null>) => ReactNode);
 
 type Props = {
   content: Node,
@@ -25,8 +25,8 @@ export function Popover({ content, type = 'auto', asChild, children }: Props) {
         tabIndex={0}
         style={{ anchorName: `--${id}-anchor` }}
         {...type === 'auto' && {
-          popovertarget: `${id}-popover`,
-          popovertargetaction: 'toggle'
+          popoverTarget: `${id}-popover`,
+          popoverTargetAction: 'toggle'
         }}
       >
         {typeof children === 'function' ? children(ref) : children}

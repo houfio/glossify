@@ -19,7 +19,7 @@ export function Tooltip({ content, palette = 'surface-variant', asChild, childre
 
   const Component = asChild ? Slot : 'span';
 
-  const updatePopover = (ref: RefObject<HTMLDivElement>, hover: boolean, focus: boolean) => {
+  const updatePopover = (ref: RefObject<HTMLDivElement | null>, hover: boolean, focus: boolean) => {
     setHover(hover);
     setFocus(focus);
 

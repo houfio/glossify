@@ -18,5 +18,5 @@ export function Span({ span = {}, asChild, children }: PropsWithChildren<Props>)
     <Component className={clsx(mapStyles(styles, span, 'spans-$key-$value'))}>
       {children}
     </Component>
-  )
+  );
 }
