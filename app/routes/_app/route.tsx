@@ -68,9 +68,14 @@ export default function App() {
           <span>
             Glossify
           </span>
-          <span>
+          <a
+            href={`https://github.com/houfio/glossify/commit/${__VERSION__}`}
+            target="_blank"
+            rel="noreferrer"
+            className={styles.link}
+          >
             {__VERSION__}
-          </span>
+          </a>
         </footer>
       </Container>
       {component}
