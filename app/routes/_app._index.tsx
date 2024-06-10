@@ -1,9 +1,10 @@
-import { faPlus } from '@fortawesome/pro-regular-svg-icons';
-import { useLoaderData } from '@remix-run/react';
+import { faPlus, faTimes } from '@fortawesome/pro-regular-svg-icons';
+import { Form, useLoaderData } from '@remix-run/react';
 import { unstable_defineLoader } from '@vercel/remix';
 import { useState } from 'react';
 import { z } from 'zod';
 
+import { Table } from '~/components/Table';
 import { Button } from '~/components/forms/Button';
 import { Container } from '~/components/layout/Container';
 import { Header } from '~/components/layout/Header';
@@ -46,6 +47,26 @@ export const action = createActions({
     await setMessage(request, response, 'Successfully added word', 'success');
 
     return respond(true);
+  },
+  deleteWord: async (data, request, response) => {
+    const userId = await requireUserId(request, response);
+    const { id } = await validate(data, z.object({
+      id: z.string()
+    }));
+
+    const word = await db.word.delete({
+      where: { id, userId }
+    });
+
+    if (!word) {
+      await setMessage(request, response, 'Unable to remove word', 'error');
+
+      return respond(false);
+    }
+
+    await setMessage(request, response, 'Successfully removed word', 'success');
+
+    return respond(true);
   }
 });
 
@@ -63,7 +84,37 @@ export default function Index() {
         <Tooltip content="This is your ID">
           {user.id}
         </Tooltip>
-        {JSON.stringify(words)}
+        <Table
+          data={words}
+          rowKey="id"
+          columns={{
+            word: {
+              title: 'Word',
+              render: (value) => value
+            },
+            definition: {
+              title: 'Definition',
+              render: (value) => value
+            },
+            id: {
+              title: '',
+              render: (value) => (
+                <Form method="post">
+                  <input name="id" value={value} type="hidden"/>
+                  <Button
+                    text="Remove"
+                    icon={faTimes}
+                    palette="background"
+                    small={true}
+                    type="submit"
+                    name="intent"
+                    value="deleteWord"
+                  />
+                </Form>
+              )
+            }
+          }}
+        />
       </Container>
       {open && (
         <AddWordModal onClose={() => setOpen(false)}/>
