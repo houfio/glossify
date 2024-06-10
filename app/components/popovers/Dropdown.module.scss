@@ -11,6 +11,7 @@
     transition: all 0.1s allow-discrete;
 
     @starting-style {
+      opacity: 0;
       transform: translateY(-.25rem);
     }
   }
