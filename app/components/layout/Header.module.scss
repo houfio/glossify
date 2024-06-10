@@ -1,5 +1,14 @@
 .header {
   padding: 2.5rem 0;
   border-bottom: 1px solid var(--background-outline);
+}
+
+.container {
+  display: flex;
+  gap: .5rem;
+}
+
+.title {
+  flex: 1;
   font-size: 2rem;
 }

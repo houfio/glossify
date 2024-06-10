@@ -17,9 +17,7 @@ export const meta: MetaFunction = () => [
 export default function Settings() {
   return (
     <>
-      <Header>
-        Settings
-      </Header>
+      <Header text="Settings"/>
       <Container>
         <Grid columns={{ laptop: 3, desktop: 4 }} gaps={{ phone: 2 }}>
           <div className={styles.separator}>

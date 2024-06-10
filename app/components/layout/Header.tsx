@@ -1,18 +1,23 @@
-import type { ReactNode } from 'react';
+import type { PropsWithChildren } from 'react';
 
 import styles from './Header.module.scss';
 
 import { Container } from '~/components/layout/Container';
 
 type Props = {
-  children: ReactNode;
+  text: string
 };
 
-export function Header({ children }: Props) {
+export function Header({ text, children }: PropsWithChildren<Props>) {
   return (
     <header className={styles.header}>
-      <Container>
-        {children}
+      <Container asChild={true}>
+        <div className={styles.container}>
+          <span className={styles.title}>
+            {text}
+          </span>
+          {children}
+        </div>
       </Container>
     </header>
   );
