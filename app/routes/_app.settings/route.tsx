@@ -23,22 +23,26 @@ export default function Settings() {
       </div>
       <Container>
         <Grid columns={{ laptop: 3, desktop: 4 }} gaps={{ phone: 2 }}>
-          <Navigation
-            items={[{
-              title: 'Profile',
-              icon: faUser,
-              to: '/settings',
-              end: true
-            }, {
-              title: 'Security',
-              icon: faShieldHalved,
-              to: '/settings/security'
-            }]}
-            orientation="vertical"
-            palette="background"
-          />
-          <Span span={{ laptop: 2, desktop: 3 }}>
-            <Outlet/>
+          <div className={styles.separator}>
+            <Navigation
+              items={[{
+                title: 'Profile',
+                icon: faUser,
+                to: '/settings',
+                end: true
+              }, {
+                title: 'Security',
+                icon: faShieldHalved,
+                to: '/settings/security'
+              }]}
+              orientation="vertical"
+              palette="background"
+            />
+          </div>
+          <Span span={{ laptop: 2, desktop: 3 }} asChild={true}>
+            <div className={styles.content}>
+              <Outlet/>
+            </div>
           </Span>
         </Grid>
       </Container>
