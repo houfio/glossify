@@ -29,7 +29,10 @@ export function Toast({ message, type, index }: Props) {
     <div
       ref={ref}
       popover="manual"
-      style={withPalette(palette[type], { bottom: `${index * 3 + .5}rem` })}
+      style={{
+        bottom: `${index * 3 + .5}rem`,
+        ...withPalette(palette[type])
+      }}
       className={clsx(styles.toast, styles[type])}
     >
       {message}

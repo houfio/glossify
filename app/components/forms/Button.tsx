@@ -13,10 +13,11 @@ type Props = ComponentPropsWithoutRef<'button'> & {
   text: string,
   icon?: IconProp,
   loading?: boolean,
-  palette?: string
+  palette?: string,
+  small?: boolean
 };
 
-export function Button({ text, icon, loading, palette = 'accent', style, className, ...props }: Props) {
+export function Button({ text, icon, loading, palette = 'accent', small, ...props }: Props) {
   const { state } = useNavigation();
 
   const isLoading = loading ?? (props.type === 'submit' && state === 'submitting');
@@ -24,16 +25,21 @@ export function Button({ text, icon, loading, palette = 'accent', style, classNa
 
   return (
     <button
+      title={small ? text : undefined}
       disabled={disabled}
-      style={withPalette(palette, style)}
-      className={clsx(styles.button, className)}
+      style={withPalette(palette)}
+      className={clsx(styles.button, small && styles.small)}
       {...props}
     >
       <div className={clsx(isLoading && styles.loading)}>
         {icon && (
-          <FontAwesomeIcon icon={icon} fixedWidth={true} className={styles.icon}/>
+          <FontAwesomeIcon
+            icon={icon}
+            fixedWidth={!small}
+            className={clsx(!small && styles.icon)}
+          />
         )}
-        {text}
+        {!small && text}
       </div>
       {isLoading && (
         <FontAwesomeIcon icon={faRotate} spin={true} className={styles.spinner}/>

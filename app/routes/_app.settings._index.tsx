@@ -1,3 +1,4 @@
+import { faFloppyDisk } from '@fortawesome/pro-regular-svg-icons';
 import { Theme } from '@prisma/client';
 import { useActionData } from '@remix-run/react';
 import { z } from 'zod';
@@ -59,7 +60,13 @@ export default function Profile() {
           name="theme"
           defaultValue={theme}
         />
-        <Button text="Save" type="submit" name="intent" value="updateProfile"/>
+        <Button
+          text="Save"
+          icon={faFloppyDisk}
+          type="submit"
+          name="intent"
+          value="updateProfile"
+        />
       </Form>
     </>
   );

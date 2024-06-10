@@ -1,3 +1,4 @@
+import { faFloppyDisk } from '@fortawesome/pro-regular-svg-icons';
 import { useActionData } from '@remix-run/react';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
@@ -53,7 +54,13 @@ export default function Profile() {
         <Input label="Current password" name="currentPassword" type="password" required={true}/>
         <Input label="New password" name="newPassword" type="password" required={true}/>
         <Input label="Confirm password" name="confirmPassword" type="password" required={true}/>
-        <Button text="Save" type="submit" name="intent" value="updatePassword"/>
+        <Button
+          text="Save"
+          icon={faFloppyDisk}
+          type="submit"
+          name="intent"
+          value="updatePassword"
+        />
       </Form>
     </>
   );

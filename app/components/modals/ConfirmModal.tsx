@@ -20,7 +20,7 @@ export function ConfirmModal({ onClose, children }: PropsWithChildren<Props>) {
         <div>
           {children}
         </div>
-        <ItemList orientation="horizontal" className={styles.items}>
+        <ItemList orientation="horizontal">
           <button type="submit" autofocus="true">
             No
           </button>

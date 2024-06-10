@@ -15,6 +15,11 @@
   &:active {
     background-color: var(--color-click);
   }
+
+  &.small {
+    padding: .25rem .5rem;
+    border: none;
+  }
 }
 
 .icon {

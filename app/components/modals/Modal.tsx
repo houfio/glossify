@@ -1,11 +1,11 @@
 import { faXmark } from '@fortawesome/pro-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useStore } from '@nanostores/react';
 import type { PropsWithChildren } from 'react';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import styles from './Modal.module.scss';
 
+import { Button } from '~/components/forms/Button';
 import { $openModal } from '~/stores/modals';
 
 type Props = {
@@ -48,9 +48,13 @@ export function Modal({ title, strict = Boolean(title), onClose, children }: Pro
         {title && (
           <div className={styles.title}>
             {title}
-            <button title="Close" className={styles.close} onClick={() => onClose()}>
-              <FontAwesomeIcon icon={faXmark}/>
-            </button>
+            <Button
+              text="Close"
+              icon={faXmark}
+              palette="surface"
+              small={true}
+              onClick={() => onClose()}
+            />
           </div>
         )}
         {children}

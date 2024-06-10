@@ -1,5 +1,5 @@
 import { Slot } from '@radix-ui/react-slot';
-import type { ReactNode, RefObject } from 'react';
+import type { PropsWithChildren, ReactNode, RefObject } from 'react';
 import { useEffect, useId, useImperativeHandle, useRef } from 'react';
 
 import styles from './Popover.module.scss';
@@ -10,11 +10,10 @@ type Props = {
   ref?: RefObject<PopoverRef | null>,
   open?: boolean,
   content: ReactNode,
-  asChild?: boolean,
-  children: ReactNode
+  asChild?: boolean
 };
 
-export function Popover({ ref, open, content, asChild, children }: Props) {
+export function Popover({ ref, open, content, asChild, children }: PropsWithChildren<Props>) {
   const popoverRef = useRef<HTMLElement>(null);
   const id = useId().replaceAll(':', '');
 
