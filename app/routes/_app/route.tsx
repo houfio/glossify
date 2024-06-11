@@ -49,7 +49,7 @@ export default function App() {
               }, {
                 title: 'Log out',
                 icon: faArrowRightFromBracket,
-                onClick: prompt
+                onClick: () => prompt(true)
               }]}
               asChild={true}
             >

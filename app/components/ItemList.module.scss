@@ -55,4 +55,10 @@
       }
     }
   }
+
+  &.small {
+    & > button, & > a {
+      padding: .25rem .5rem;
+    }
+  }
 }

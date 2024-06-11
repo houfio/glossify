@@ -1,12 +1,12 @@
 import { faPenToSquare, faPlus, faTimes } from '@fortawesome/pro-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { Word } from '@prisma/client';
-import { Form, useLoaderData } from '@remix-run/react';
+import { useLoaderData, useSubmit } from '@remix-run/react';
 import { unstable_defineLoader } from '@vercel/remix';
 import { useState } from 'react';
 import { z } from 'zod';
 
-import styles from './route.module.scss';
-
+import { ItemList } from '~/components/ItemList';
 import { Table } from '~/components/Table';
 import { Button } from '~/components/forms/Button';
 import { Container } from '~/components/layout/Container';
@@ -14,6 +14,7 @@ import { Header } from '~/components/layout/Header';
 import { UpsertWordModal } from '~/components/modals/UpsertWordModal';
 import { Tooltip } from '~/components/popovers/Tooltip';
 import { db } from '~/db.server';
+import { useConfirmation } from '~/hooks/useConfirmation';
 import { useUser } from '~/hooks/useUser';
 import { requireUserId, setMessage } from '~/session.server';
 import { createActions } from '~/utils/createActions.server';
@@ -94,8 +95,19 @@ export const action = createActions({
 
 export default function Index() {
   const { words } = useLoaderData<typeof loader>();
+  const submit = useSubmit();
   const user = useUser();
   const [open, setOpen] = useState<boolean | Omit<Word, 'userId'>>(false);
+  const [prompt, component] = useConfirmation<string>('Are you sure you want to delete this word?', (id) => {
+    const data = new FormData();
+
+    data.set('intent', 'deleteWord');
+    data.set('id', id);
+
+    submit(data, {
+      method: 'post'
+    });
+  });
 
   return (
     <>
@@ -121,27 +133,14 @@ export default function Index() {
             id: {
               title: '',
               render: (value, row) => (
-                <div className={styles.actions}>
-                  <Button
-                    text="Edit"
-                    icon={faPenToSquare}
-                    palette="background"
-                    small={true}
-                    onClick={() => setOpen(row)}
-                  />
-                  <Form method="post">
-                    <input name="id" value={value} type="hidden"/>
-                    <Button
-                      text="Remove"
-                      icon={faTimes}
-                      palette="background"
-                      small={true}
-                      type="submit"
-                      name="intent"
-                      value="deleteWord"
-                    />
-                  </Form>
-                </div>
+                <ItemList orientation="horizontal" palette="background" small={true}>
+                  <button title="Edit" onClick={() => setOpen(row)}>
+                    <FontAwesomeIcon icon={faPenToSquare}/>
+                  </button>
+                  <button title="Remove" onClick={() => prompt(value)}>
+                    <FontAwesomeIcon icon={faTimes}/>
+                  </button>
+                </ItemList>
               )
             }
           }}
@@ -153,6 +152,7 @@ export default function Index() {
           onClose={() => setOpen(false)}
         />
       )}
+      {component}
     </>
   );
 }

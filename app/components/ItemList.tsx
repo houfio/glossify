@@ -7,12 +7,20 @@ import { withPalette } from '~/utils/withPalette';
 
 type Props = {
   orientation: 'horizontal' | 'vertical',
-  palette?: string
+  palette?: string,
+  small?: boolean
 };
 
-export function ItemList({ orientation, palette = 'surface', children }: PropsWithChildren<Props>) {
+export function ItemList({ orientation, palette = 'surface', small, children }: PropsWithChildren<Props>) {
   return (
-    <div style={withPalette(palette)} className={clsx(styles.list, orientation === 'vertical' && styles.vertical)}>
+    <div
+      style={withPalette(palette)}
+      className={clsx(
+        styles.list,
+        orientation === 'vertical' && styles.vertical,
+        small && styles.small
+      )}
+    >
       {children}
     </div>
   );
