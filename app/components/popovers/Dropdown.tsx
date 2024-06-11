@@ -10,7 +10,7 @@ import styles from './Dropdown.module.scss';
 
 import { ItemList } from '~/components/ItemList';
 import { Popover } from '~/components/popovers/Popover';
-import type { PopoverRef } from '~/types';
+import type { ImperativePopoverHandle } from '~/types';
 import { withPalette } from '~/utils/withPalette';
 
 type Props = {
@@ -25,7 +25,7 @@ type Props = {
 };
 
 export function Dropdown({ items, palette = 'surface', asChild, children }: PropsWithChildren<Props>) {
-  const ref = useRef<PopoverRef>(null);
+  const ref = useRef<ImperativePopoverHandle>(null);
 
   return (
     <Popover

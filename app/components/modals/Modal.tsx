@@ -1,12 +1,10 @@
 import { faXmark } from '@fortawesome/pro-regular-svg-icons';
-import { useStore } from '@nanostores/react';
 import type { PropsWithChildren } from 'react';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 
 import styles from './Modal.module.scss';
 
 import { Button } from '~/components/forms/Button';
-import { $openModal } from '~/stores/modals';
 
 type Props = {
   title?: string,
@@ -16,25 +14,10 @@ type Props = {
 
 export function Modal({ title, strict = Boolean(title), onClose, children }: PropsWithChildren<Props>) {
   const ref = useRef<HTMLDialogElement>(null);
-  const [id] = useState(() => crypto.randomUUID());
-  const openModal = useStore($openModal);
 
   useLayoutEffect(() => {
     ref.current?.showModal();
-    $openModal.set(id);
-
-    return () => {
-      if ($openModal.get() === id) {
-        $openModal.set('');
-      }
-    };
-  }, [id]);
-
-  useEffect(() => {
-    if (openModal && openModal !== id) {
-      onClose();
-    }
-  }, [openModal, onClose]);
+  }, []);
 
   return (
     <dialog

@@ -4,10 +4,10 @@ import { useEffect, useId, useImperativeHandle, useRef } from 'react';
 
 import styles from './Popover.module.scss';
 
-import type { PopoverRef } from '~/types';
+import type { ImperativePopoverHandle } from '~/types';
 
 type Props = {
-  ref?: RefObject<PopoverRef | null>,
+  ref?: RefObject<ImperativePopoverHandle | null>,
   open?: boolean,
   content: ReactNode,
   asChild?: boolean

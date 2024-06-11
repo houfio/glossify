@@ -17,7 +17,7 @@ import { validate } from '~/utils/validate.server';
 export const action = createActions({
   updateProfile: async (data, request, response) => {
     const { username, theme } = await validate(data, z.object({
-      username: z.string().min(3),
+      username: z.string().trim().min(3),
       theme: z.nativeEnum(Theme)
     }));
 

@@ -17,7 +17,7 @@ export type Issue = {
 
 export type MessageType = 'info' | 'success' | 'error';
 
-export type PopoverRef = {
+export type ImperativePopoverHandle = {
   show: () => void;
   hide: () => void;
 };

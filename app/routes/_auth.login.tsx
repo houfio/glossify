@@ -20,7 +20,7 @@ export const meta: MetaFunction = () => [
 export const action = createActions({
   login: async (data, request, response) => {
     const { username, password } = await validate(data, z.object({
-      username: z.string().min(3),
+      username: z.string().trim().min(3),
       password: z.string().min(3)
     }));
 

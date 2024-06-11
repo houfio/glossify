@@ -20,7 +20,7 @@ export const action = createActions({
   register: async (data, request, response) => {
     const { email, username, password } = await validate(data, z.object({
       email: z.string().email(),
-      username: z.string().min(3),
+      username: z.string().trim().min(3),
       password: z.string().min(3)
     }));
 
