@@ -15,7 +15,6 @@ import { UpsertWordModal } from '~/components/modals/UpsertWordModal';
 import { Tooltip } from '~/components/popovers/Tooltip';
 import { db } from '~/db.server';
 import { useConfirmation } from '~/hooks/useConfirmation';
-import { useUser } from '~/hooks/useUser';
 import { requireUserId, setMessage } from '~/session.server';
 import { createActions } from '~/utils/createActions.server';
 import { respond } from '~/utils/respond.server';
@@ -96,7 +95,6 @@ export const action = createActions({
 export default function Index() {
   const { words } = useLoaderData<typeof loader>();
   const submit = useSubmit();
-  const user = useUser();
   const [open, setOpen] = useState<boolean | Omit<Word, 'userId'>>(false);
   const [prompt, component] = useConfirmation<string>('Are you sure you want to delete this word?', (id) => {
     const data = new FormData();
@@ -115,9 +113,6 @@ export default function Index() {
         <Button text="Add" icon={faPlus} onClick={() => setOpen(true)}/>
       </Header>
       <Container>
-        <Tooltip content="This is your ID">
-          {user.id}
-        </Tooltip>
         <Table
           data={words}
           rowKey="id"
@@ -134,12 +129,16 @@ export default function Index() {
               title: '',
               render: (value, row) => (
                 <ItemList orientation="horizontal" palette="background" small={true}>
-                  <button title="Edit" onClick={() => setOpen(row)}>
-                    <FontAwesomeIcon icon={faPenToSquare}/>
-                  </button>
-                  <button title="Remove" onClick={() => prompt(value)}>
-                    <FontAwesomeIcon icon={faTimes}/>
-                  </button>
+                  <Tooltip content="Edit" asChild={true}>
+                    <button onClick={() => setOpen(row)}>
+                      <FontAwesomeIcon icon={faPenToSquare}/>
+                    </button>
+                  </Tooltip>
+                  <Tooltip content="Remove" asChild={true}>
+                    <button onClick={() => prompt(value)}>
+                      <FontAwesomeIcon icon={faTimes}/>
+                    </button>
+                  </Tooltip>
                 </ItemList>
               )
             }

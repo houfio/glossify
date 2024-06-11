@@ -1,6 +1,6 @@
 import { Slot } from '@radix-ui/react-slot';
 import type { PropsWithChildren, ReactNode } from 'react';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 
 import styles from './Tooltip.module.scss';
 
@@ -14,6 +14,7 @@ type Props = {
 };
 
 export function Tooltip({ content, palette = 'surface-variant', asChild, children }: PropsWithChildren<Props>) {
+  const id = useId();
   const [open, setOpen] = useState(false);
   const [hover, setHover] = useState(false);
   const [focus, setFocus] = useState(false);
@@ -29,7 +30,7 @@ export function Tooltip({ content, palette = 'surface-variant', asChild, childre
   return (
     <Popover
       content={(
-        <div style={withPalette(palette)} className={styles.tooltip}>
+        <div id={id} style={withPalette(palette)} className={styles.tooltip}>
           {content}
         </div>
       )}
@@ -37,6 +38,8 @@ export function Tooltip({ content, palette = 'surface-variant', asChild, childre
       asChild={true}
     >
       <Component
+        aria-labelledby={id}
+        onClick={() => updatePopover(false, false)}
         onMouseEnter={() => updatePopover(true, focus)}
         onMouseLeave={() => updatePopover(false, focus)}
         onFocus={() => updatePopover(hover, true)}

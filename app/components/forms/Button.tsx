@@ -7,6 +7,7 @@ import { useNavigation } from 'react-router';
 
 import styles from './Button.module.scss';
 
+import { Tooltip } from '~/components/popovers/Tooltip';
 import { withPalette } from '~/utils/withPalette';
 
 type Props = ComponentPropsWithoutRef<'button'> & {
@@ -22,10 +23,8 @@ export function Button({ text, icon, loading, palette = 'accent', small, ...prop
 
   const isLoading = loading ?? (props.type === 'submit' && state === 'submitting');
   const disabled = isLoading || props.disabled;
-
-  return (
+  const button = (
     <button
-      title={small ? text : undefined}
       disabled={disabled}
       style={withPalette(palette)}
       className={clsx(styles.button, small && styles.small)}
@@ -45,5 +44,15 @@ export function Button({ text, icon, loading, palette = 'accent', small, ...prop
         <FontAwesomeIcon icon={faRotate} spin={true} className={styles.spinner}/>
       )}
     </button>
+  );
+
+  if (!small) {
+    return button;
+  }
+
+  return (
+    <Tooltip content={text} asChild={true}>
+      {button}
+    </Tooltip>
   );
 }
