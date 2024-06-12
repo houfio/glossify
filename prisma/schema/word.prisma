@@ -2,8 +2,8 @@ model Word {
   id         String  @id @default(cuid())
   user       User    @relation(fields: [userId], references: [id])
   userId     String
-  folder     Folder? @relation(fields: [folderId], references: [id])
-  folderId   String?
+  list       List?   @relation(fields: [listId], references: [id])
+  listId     String?
   word       String
   definition String
 }

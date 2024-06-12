@@ -1,5 +1,5 @@
 import { faFloppyDisk, faPlus } from '@fortawesome/pro-regular-svg-icons';
-import type { Folder, Word } from '@prisma/client';
+import type { List, Word } from '@prisma/client';
 
 import { Button } from '~/components/forms/Button';
 import { Form } from '~/components/forms/Form';
@@ -9,11 +9,11 @@ import { Modal } from '~/components/modals/Modal';
 
 type Props = {
   word?: Word,
-  folders: Folder[],
+  lists: List[],
   onClose: () => void
 };
 
-export function UpsertWordModal({ word, folders, onClose }: Props) {
+export function UpsertWordModal({ word, lists, onClose }: Props) {
   return (
     <Modal title={word ? 'Update word' : 'Add word'} onClose={onClose}>
       <Form method="post">
@@ -23,19 +23,19 @@ export function UpsertWordModal({ word, folders, onClose }: Props) {
         <Input name="word" label="To study" defaultValue={word?.word} autofocus="true"/>
         <Input name="definition" label="Definition" defaultValue={word?.definition}/>
         <Select
-          name="folderId"
-          label="folder"
+          name="listId"
+          label="List"
           options={[
             {
               value: '',
               label: ''
             },
-            ...folders.map((folder) => ({
-              value: folder.id,
-              label: folder.name
+            ...lists.map((list) => ({
+              value: list.id,
+              label: list.name
             }))
           ]}
-          defaultValue={word?.folderId ?? ''}
+          defaultValue={word?.listId ?? ''}
         />
         <Button
           text={word ? 'Save' : 'Add'}
