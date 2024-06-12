@@ -21,22 +21,25 @@ import { respond } from '~/utils/respond.server';
 import { validate } from '~/utils/validate.server';
 
 export const loader = unstable_defineLoader(async ({ request, response }) => {
+  const url = new URL(request.url);
+  const listId = url.searchParams.get('list');
   const userId = await requireUserId(request, response);
   const { words, lists } = await db.user.findUniqueOrThrow({
     where: { id: userId },
     select: {
       words: {
+        where: { listId },
         orderBy: { word: 'asc' }
       },
       lists: {
-        orderBy: { name: 'asc' },
         include: {
           _count: {
             select: {
               words: true
             }
           }
-        }
+        },
+        orderBy: { name: 'asc' }
       }
     }
   });
