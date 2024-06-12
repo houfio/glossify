@@ -1,3 +1,5 @@
+import { faCactus } from '@fortawesome/pro-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { clsx } from 'clsx';
 import type { ReactNode } from 'react';
 
@@ -37,7 +39,7 @@ export function Table<T>({ data, rowKey, columns }: Props<T>) {
         </tr>
       </thead>
       <tbody>
-        {data.map((row) => (
+        {data.length ? data.map((row) => (
           <tr key={String(row[rowKey])} className={styles.row}>
             {columnArrays.map(({ key, config }) => (
               <td key={key} className={styles.body}>
@@ -45,7 +47,16 @@ export function Table<T>({ data, rowKey, columns }: Props<T>) {
               </td>
             ))}
           </tr>
-        ))}
+        )) : (
+          <tr className={styles.row}>
+            <td colSpan={columnArrays.length} className={styles.body}>
+              <div className={styles.empty}>
+                <FontAwesomeIcon icon={faCactus} size="xl"/>
+                There's nothing to see here
+              </div>
+            </td>
+          </tr>
+        )}
       </tbody>
     </table>
   );
