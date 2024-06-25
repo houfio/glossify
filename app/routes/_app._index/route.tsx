@@ -155,11 +155,15 @@ export default function Index() {
   const { words, lists } = useLoaderData<typeof loader>();
   const data = useActionData<typeof action>();
   const submit = useSubmit();
-  const [open, close, withModal] = useModals<{
-    word: Word | undefined,
-    list: List | undefined
-  }>();
-  const [prompt, component] = useConfirmation<[string, string]>(([type]) => `Are you sure you want to delete this ${type}?`, ([type, id]) => {
+  const [open, close, modals] = useModals({
+    word: (word?: Word) => (
+      <UpsertWordModal word={word} lists={lists}/>
+    ),
+    list: (list?: List) => (
+      <UpsertListModal list={list}/>
+    )
+  });
+  const [prompt, confirmation] = useConfirmation<[string, string]>(([type]) => `Are you sure you want to delete this ${type}?`, ([type, id]) => {
     const data = new FormData();
 
     data.set('intent', 'delete');
@@ -180,8 +184,8 @@ export default function Index() {
   return (
     <>
       <Header text="Words">
-        <Button text="Add word" icon={faInputText} onClick={() => open('word', undefined)}/>
-        <Button text="Add list" icon={faFolder} onClick={() => open('list', undefined)}/>
+        <Button text="Add word" icon={faInputText} onClick={() => open('word')}/>
+        <Button text="Add list" icon={faFolder} onClick={() => open('list')}/>
       </Header>
       <Container>
         <Lists
@@ -195,13 +199,8 @@ export default function Index() {
           prompt={(id) => prompt(['word', id])}
         />
       </Container>
-      {withModal('word', (word) => (
-        <UpsertWordModal word={word} lists={lists} onClose={close}/>
-      ))}
-      {withModal('list', (list) => (
-        <UpsertListModal list={list} onClose={close}/>
-      ))}
-      {component}
+      {modals}
+      {confirmation}
     </>
   );
 }

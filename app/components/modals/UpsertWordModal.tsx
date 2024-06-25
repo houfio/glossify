@@ -9,13 +9,12 @@ import { Modal } from '~/components/modals/Modal';
 
 type Props = {
   word?: Word,
-  lists: List[],
-  onClose: () => void
+  lists: List[]
 };
 
-export function UpsertWordModal({ word, lists, onClose }: Props) {
+export function UpsertWordModal({ word, lists }: Props) {
   return (
-    <Modal title={word ? 'Update word' : 'Add word'} onClose={onClose}>
+    <Modal title={word ? 'Update word' : 'Add word'}>
       <Form method="post">
         {word && (
           <input name="id" value={word.id} type="hidden"/>

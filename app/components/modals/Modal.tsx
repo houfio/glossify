@@ -1,18 +1,24 @@
 import { faXmark } from '@fortawesome/pro-regular-svg-icons';
 import type { PropsWithChildren } from 'react';
-import { useLayoutEffect, useRef } from 'react';
+import { use, useLayoutEffect, useRef } from 'react';
 
 import styles from './Modal.module.scss';
 
 import { Button } from '~/components/forms/Button';
+import { ModalContext } from '~/hooks/useModals';
 
 type Props = {
   title?: string,
   strict?: boolean,
-  onClose: (value?: string) => void
+  onClose?: (value?: string) => void
 };
 
-export function Modal({ title, strict = Boolean(title), onClose, children }: PropsWithChildren<Props>) {
+export function Modal({
+  title,
+  strict = Boolean(title),
+  onClose = use(ModalContext),
+  children
+}: PropsWithChildren<Props>) {
   const ref = useRef<HTMLDialogElement>(null);
 
   useLayoutEffect(() => {

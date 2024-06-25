@@ -7,13 +7,12 @@ import { Input } from '~/components/forms/Input';
 import { Modal } from '~/components/modals/Modal';
 
 type Props = {
-  list?: List,
-  onClose: () => void
+  list?: List
 };
 
-export function UpsertListModal({ list, onClose }: Props) {
+export function UpsertListModal({ list }: Props) {
   return (
-    <Modal title={list ? 'Update list' : 'Add list'} onClose={onClose}>
+    <Modal title={list ? 'Update list' : 'Add list'}>
       <Form method="post">
         {list && (
           <input name="id" value={list.id} type="hidden"/>
