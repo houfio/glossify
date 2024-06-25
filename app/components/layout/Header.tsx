@@ -5,7 +5,7 @@ import styles from './Header.module.scss';
 import { Container } from '~/components/layout/Container';
 
 type Props = {
-  text: string
+  text: string;
 };
 
 export function Header({ text, children }: PropsWithChildren<Props>) {
@@ -13,9 +13,7 @@ export function Header({ text, children }: PropsWithChildren<Props>) {
     <header className={styles.header}>
       <Container asChild={true}>
         <div className={styles.container}>
-          <span className={styles.title}>
-            {text}
-          </span>
+          <span className={styles.title}>{text}</span>
           {children}
         </div>
       </Container>

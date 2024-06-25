@@ -11,12 +11,16 @@ export function respond(success: boolean, dataOrIssues?: unknown) {
     };
   }
 
-  const issues = dataOrIssues as (string | Issue)[] ?? [];
+  const issues = (dataOrIssues as (string | Issue)[]) ?? [];
 
   return {
     success,
-    issues: issues.map((issue) => typeof issue !== 'string' ? issue : {
-      message: issue
-    })
+    issues: issues.map((issue) =>
+      typeof issue !== 'string'
+        ? issue
+        : {
+            message: issue
+          }
+    )
   };
 }

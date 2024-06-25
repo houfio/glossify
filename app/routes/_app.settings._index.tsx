@@ -16,10 +16,13 @@ import { validate } from '~/utils/validate.server';
 
 export const action = createActions({
   updateProfile: async (data, request, response) => {
-    const { username, theme } = await validate(data, z.object({
-      username: z.string().trim().min(3),
-      theme: z.nativeEnum(Theme)
-    }));
+    const { username, theme } = await validate(
+      data,
+      z.object({
+        username: z.string().trim().min(3),
+        theme: z.nativeEnum(Theme)
+      })
+    );
 
     const userId = await requireUserId(request, response);
 
@@ -44,29 +47,27 @@ export default function Profile() {
   return (
     <>
       <Form method="post" issues={data?.issues}>
-        <Input label="Username" name="username" defaultValue={username}/>
+        <Input label="Username" name="username" defaultValue={username} />
         <Select
           label="Theme"
-          options={[{
-            value: 'AUTOMATIC',
-            label: 'Automatic'
-          }, {
-            value: 'LIGHT',
-            label: 'Light'
-          }, {
-            value: 'DARK',
-            label: 'Dark'
-          }]}
+          options={[
+            {
+              value: 'AUTOMATIC',
+              label: 'Automatic'
+            },
+            {
+              value: 'LIGHT',
+              label: 'Light'
+            },
+            {
+              value: 'DARK',
+              label: 'Dark'
+            }
+          ]}
           name="theme"
           defaultValue={theme}
         />
-        <Button
-          text="Save"
-          icon={faFloppyDisk}
-          type="submit"
-          name="intent"
-          value="updateProfile"
-        />
+        <Button text="Save" icon={faFloppyDisk} type="submit" name="intent" value="updateProfile" />
       </Form>
     </>
   );

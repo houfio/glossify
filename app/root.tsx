@@ -5,12 +5,12 @@ import { useStore } from '@nanostores/react';
 import { Theme } from '@prisma/client';
 import { Slot } from '@radix-ui/react-slot';
 import {
-  isRouteErrorResponse,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  isRouteErrorResponse,
   useLoaderData,
   useRouteError
 } from '@remix-run/react';
@@ -28,9 +28,7 @@ import { $toasts, openToast } from '~/stores/toasts';
 
 config.autoAddCss = false;
 
-export const meta: MetaFunction = () => [
-  { title: 'Glossify' }
-];
+export const meta: MetaFunction = () => [{ title: 'Glossify' }];
 
 export const loader = unstable_defineLoader(async ({ request, response }) => {
   const userId = await getUserId(request);
@@ -56,17 +54,18 @@ export function Layout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
       <head>
-        <meta charSet="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link rel="preconnect" href="https://fonts.googleapis.com"/>
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&family=Noto+Sans:wght@100..900&display=swap"/>
-        <Meta/>
-        <Links/>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&family=Noto+Sans:wght@100..900&display=swap"
+        />
+        <Meta />
+        <Links />
       </head>
-      <Slot>
-        {children}
-      </Slot>
+      <Slot>{children}</Slot>
     </html>
   );
 }
@@ -85,17 +84,12 @@ export default function Root() {
 
   return (
     <body className={data.theme}>
-      <Outlet/>
+      <Outlet />
       {toasts.map((toast, i) => (
-        <Toast
-          key={toast.id}
-          message={toast.message}
-          type={toast.type}
-          index={toasts.length - i - 1}
-        />
+        <Toast key={toast.id} message={toast.message} type={toast.type} index={toasts.length - i - 1} />
       ))}
-      <ScrollRestoration/>
-      <Scripts/>
+      <ScrollRestoration />
+      <Scripts />
     </body>
   );
 }
@@ -107,27 +101,21 @@ export function ErrorBoundary() {
 
   return (
     <body className="error-boundary">
-      <FontAwesomeIcon icon={faExplosion} size="xl"/>
+      <FontAwesomeIcon icon={faExplosion} size="xl" />
       {isRouteErrorResponse(error) ? (
         <>
           <span>
             {error.status} {error.statusText}
           </span>
-          <pre className="error-boundary-info">
-            {JSON.stringify(error.data, undefined, 2)}
-          </pre>
+          <pre className="error-boundary-info">{JSON.stringify(error.data, undefined, 2)}</pre>
         </>
       ) : (
         <>
           Oh no, something went wrong
-          {error instanceof Error && (
-            <pre className="error-boundary-info">
-              {error.stack}
-            </pre>
-          )}
+          {error instanceof Error && <pre className="error-boundary-info">{error.stack}</pre>}
         </>
       )}
-      <Scripts/>
+      <Scripts />
     </body>
   );
 }

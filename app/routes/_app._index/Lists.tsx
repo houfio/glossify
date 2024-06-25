@@ -1,7 +1,7 @@
 import { faEye, faEyeSlash, faPenToSquare, faTimes } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { List } from '@prisma/client';
-import { createSearchParams, Link, useSearchParams } from '@remix-run/react';
+import { Link, createSearchParams, useSearchParams } from '@remix-run/react';
 
 import styles from './Lists.module.scss';
 
@@ -11,9 +11,9 @@ import { Tooltip } from '~/components/popovers/Tooltip';
 import { withPalette } from '~/utils/withPalette';
 
 type Props = {
-  lists: (List & { _count: { words: number } })[],
-  open: (list: List) => void,
-  prompt: (id: string) => void
+  lists: (List & { _count: { words: number } })[];
+  open: (list: List) => void;
+  prompt: (id: string) => void;
 };
 
 export function Lists({ lists, open, prompt }: Props) {
@@ -34,29 +34,23 @@ export function Lists({ lists, open, prompt }: Props) {
           }
 
           return (
-            <div
-              key={list.id}
-              className={styles.list}
-              style={withPalette(active ? 'surface-variant' : 'surface')}
-            >
+            <div key={list.id} className={styles.list} style={withPalette(active ? 'surface-variant' : 'surface')}>
               {list.name}
-              <div className={styles.subtitle}>
-                {list._count.words} word(s)
-              </div>
+              <div className={styles.subtitle}>{list._count.words} word(s)</div>
               <ItemList orientation="horizontal" palette={palette} small={true}>
                 <Tooltip content={active ? 'Hide' : 'Show'} asChild={true}>
                   <Link to={{ search: newParams.toString() }}>
-                    <FontAwesomeIcon icon={active ? faEyeSlash : faEye}/>
+                    <FontAwesomeIcon icon={active ? faEyeSlash : faEye} />
                   </Link>
                 </Tooltip>
                 <Tooltip content="Edit" asChild={true}>
-                  <button onClick={() => open(list)}>
-                    <FontAwesomeIcon icon={faPenToSquare}/>
+                  <button type="button" onClick={() => open(list)}>
+                    <FontAwesomeIcon icon={faPenToSquare} />
                   </button>
                 </Tooltip>
                 <Tooltip content="Remove" asChild={true}>
-                  <button onClick={() => prompt(list.id)}>
-                    <FontAwesomeIcon icon={faTimes}/>
+                  <button type="button" onClick={() => prompt(list.id)}>
+                    <FontAwesomeIcon icon={faTimes} />
                   </button>
                 </Tooltip>
               </ItemList>

@@ -25,13 +25,11 @@ export default function Auth() {
     <div className={styles.wrapper}>
       <div className={styles.box}>
         <span className={styles.title}>
-          <FontAwesomeIcon icon={faFolders}/> Glossify
+          <FontAwesomeIcon icon={faFolders} /> Glossify
         </span>
-        <Outlet/>
+        <Outlet />
       </div>
-      <span className={styles.version}>
-        {__VERSION__}
-      </span>
+      <span className={styles.version}>{__VERSION__}</span>
     </div>
   );
 }

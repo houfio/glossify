@@ -1,4 +1,8 @@
-export {};
+/// <reference types="@remix-run/node" />
+/// <reference types="@remix-run/react/future/single-fetch.d.ts" />
+/// <reference types="vite/client" />
+
+export type {};
 
 declare global {
   const __VERSION__: string;

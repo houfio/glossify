@@ -15,13 +15,13 @@ import { withPalette } from '~/utils/withPalette';
 
 type Props = {
   items: {
-    title: string,
-    icon: IconProp,
-    to?: To,
-    onClick?: () => void
-  }[],
-  palette?: string,
-  asChild?: boolean
+    title: string;
+    icon: IconProp;
+    to?: To;
+    onClick?: () => void;
+  }[];
+  palette?: string;
+  asChild?: boolean;
 };
 
 export function Dropdown({ items, palette = 'surface', asChild, children }: PropsWithChildren<Props>) {
@@ -30,12 +30,12 @@ export function Dropdown({ items, palette = 'surface', asChild, children }: Prop
   return (
     <Popover
       ref={ref}
-      content={(
+      content={
         <div style={withPalette(palette)} className={styles.dropdown}>
           <ItemList orientation="vertical" palette={palette}>
-            {items.map((item, i) => (
+            {items.map((item) => (
               <Slot
-                key={i}
+                key={item.title}
                 autoFocus={true}
                 onClick={() => {
                   item.onClick?.();
@@ -44,18 +44,18 @@ export function Dropdown({ items, palette = 'surface', asChild, children }: Prop
               >
                 {item.to ? (
                   <Link to={item.to}>
-                    <FontAwesomeIcon icon={item.icon} fixedWidth={true}/> {item.title}
+                    <FontAwesomeIcon icon={item.icon} fixedWidth={true} /> {item.title}
                   </Link>
                 ) : (
-                  <button>
-                    <FontAwesomeIcon icon={item.icon} fixedWidth={true}/> {item.title}
+                  <button type="button">
+                    <FontAwesomeIcon icon={item.icon} fixedWidth={true} /> {item.title}
                   </button>
                 )}
               </Slot>
             ))}
           </ItemList>
         </div>
-      )}
+      }
       asChild={asChild}
     >
       {children}

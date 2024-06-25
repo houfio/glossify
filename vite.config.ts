@@ -10,20 +10,14 @@ export default defineConfig({
       future: {
         unstable_singleFetch: true
       },
-      presets: [
-        vercelPreset()
-      ]
+      presets: [vercelPreset()]
     }),
     tsconfigPaths(),
     babel({
       filter: /\.[jt]sx?$/,
       babelConfig: {
-        presets: [
-          '@babel/preset-typescript'
-        ],
-        plugins: [
-          ['babel-plugin-react-compiler', {}]
-        ]
+        presets: ['@babel/preset-typescript'],
+        plugins: [['babel-plugin-react-compiler', {}]]
       }
     })
   ],

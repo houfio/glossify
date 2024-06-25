@@ -10,35 +10,36 @@ import { Grid } from '~/components/layout/Grid';
 import { Header } from '~/components/layout/Header';
 import { Span } from '~/components/layout/Span';
 
-export const meta: MetaFunction = () => [
-  { title: 'Glossify / Settings' }
-];
+export const meta: MetaFunction = () => [{ title: 'Glossify / Settings' }];
 
 export default function Settings() {
   return (
     <>
-      <Header text="Settings"/>
+      <Header text="Settings" />
       <Container>
         <Grid columns={{ laptop: 3, desktop: 4 }} gaps={{ phone: 2 }}>
           <div className={styles.separator}>
             <Navigation
-              items={[{
-                title: 'Profile',
-                icon: faUser,
-                to: '/settings',
-                end: true
-              }, {
-                title: 'Security',
-                icon: faShieldHalved,
-                to: '/settings/security'
-              }]}
+              items={[
+                {
+                  title: 'Profile',
+                  icon: faUser,
+                  to: '/settings',
+                  end: true
+                },
+                {
+                  title: 'Security',
+                  icon: faShieldHalved,
+                  to: '/settings/security'
+                }
+              ]}
               orientation="vertical"
               palette="background"
             />
           </div>
           <Span span={{ laptop: 2, desktop: 3 }} asChild={true}>
             <div className={styles.content}>
-              <Outlet/>
+              <Outlet />
             </div>
           </Span>
         </Grid>

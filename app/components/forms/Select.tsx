@@ -5,22 +5,16 @@ import { useId } from 'react';
 import styles from './Select.module.scss';
 
 type Props<T> = Omit<ComponentPropsWithoutRef<'select'>, 'children'> & {
-  label: string,
+  label: string;
   options: {
-    value: T,
-    label: string
-  }[],
-  small?: boolean,
-  setValue?: (value: T) => void
+    value: T;
+    label: string;
+  }[];
+  small?: boolean;
+  setValue?: (value: T) => void;
 };
 
-export function Select<T extends string>({
-  label,
-  options,
-  small = false,
-  setValue,
-  ...props
-}: Props<T>) {
+export function Select<T extends string>({ label, options, small = false, setValue, ...props }: Props<T>) {
   const id = useId();
 
   return (

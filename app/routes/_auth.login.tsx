@@ -13,23 +13,24 @@ import { createActions } from '~/utils/createActions.server';
 import { respond } from '~/utils/respond.server';
 import { validate } from '~/utils/validate.server';
 
-export const meta: MetaFunction = () => [
-  { title: 'Glossify / Login' }
-];
+export const meta: MetaFunction = () => [{ title: 'Glossify / Login' }];
 
 export const action = createActions({
   login: async (data, request, response) => {
-    const { username, password } = await validate(data, z.object({
-      username: z.string().trim().min(3),
-      password: z.string().min(3)
-    }));
+    const { username, password } = await validate(
+      data,
+      z.object({
+        username: z.string().trim().min(3),
+        password: z.string().min(3)
+      })
+    );
 
     const user = await db.user.findUnique({
       where: { username },
       select: { id: true, password: true }
     });
 
-    if (user && await bcrypt.compare(password, user.password)) {
+    if (user && (await bcrypt.compare(password, user.password))) {
       throw await login(request, response, user.id);
     }
 
@@ -45,9 +46,9 @@ export default function Login() {
   return (
     <>
       <Form method="post" issues={data?.issues}>
-        <Input label="Username" name="username" required={true}/>
-        <Input label="Password" name="password" type="password" required={true}/>
-        <Button text="Log in" icon={faArrowRightToBracket} type="submit" name="intent" value="login"/>
+        <Input label="Username" name="username" required={true} />
+        <Input label="Password" name="password" type="password" required={true} />
+        <Button text="Log in" icon={faArrowRightToBracket} type="submit" name="intent" value="login" />
       </Form>
       <Link to="/register">Register</Link>
     </>

@@ -8,9 +8,9 @@ import { Button } from '~/components/forms/Button';
 import { ModalContext } from '~/hooks/useModals';
 
 type Props = {
-  title?: string,
-  strict?: boolean,
-  onClose?: (value?: string) => void
+  title?: string;
+  strict?: boolean;
+  onClose?: (value?: string) => void;
 };
 
 export function Modal({
@@ -26,6 +26,7 @@ export function Modal({
   }, []);
 
   return (
+    // biome-ignore lint/a11y/useKeyWithClickEvents: dialog has built-in key handling
     <dialog
       ref={ref}
       className={styles.modal}
@@ -37,13 +38,7 @@ export function Modal({
         {title && (
           <div className={styles.title}>
             {title}
-            <Button
-              text="Close"
-              icon={faXmark}
-              palette="surface"
-              small={true}
-              onClick={() => onClose()}
-            />
+            <Button text="Close" icon={faXmark} palette="surface" small={true} onClick={() => onClose()} />
           </div>
         )}
         {children}

@@ -7,9 +7,9 @@ import type { MessageType } from '~/types';
 import { withPalette } from '~/utils/withPalette';
 
 type Props = {
-  message: string,
-  type: MessageType,
-  index: number
+  message: string;
+  type: MessageType;
+  index: number;
 };
 
 const palette: Record<MessageType, string> = {
@@ -30,7 +30,7 @@ export function Toast({ message, type, index }: Props) {
       ref={ref}
       popover="manual"
       style={{
-        bottom: `${index * 3 + .5}rem`,
+        bottom: `${index * 3 + 0.5}rem`,
         ...withPalette(palette[type])
       }}
       className={clsx(styles.toast, styles[type])}

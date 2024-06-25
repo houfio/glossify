@@ -10,28 +10,26 @@ import { ItemList } from '~/components/ItemList';
 
 type Props = {
   items: {
-    title: string,
-    icon?: IconProp,
-    to: To,
-    end?: boolean
-  }[],
-  orientation: 'horizontal' | 'vertical',
-  palette?: string
+    title: string;
+    icon?: IconProp;
+    to: To;
+    end?: boolean;
+  }[];
+  orientation: 'horizontal' | 'vertical';
+  palette?: string;
 };
 
 export function Navigation({ items, orientation, palette }: Props) {
   return (
     <ItemList orientation={orientation} palette={palette}>
-      {items.map((item, i) => (
+      {items.map((item) => (
         <NavLink
-          key={i}
+          key={item.title}
           to={item.to}
           end={item.end}
           className={({ isActive }) => clsx(isActive && styles.active)}
         >
-          {item.icon && (
-            <FontAwesomeIcon icon={item.icon} fixedWidth={true}/>
-          )} {item.title}
+          {item.icon && <FontAwesomeIcon icon={item.icon} fixedWidth={true} />} {item.title}
         </NavLink>
       ))}
     </ItemList>

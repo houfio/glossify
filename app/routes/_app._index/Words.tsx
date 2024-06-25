@@ -7,9 +7,9 @@ import { Table } from '~/components/Table';
 import { Tooltip } from '~/components/popovers/Tooltip';
 
 type Props = {
-  words: Word[],
-  open: (word: Word) => void,
-  prompt: (id: string) => void
+  words: Word[];
+  open: (word: Word) => void;
+  prompt: (id: string) => void;
 };
 
 export function Words({ words, open, prompt }: Props) {
@@ -31,13 +31,13 @@ export function Words({ words, open, prompt }: Props) {
           render: (value, row) => (
             <ItemList orientation="horizontal" palette="background" small={true}>
               <Tooltip content="Edit" asChild={true}>
-                <button onClick={() => open(row)}>
-                  <FontAwesomeIcon icon={faPenToSquare}/>
+                <button type="button" onClick={() => open(row)}>
+                  <FontAwesomeIcon icon={faPenToSquare} />
                 </button>
               </Tooltip>
               <Tooltip content="Remove" asChild={true}>
-                <button onClick={() => prompt(value)}>
-                  <FontAwesomeIcon icon={faTimes}/>
+                <button type="button" onClick={() => prompt(value)}>
+                  <FontAwesomeIcon icon={faTimes} />
                 </button>
               </Tooltip>
             </ItemList>

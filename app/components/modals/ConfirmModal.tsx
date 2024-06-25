@@ -6,20 +6,14 @@ import { ItemList } from '~/components/ItemList';
 import { Modal } from '~/components/modals/Modal';
 
 type Props = {
-  onClose: (confirmed: boolean) => void
+  onClose: (confirmed: boolean) => void;
 };
 
 export function ConfirmModal({ onClose, children }: PropsWithChildren<Props>) {
   return (
-    <Modal
-      title="Confirm"
-      strict={false}
-      onClose={(value) => onClose(value === 'confirm')}
-    >
+    <Modal title="Confirm" strict={false} onClose={(value) => onClose(value === 'confirm')}>
       <form method="dialog" className={styles.form}>
-        <div>
-          {children}
-        </div>
+        <div>{children}</div>
         <ItemList orientation="horizontal">
           <button type="submit" autofocus="true">
             No

@@ -7,7 +7,7 @@ import styles from './Input.module.scss';
 import { useForm } from '~/hooks/useForm';
 
 type Props = ComponentPropsWithoutRef<'input'> & {
-  label: string
+  label: string;
 };
 
 export function Input({ label, className, ...props }: Props) {
@@ -21,12 +21,10 @@ export function Input({ label, className, ...props }: Props) {
       <label htmlFor={id} className={styles.label}>
         {label}
       </label>
-      <input id={id} className={clsx(styles.input, issue && styles.issue)} {...props}/>
+      <input id={id} className={clsx(styles.input, issue && styles.issue)} {...props} />
       {issue && (
         <div className={styles.messageWrapper}>
-          <div className={styles.message}>
-            {issue.message}
-          </div>
+          <div className={styles.message}>{issue.message}</div>
         </div>
       )}
     </div>

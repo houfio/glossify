@@ -8,9 +8,9 @@ import { Popover } from '~/components/popovers/Popover';
 import { withPalette } from '~/utils/withPalette';
 
 type Props = {
-  content: ReactNode,
-  palette?: string,
-  asChild?: boolean
+  content: ReactNode;
+  palette?: string;
+  asChild?: boolean;
 };
 
 export function Tooltip({ content, palette = 'surface-variant', asChild, children }: PropsWithChildren<Props>) {
@@ -29,11 +29,11 @@ export function Tooltip({ content, palette = 'surface-variant', asChild, childre
 
   return (
     <Popover
-      content={(
+      content={
         <div id={id} style={withPalette(palette)} className={styles.tooltip}>
           {content}
         </div>
-      )}
+      }
       open={open}
       asChild={true}
     >

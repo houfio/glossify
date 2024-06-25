@@ -8,19 +8,17 @@ import { Select } from '~/components/forms/Select';
 import { Modal } from '~/components/modals/Modal';
 
 type Props = {
-  word?: Word,
-  lists: List[]
+  word?: Word;
+  lists: List[];
 };
 
 export function UpsertWordModal({ word, lists }: Props) {
   return (
     <Modal title={word ? 'Update word' : 'Add word'}>
       <Form method="post">
-        {word && (
-          <input name="id" value={word.id} type="hidden"/>
-        )}
-        <Input name="word" label="To study" defaultValue={word?.word} autofocus="true"/>
-        <Input name="definition" label="Definition" defaultValue={word?.definition}/>
+        {word && <input name="id" value={word.id} type="hidden" />}
+        <Input name="word" label="To study" defaultValue={word?.word} autofocus="true" />
+        <Input name="definition" label="Definition" defaultValue={word?.definition} />
         <Select
           name="listId"
           label="List"

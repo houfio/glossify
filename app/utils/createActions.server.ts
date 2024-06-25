@@ -26,17 +26,20 @@ export function createActions<A extends Actions>(actions: A) {
       throw new Error(`Action not found: ${intent}`);
     }
 
-    const defineResponse = (response: object) => ({
-      ...response,
-      action: intent
-    } as unknown as Responses<A>[keyof A]);
+    const defineResponse = (response: object) =>
+      ({
+        ...response,
+        action: intent
+      }) as unknown as Responses<A>[keyof A];
 
     try {
       return defineResponse(await actions[intent](data, request, response));
     } catch (e) {
       if (isResponseStub(e)) {
         throw e;
-      } else if (e instanceof ZodError) {
+      }
+
+      if (e instanceof ZodError) {
         const issues = e.issues.map((issue) => ({
           field: issue.path.join('.'),
           message: issue.message

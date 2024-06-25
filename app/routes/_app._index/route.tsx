@@ -50,12 +50,15 @@ export const loader = unstable_defineLoader(async ({ request, response }) => {
 export const action = createActions({
   upsertWord: async (data, request, response) => {
     const userId = await requireUserId(request, response);
-    const { id, word, definition, listId } = await validate(data, z.object({
-      id: z.string().optional(),
-      word: z.string().trim().min(1),
-      definition: z.string().trim().min(1),
-      listId: z.string()
-    }));
+    const { id, word, definition, listId } = await validate(
+      data,
+      z.object({
+        id: z.string().optional(),
+        word: z.string().trim().min(1),
+        definition: z.string().trim().min(1),
+        listId: z.string()
+      })
+    );
 
     if (id) {
       const value = await db.word.update({
@@ -63,11 +66,13 @@ export const action = createActions({
         data: {
           word,
           definition,
-          list: listId ? {
-            connect: { id: listId }
-          } : {
-            disconnect: true
-          }
+          list: listId
+            ? {
+                connect: { id: listId }
+              }
+            : {
+                disconnect: true
+              }
         }
       });
 
@@ -95,10 +100,13 @@ export const action = createActions({
   },
   upsertList: async (data, request, response) => {
     const userId = await requireUserId(request, response);
-    const { id, name } = await validate(data, z.object({
-      id: z.string().optional(),
-      name: z.string().trim().min(1)
-    }));
+    const { id, name } = await validate(
+      data,
+      z.object({
+        id: z.string().optional(),
+        name: z.string().trim().min(1)
+      })
+    );
 
     if (id) {
       const value = await db.list.update({
@@ -128,16 +136,22 @@ export const action = createActions({
   },
   delete: async (data, request, response) => {
     const userId = await requireUserId(request, response);
-    const { type, id } = await validate(data, z.object({
-      type: z.enum(['word', 'list']),
-      id: z.string()
-    }));
+    const { type, id } = await validate(
+      data,
+      z.object({
+        type: z.enum(['word', 'list']),
+        id: z.string()
+      })
+    );
 
-    const deleted = type === 'word' ? await db.word.delete({
-      where: { id, userId }
-    }) : await db.list.delete({
-      where: { id, userId }
-    });
+    const deleted =
+      type === 'word'
+        ? await db.word.delete({
+            where: { id, userId }
+          })
+        : await db.list.delete({
+            where: { id, userId }
+          });
 
     if (!deleted) {
       await setMessage(request, response, `Unable to remove ${type}`, 'error');
@@ -156,24 +170,23 @@ export default function Index() {
   const data = useActionData<typeof action>();
   const submit = useSubmit();
   const [open, close, modals] = useModals({
-    word: (word?: Word) => (
-      <UpsertWordModal word={word} lists={lists}/>
-    ),
-    list: (list?: List) => (
-      <UpsertListModal list={list}/>
-    )
+    word: (word?: Word) => <UpsertWordModal word={word} lists={lists} />,
+    list: (list?: List) => <UpsertListModal list={list} />
   });
-  const [prompt, confirmation] = useConfirmation<[string, string]>(([type]) => `Are you sure you want to delete this ${type}?`, ([type, id]) => {
-    const data = new FormData();
+  const [prompt, confirmation] = useConfirmation<[string, string]>(
+    ([type]) => `Are you sure you want to delete this ${type}?`,
+    ([type, id]) => {
+      const data = new FormData();
 
-    data.set('intent', 'delete');
-    data.set('type', type);
-    data.set('id', id);
+      data.set('intent', 'delete');
+      data.set('type', type);
+      data.set('id', id);
 
-    submit(data, {
-      method: 'post'
-    });
-  });
+      submit(data, {
+        method: 'post'
+      });
+    }
+  );
 
   useEffect(() => {
     if (data?.success) {
@@ -184,20 +197,12 @@ export default function Index() {
   return (
     <>
       <Header text="Words">
-        <Button text="Add word" icon={faInputText} onClick={() => open('word')}/>
-        <Button text="Add list" icon={faFolder} onClick={() => open('list')}/>
+        <Button text="Add word" icon={faInputText} onClick={() => open('word')} />
+        <Button text="Add list" icon={faFolder} onClick={() => open('list')} />
       </Header>
       <Container>
-        <Lists
-          lists={lists}
-          open={(list) => open('list', list)}
-          prompt={(id) => prompt(['list', id])}
-        />
-        <Words
-          words={words}
-          open={(word) => open('word', word)}
-          prompt={(id) => prompt(['word', id])}
-        />
+        <Lists lists={lists} open={(list) => open('list', list)} prompt={(id) => prompt(['list', id])} />
+        <Words words={words} open={(word) => open('word', word)} prompt={(id) => prompt(['word', id])} />
       </Container>
       {modals}
       {confirmation}

@@ -5,8 +5,8 @@ import { db } from '~/db.server';
 import type { MessageType } from '~/types';
 
 type SessionData = {
-  userId?: string,
-  message?: string
+  userId?: string;
+  message?: string;
 };
 
 const storage = createCookieSessionStorage<SessionData>({
@@ -26,7 +26,12 @@ function getSession(request: Request) {
   return storage.getSession(cookie);
 }
 
-export async function setMessage(request: Request, response: ResponseStub, message: string, type: MessageType = 'info') {
+export async function setMessage(
+  request: Request,
+  response: ResponseStub,
+  message: string,
+  type: MessageType = 'info'
+) {
   const session = await getSession(request);
 
   session.flash('message', `${type};${message}`);

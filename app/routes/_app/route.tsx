@@ -28,46 +28,50 @@ export default function App() {
         <Container asChild={true}>
           <div className={styles.inner}>
             <div className={styles.title}>
-              <FontAwesomeIcon icon={faFolders}/> Glossify
+              <FontAwesomeIcon icon={faFolders} /> Glossify
             </div>
             <Navigation
-              items={[{
-                title: 'Words',
-                to: '/',
-                end: true
-              }, {
-                title: 'Practise',
-                to: '/practise'
-              }]}
+              items={[
+                {
+                  title: 'Words',
+                  to: '/',
+                  end: true
+                },
+                {
+                  title: 'Practise',
+                  to: '/practise'
+                }
+              ]}
               orientation="horizontal"
             />
             <Dropdown
-              items={[{
-                title: 'Settings',
-                icon: faGear,
-                to: '/settings'
-              }, {
-                title: 'Log out',
-                icon: faArrowRightFromBracket,
-                onClick: () => prompt()
-              }]}
+              items={[
+                {
+                  title: 'Settings',
+                  icon: faGear,
+                  to: '/settings'
+                },
+                {
+                  title: 'Log out',
+                  icon: faArrowRightFromBracket,
+                  onClick: () => prompt()
+                }
+              ]}
               asChild={true}
             >
-              <button title="Profile" className={styles.profile}>
-                <FontAwesomeIcon icon={faCircleUser}/>
+              <button title="Profile" type="button" className={styles.profile}>
+                <FontAwesomeIcon icon={faCircleUser} />
               </button>
             </Dropdown>
           </div>
         </Container>
       </nav>
       <main className={styles.main}>
-        <Outlet/>
+        <Outlet />
       </main>
       <Container asChild={true}>
         <footer className={styles.footer}>
-          <span>
-            Glossify
-          </span>
+          <span>Glossify</span>
           <a
             href={`https://github.com/houfio/glossify/commit/${__VERSION__}`}
             target="_blank"

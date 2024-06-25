@@ -6,10 +6,13 @@ import { ConfirmModal } from '~/components/modals/ConfirmModal';
 const symbol = Symbol('open');
 
 export function useConfirmation(message: string, onConfirm: () => void): [() => void, ReactNode];
-export function useConfirmation<T>(message: string | ((value: T) => string), onConfirm: (value: T) => void): [(value: T) => void, ReactNode];
+export function useConfirmation<T>(
+  message: string | ((value: T) => string),
+  onConfirm: (value: T) => void
+): [(value: T) => void, ReactNode];
 
 export function useConfirmation<T>(message: string | ((value: T) => string), onConfirm: (value?: T) => void) {
-  const [open, setOpen] = useState<T | Symbol>();
+  const [open, setOpen] = useState<T | symbol>();
   const prompt = useCallback((value?: T) => setOpen(value ?? symbol), []);
 
   const component = (
@@ -18,7 +21,7 @@ export function useConfirmation<T>(message: string | ((value: T) => string), onC
         <ConfirmModal
           onClose={(confirmed) => {
             if (confirmed) {
-              onConfirm(open === symbol ? undefined : open as T);
+              onConfirm(open === symbol ? undefined : (open as T));
             }
 
             setOpen(undefined);

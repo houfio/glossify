@@ -7,9 +7,9 @@ import styles from './Grid.module.scss';
 import { mapStyles } from '~/utils/mapStyles';
 
 type Props = {
-  columns?: Record<string, number>,
-  gaps?: Record<string, number>,
-  asChild?: boolean
+  columns?: Record<string, number>;
+  gaps?: Record<string, number>;
+  asChild?: boolean;
 };
 
 export function Grid({ columns = {}, gaps = {}, asChild, children }: PropsWithChildren<Props>) {

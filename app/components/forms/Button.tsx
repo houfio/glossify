@@ -11,11 +11,11 @@ import { Tooltip } from '~/components/popovers/Tooltip';
 import { withPalette } from '~/utils/withPalette';
 
 type Props = ComponentPropsWithoutRef<'button'> & {
-  text: string,
-  icon?: IconProp,
-  loading?: boolean,
-  palette?: string,
-  small?: boolean
+  text: string;
+  icon?: IconProp;
+  loading?: boolean;
+  palette?: string;
+  small?: boolean;
 };
 
 export function Button({ text, icon, loading, palette = 'accent', small, ...props }: Props) {
@@ -31,18 +31,10 @@ export function Button({ text, icon, loading, palette = 'accent', small, ...prop
       {...props}
     >
       <div className={clsx(isLoading && styles.loading)}>
-        {icon && (
-          <FontAwesomeIcon
-            icon={icon}
-            fixedWidth={!small}
-            className={clsx(!small && styles.icon)}
-          />
-        )}
+        {icon && <FontAwesomeIcon icon={icon} fixedWidth={!small} className={clsx(!small && styles.icon)} />}
         {!small && text}
       </div>
-      {isLoading && (
-        <FontAwesomeIcon icon={faRotate} spin={true} className={styles.spinner}/>
-      )}
+      {isLoading && <FontAwesomeIcon icon={faRotate} spin={true} className={styles.spinner} />}
     </button>
   );
 

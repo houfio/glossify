@@ -7,20 +7,24 @@ import styles from './Popover.module.scss';
 import type { ImperativePopoverHandle } from '~/types';
 
 type Props = {
-  ref?: RefObject<ImperativePopoverHandle | null>,
-  open?: boolean,
-  content: ReactNode,
-  asChild?: boolean
+  ref?: RefObject<ImperativePopoverHandle | null>;
+  open?: boolean;
+  content: ReactNode;
+  asChild?: boolean;
 };
 
 export function Popover({ ref, open, content, asChild, children }: PropsWithChildren<Props>) {
   const popoverRef = useRef<HTMLElement>(null);
   const id = useId().replaceAll(':', '');
 
-  useImperativeHandle(ref, () => ({
-    show: () => popoverRef.current?.showPopover(),
-    hide: () => popoverRef.current?.hidePopover()
-  }), []);
+  useImperativeHandle(
+    ref,
+    () => ({
+      show: () => popoverRef.current?.showPopover(),
+      hide: () => popoverRef.current?.hidePopover()
+    }),
+    []
+  );
 
   useEffect(() => {
     if (open === undefined) {
@@ -42,10 +46,10 @@ export function Popover({ ref, open, content, asChild, children }: PropsWithChil
       <Component
         tabIndex={0}
         style={{ anchorName: `--${id}-anchor` }}
-        {...auto && {
+        {...(auto && {
           popoverTarget: `${id}-popover`,
           popoverTargetAction: 'toggle'
-        }}
+        })}
       >
         {children}
       </Component>

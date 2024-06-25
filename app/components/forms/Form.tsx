@@ -8,13 +8,13 @@ import { useForm } from '~/hooks/useForm';
 import type { Issue } from '~/types';
 
 type Props = ComponentPropsWithoutRef<typeof RemixForm> & {
-  issues?: Issue[]
+  issues?: Issue[];
 };
 
 export function Form({ issues = [], className, ...props }: Props) {
   return (
     <useForm.Provider issues={issues}>
-      <RemixForm className={clsx(styles.form, className)} {...props}/>
+      <RemixForm className={clsx(styles.form, className)} {...props} />
     </useForm.Provider>
   );
 }
