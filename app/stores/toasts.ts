@@ -1,21 +1,19 @@
 import { atom } from 'nanostores';
 
-import type { MessageType } from '~/types';
-
 type Toast = {
   id: number;
   message: string;
-  type: MessageType;
+  palette: string;
 };
 
 export const $toasts = atom<Toast[]>([]);
 
-export function openToast(message: string, type: MessageType = 'info') {
+export function openToast(message: string, palette = 'accent') {
   const id = window.setTimeout(() => {
     closeToast(id);
   }, 5_000);
 
-  $toasts.set([...$toasts.get(), { id, message, type }]);
+  $toasts.set([...$toasts.get(), { id, message, palette }]);
 }
 
 export function closeToast(id: number) {

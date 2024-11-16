@@ -1,11 +1,9 @@
 import { Slot } from '@radix-ui/react-slot';
 import type { PropsWithChildren, ReactNode } from 'react';
 import { useId, useState } from 'react';
-
-import styles from './Tooltip.module.scss';
-
 import { Popover } from '~/components/popovers/Popover';
-import { withPalette } from '~/utils/withPalette';
+import { withPalette } from '~/utils/styles.ts';
+import styles from './Tooltip.module.scss';
 
 type Props = {
   content: ReactNode;

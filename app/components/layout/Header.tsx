@@ -1,8 +1,6 @@
 import type { PropsWithChildren } from 'react';
-
-import styles from './Header.module.scss';
-
 import { Container } from '~/components/layout/Container';
+import styles from './Header.module.scss';
 
 type Props = {
   text: string;

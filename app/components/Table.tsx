@@ -2,7 +2,6 @@ import { faCactus } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { clsx } from 'clsx';
 import type { ReactNode } from 'react';
-
 import styles from './Table.module.scss';
 
 type Props<T> = {

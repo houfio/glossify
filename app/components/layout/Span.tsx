@@ -1,10 +1,8 @@
 import { Slot } from '@radix-ui/react-slot';
 import { clsx } from 'clsx';
 import type { PropsWithChildren } from 'react';
-
+import { mapStyles } from '~/utils/styles.ts';
 import styles from './Span.module.scss';
-
-import { mapStyles } from '~/utils/mapStyles';
 
 type Props = {
   span?: Record<string, number>;

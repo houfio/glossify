@@ -1,24 +1,14 @@
-import { clsx } from 'clsx';
 import { useLayoutEffect, useRef } from 'react';
-
+import { withPalette } from '~/utils/styles.ts';
 import styles from './Toast.module.scss';
-
-import type { MessageType } from '~/types';
-import { withPalette } from '~/utils/withPalette';
 
 type Props = {
   message: string;
-  type: MessageType;
+  palette: string;
   index: number;
 };
 
-const palette: Record<MessageType, string> = {
-  info: 'surface-variant',
-  success: 'accent',
-  error: 'error'
-};
-
-export function Toast({ message, type, index }: Props) {
+export function Toast({ message, palette, index }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -31,9 +21,9 @@ export function Toast({ message, type, index }: Props) {
       popover="manual"
       style={{
         bottom: `${index * 3 + 0.5}rem`,
-        ...withPalette(palette[type])
+        ...withPalette(palette)
       }}
-      className={clsx(styles.toast, styles[type])}
+      className={styles.toast}
     >
       {message}
     </div>

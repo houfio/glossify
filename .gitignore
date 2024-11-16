@@ -1,5 +1,6 @@
 .env
 .cache/
 .idea/
+.react-router/
 build/
 node_modules/

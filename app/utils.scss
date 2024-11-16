@@ -4,91 +4,16 @@
 @use "sass:math";
 @use "sass:meta";
 
+$columns: 6 !default;
+$gaps: 3 !default;
 $breakpoints: (
   phone: 0rem,
   tablet: 37.5rem,
   laptop: 56.25rem,
   desktop: 75rem
-);
-
-$colors: (
-  gray: (
-    colors: #ffffff #121212,
-    shades: 0 50 100 200 300 400 450 500
-  ),
-  yellow: (
-    colors: #eea83b #ca763b,
-    shades: 100 200 300 400 500
-  ),
-  red: (
-    colors: #ab5243 #8a3329,
-    shades: 100 200 300
-  )
-);
-
-$tokens: (
-  background: (
-    light: gray 0,
-    dark: gray 500
-  ),
-  on-background: (
-    light: gray 400,
-    dark: gray 0
-  ),
-  on-background-subtle: (
-    light: gray 100,
-    dark: gray 400
-  ),
-  background-hover: (
-    light: gray 50,
-    dark: gray 450
-  ),
-  background-click: on-background-subtle,
-  background-outline: background-hover,
-
-  surface: background-hover,
-  on-surface: on-background,
-  on-surface-subtle: (
-    light: gray 200,
-    dark: gray 300
-  ),
-  surface-hover: background-click,
-  surface-click: on-surface-subtle,
-  surface-outline: surface-hover,
-
-  surface-variant: background-click,
-  on-surface-variant: on-background,
-  on-surface-variant-subtle: on-surface-subtle,
-  surface-variant-hover: surface-click,
-  surface-variant-click: (
-    light: gray 300,
-    dark: gray 200
-  ),
-  surface-variant-outline: surface-variant-hover,
-
-  input: gray 0,
-  on-input: gray 500,
-  input-outline: (
-    light: gray 100,
-    dark: gray 200
-  ),
-
-  accent: yellow 300,
-  on-accent: gray 500,
-  accent-hover: yellow 200,
-  accent-click: yellow 400,
-  accent-outline: (
-    light: yellow 500,
-    dark: yellow 100
-  ),
-
-  error: red 200,
-  on-error: grey 0,
-  error-outline: (
-    light: red 300,
-    dark: red 100
-  )
-);
+) !default;
+$colors: () !default;
+$tokens: () !default;
 
 @mixin with-breakpoint($breakpoint) {
   $width: map.get($breakpoints, $breakpoint);
@@ -102,7 +27,7 @@ $tokens: (
   }
 }
 
-@function generate-shades($start, $end, $shades) {
+@function -generate-shades($start, $end, $shades) {
   $result: ();
   $length: list.length($shades);
   $min: math.min($shades...);
@@ -116,7 +41,7 @@ $tokens: (
   @return $result;
 }
 
-@function generate-palette() {
+@function -generate-palette() {
   $result: ();
 
   @each $color, $config in $colors {
@@ -124,24 +49,24 @@ $tokens: (
     $start: list.nth($colors, 1);
     $end: list.nth($colors, 2);
     $shades: map.get($config, shades);
-    $result: map.set($result, $color, generate-shades($start, $end, $shades));
+    $result: map.set($result, $color, -generate-shades($start, $end, $shades));
   }
 
   @return $result;
 }
 
-@function get-color($token, $theme) {
+@function -get-color($token, $theme) {
   $colors: map.get($tokens, $token);
   $color: if(meta.type-of($colors) == 'map', map.get($colors, $theme), $colors);
 
   @if meta.type-of($color) == 'string' {
-    $color: get-color($color, $theme);
+    $color: -get-color($color, $theme);
   }
 
   @return $color;
 }
 
-@function from-palette($color, $palette) {
+@function -from-palette($color, $palette) {
   $name: list.nth($color, 1);
   $shade: list.nth($color, 2);
 
@@ -149,12 +74,12 @@ $tokens: (
 }
 
 @mixin with-colors() {
-  $palette: generate-palette();
+  $palette: -generate-palette();
 
   @each $token in map.keys($tokens) {
-    $light: get-color($token, light);
-    $dark: get-color($token, dark);
+    $light: -get-color($token, light);
+    $dark: -get-color($token, dark);
 
-    --#{$token}: light-dark(#{from-palette($light, $palette)}, #{from-palette($dark, $palette)});
+    --#{$token}: light-dark(#{-from-palette($light, $palette)}, #{-from-palette($dark, $palette)});
   }
 }

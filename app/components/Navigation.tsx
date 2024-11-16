@@ -1,12 +1,9 @@
 import type { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NavLink } from '@remix-run/react';
-import type { To } from '@remix-run/router';
 import { clsx } from 'clsx';
-
-import styles from './Navigation.module.scss';
-
+import { NavLink, type To } from 'react-router';
 import { ItemList } from '~/components/ItemList';
+import styles from './Navigation.module.scss';
 
 type Props = {
   items: {

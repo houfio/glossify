@@ -1,10 +1,8 @@
 @use "../../utils";
 
-$spans: 6;
-
 @each $breakpoint, $width in utils.$breakpoints {
   @include utils.with-breakpoint($breakpoint) {
-    @for $span from 1 through $spans {
+    @for $span from 1 through utils.$columns {
       .spans-#{$breakpoint}-#{$span} {
         grid-column: span #{$span};
       }

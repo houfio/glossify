@@ -1,66 +1,95 @@
-@use "modern-normalize";
 @use "@fortawesome/fontawesome-svg-core/styles.css";
-@use "utils";
+@use "modern-normalize";
+@use "utils" with (
+  $colors: (
+    gray: (
+      colors: #ffffff #1f1f1f,
+      shades: 0 50 100 150 200 250 300 350 400 450 500
+    ),
+    yellow: (
+      colors: #eea83b #ca763b,
+      shades: 100 200 300 400 500
+    )
+  ),
+  $tokens: (
+    background: (
+      light: gray 0,
+      dark: gray 500
+    ),
+    on-background: (
+      light: gray 400,
+      dark: gray 0
+    ),
+    on-background-subtle: (
+      light: gray 150,
+      dark: gray 300
+    ),
+    background-hover: (
+      light: gray 50,
+      dark: gray 450
+    ),
+    background-click: (
+      light: gray 100,
+      dark: gray 400
+    ),
+    background-outline: background-hover,
+
+    surface: (
+      light: gray 50,
+      dark: gray 450
+    ),
+    on-surface: on-background,
+    on-surface-subtle: (
+      light: gray 200,
+      dark: gray 250
+    ),
+    surface-hover: (
+      light: gray 100,
+      dark: gray 400
+    ),
+    surface-click: (
+      light: gray 150,
+      dark: gray 350
+    ),
+    surface-outline: surface-hover,
+
+    surface-variant: (
+      light: gray 100,
+      dark: gray 400
+    ),
+    on-surface-variant: on-background,
+    on-surface-variant-subtle: (
+      light: gray 250,
+      dark: gray 200
+    ),
+    surface-variant-hover: (
+      light: gray 150,
+      dark: gray 350
+    ),
+    surface-variant-click: (
+      light: gray 200,
+      dark: gray 300
+    ),
+    surface-variant-outline: surface-variant-hover,
+
+    accent: yellow 300,
+    on-accent: gray 500,
+    accent-hover: yellow 200,
+    accent-click: yellow 400,
+    accent-outline: (
+      light: yellow 500,
+      dark: yellow 100
+    )
+  )
+);
 
 :root {
   color-scheme: light dark;
 
-  @include utils.with-colors();
+  @include utils.with-colors;
 }
 
 body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100dvh;
   color: var(--on-background);
   background-color: var(--background);
-  font-family: "Noto Sans", sans-serif;
-
-  &.light {
-    color-scheme: light;
-  }
-
-  &.dark {
-    color-scheme: dark;
-  }
-}
-
-.error-boundary {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: .5rem;
-  height: 100dvh;
-
-  &-info {
-    max-width: calc(100% - 2rem);
-    margin: 0 auto;
-    padding: .5rem;
-    color: var(--on-surface);
-    background-color: var(--surface);
-    border: 1px solid var(--surface-outline);
-    border-radius: .5rem;
-    overflow: auto;
-  }
-}
-
-input, select, button {
-  padding: 0;
-  background: none;
-  border: none;
-  appearance: none;
-}
-
-button {
-  text-align: start;
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  &:disabled {
-    pointer-events: none;
-    opacity: .5;
-  }
 }

@@ -1,16 +1,18 @@
 import { Slot } from '@radix-ui/react-slot';
 import type { PropsWithChildren, ReactNode, RefObject } from 'react';
 import { useEffect, useId, useImperativeHandle, useRef } from 'react';
-
 import styles from './Popover.module.scss';
-
-import type { ImperativePopoverHandle } from '~/types';
 
 type Props = {
   ref?: RefObject<ImperativePopoverHandle | null>;
   open?: boolean;
   content: ReactNode;
   asChild?: boolean;
+};
+
+export type ImperativePopoverHandle = {
+  show: () => void;
+  hide: () => void;
 };
 
 export function Popover({ ref, open, content, asChild, children }: PropsWithChildren<Props>) {

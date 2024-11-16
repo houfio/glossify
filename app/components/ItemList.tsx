@@ -1,9 +1,7 @@
 import { clsx } from 'clsx';
 import type { PropsWithChildren } from 'react';
-
+import { withPalette } from '~/utils/styles.ts';
 import styles from './ItemList.module.scss';
-
-import { withPalette } from '~/utils/withPalette';
 
 type Props = {
   orientation: 'horizontal' | 'vertical';

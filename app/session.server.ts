@@ -1,22 +1,23 @@
-import type { ResponseStub } from '@remix-run/server-runtime/dist/single-fetch';
-import { createCookieSessionStorage } from '@vercel/remix';
+import { createCookieSessionStorage, redirect } from 'react-router';
+import { db } from '~/db.server.ts';
 
-import { db } from '~/db.server';
-import type { MessageType } from '~/types';
-
-type SessionData = {
-  userId?: string;
-  message?: string;
+type Data = {
+  userId: string;
 };
 
-const storage = createCookieSessionStorage<SessionData>({
+type FlashData = {
+  message: string;
+  palette: string;
+};
+
+const storage = createCookieSessionStorage<Data, FlashData>({
   cookie: {
     name: '__session',
     httpOnly: true,
     path: '/',
     sameSite: 'lax',
-    secrets: [process.env.SESSION_SECRET ?? ''],
-    secure: process.env.NODE_ENV === 'production'
+    secrets: [String(process.env.SESSION_SECRET)],
+    secure: true
   }
 });
 
@@ -26,32 +27,32 @@ function getSession(request: Request) {
   return storage.getSession(cookie);
 }
 
-export async function setMessage(
-  request: Request,
-  response: ResponseStub,
-  message: string,
-  type: MessageType = 'info'
-) {
+export async function setMessage(request: Request, message: string, palette = 'accent') {
   const session = await getSession(request);
 
-  session.flash('message', `${type};${message}`);
+  session.flash('message', message);
+  session.flash('palette', palette);
 
-  response.headers.set('Set-Cookie', await storage.commitSession(session));
+  return {
+    'Set-Cookie': await storage.commitSession(session)
+  };
 }
 
-export async function getMessage(request: Request, response: ResponseStub) {
+export async function getMessage(request: Request) {
   const session = await getSession(request);
   const message = session.get('message');
+  const palette = session.get('palette');
 
-  response.headers.set('Set-Cookie', await storage.commitSession(session));
-
-  if (!message) {
-    return;
+  if (!message || !palette) {
+    return {};
   }
 
-  const [type, msg] = message.split(';');
-
-  return [type, msg] as [MessageType, string];
+  return {
+    message: [message, palette] as const,
+    headers: {
+      'Set-Cookie': await storage.commitSession(session)
+    }
+  };
 }
 
 export async function getUserId(request: Request) {
@@ -60,52 +61,54 @@ export async function getUserId(request: Request) {
   return session.get('userId');
 }
 
-export async function requireUserId(request: Request, response: ResponseStub) {
+export async function requireUserId(request: Request) {
   const userId = await getUserId(request);
 
   if (!userId) {
-    throw await logout(request, response);
+    throw await logout(request);
   }
 
   return userId;
 }
 
-export async function requireUser(request: Request, response: ResponseStub) {
-  const userId = await requireUserId(request, response);
+export async function requireUser(request: Request) {
+  const userId = await requireUserId(request);
   const user = await db.user.findUnique({
     where: { id: userId },
     omit: { password: true }
   });
 
   if (!user) {
-    throw await logout(request, response);
+    throw await logout(request);
   }
 
   return user;
 }
 
-export async function login(request: Request, response: ResponseStub, userId: string) {
+export async function login(request: Request, userId: string) {
   const session = await getSession(request);
 
   session.set('userId', userId);
-  session.flash('message', 'info;Successfully logged in');
+  session.flash('message', 'Successfully logged in');
+  session.flash('palette', 'accent');
 
-  response.status = 302;
-  response.headers.set('Location', '/');
-  response.headers.set('Set-Cookie', await storage.commitSession(session));
-
-  return response;
+  return redirect('/', {
+    headers: {
+      'Set-Cookie': await storage.commitSession(session)
+    }
+  });
 }
 
-export async function logout(request: Request, response: ResponseStub) {
+export async function logout(request: Request) {
   const session = await getSession(request);
 
   session.unset('userId');
-  session.flash('message', 'info;Successfully logged out');
+  session.flash('message', 'Successfully logged out');
+  session.flash('palette', 'accent');
 
-  response.status = 302;
-  response.headers.set('Location', '/login');
-  response.headers.set('Set-Cookie', await storage.commitSession(session));
-
-  return response;
+  return redirect('/login', {
+    headers: {
+      'Set-Cookie': await storage.commitSession(session)
+    }
+  });
 }

@@ -4,11 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { clsx } from 'clsx';
 import type { ComponentPropsWithoutRef } from 'react';
 import { useNavigation } from 'react-router';
-
+import { withPalette } from '~/utils/styles.ts';
 import styles from './Button.module.scss';
-
-import { Tooltip } from '~/components/popovers/Tooltip';
-import { withPalette } from '~/utils/withPalette';
 
 type Props = ComponentPropsWithoutRef<'button'> & {
   text: string;
@@ -23,12 +20,14 @@ export function Button({ text, icon, loading, palette = 'accent', small, ...prop
 
   const isLoading = loading ?? (props.type === 'submit' && state === 'submitting');
   const disabled = isLoading || props.disabled;
-  const button = (
+
+  return (
     <button
+      title={small ? text : undefined}
       disabled={disabled}
-      style={withPalette(palette)}
-      className={clsx(styles.button, small && styles.small)}
       {...props}
+      style={{ ...props.style, ...withPalette(palette) }}
+      className={clsx(props.className, styles.button, small && styles.small)}
     >
       <div className={clsx(isLoading && styles.loading)}>
         {icon && <FontAwesomeIcon icon={icon} fixedWidth={!small} className={clsx(!small && styles.icon)} />}
@@ -36,15 +35,5 @@ export function Button({ text, icon, loading, palette = 'accent', small, ...prop
       </div>
       {isLoading && <FontAwesomeIcon icon={faRotate} spin={true} className={styles.spinner} />}
     </button>
-  );
-
-  if (!small) {
-    return button;
-  }
-
-  return (
-    <Tooltip content={text} asChild={true}>
-      {button}
-    </Tooltip>
   );
 }

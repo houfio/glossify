@@ -1,9 +1,6 @@
 @use "sass:math";
 @use "../../utils";
 
-$columns: 6;
-$gaps: 3;
-
 .grid {
   display: grid;
   align-items: start;
@@ -11,13 +8,13 @@ $gaps: 3;
 
 @each $breakpoint, $width in utils.$breakpoints {
   @include utils.with-breakpoint($breakpoint) {
-    @for $column from 1 through $columns {
+    @for $column from 1 through utils.$columns {
       .columns-#{$breakpoint}-#{$column} {
         grid-template-columns: repeat(#{$column}, 1fr);
       }
     }
 
-    @for $gap from 1 through $gaps {
+    @for $gap from 1 through utils.$gaps {
       .gaps-#{$breakpoint}-#{$gap} {
         gap: #{math.div($gap, 2)}rem;
       }

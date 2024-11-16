@@ -1,0 +1,32 @@
+.content {
+  width: 25rem;
+}
+
+.input {
+  padding: 0 .5rem;
+  height: 2rem;
+  color: var(--on-surface-variant);
+  background-color: var(--surface-variant);
+  border: 1px solid var(--surface-variant-outline);
+  border-radius: .5rem;
+  appearance: none;
+}
+
+.tags {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin: .5rem 0;
+  padding: 1rem 0;
+  border: solid var(--background-outline);
+  border-width: 1px 0 1px;
+}
+
+.row {
+  display: flex;
+  gap: .5rem;
+}
+
+.add {
+  margin-top: .5rem;
+}
