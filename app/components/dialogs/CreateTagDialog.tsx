@@ -1,8 +1,8 @@
 import type { Tag } from '@prisma/client';
 import { type PropsWithChildren, useState } from 'react';
-import { Dialog } from '~/components/dialogs/Dialog.tsx';
-import { TagSelect } from '~/components/TagSelect.tsx';
 import { Form } from 'react-router';
+import { TagSelect } from '~/components/TagSelect.tsx';
+import { Dialog } from '~/components/dialogs/Dialog.tsx';
 
 type Props = {
   tags: Pick<Tag, 'id' | 'name' | 'parentId'>[];

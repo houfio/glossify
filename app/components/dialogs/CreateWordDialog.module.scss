@@ -18,11 +18,13 @@
   border-width: 1px 0 1px;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .row {
   display: flex;
   gap: .5rem;
-}
-
-.add {
-  margin-top: .5rem;
 }

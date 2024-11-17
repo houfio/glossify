@@ -1,0 +1,24 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+  color: var(--on-background);
+}
+
+.input {
+  height: 2.25rem;
+  padding: 0 .5rem;
+  color: var(--on-background);
+  background-color: var(--background);
+  border: 1px solid var(--background-outline);
+  border-radius: .5rem;
+  outline: none;
+
+  &[data-focused] {
+    outline: 5px auto -webkit-focus-ring-color;
+  }
+
+  &[data-disabled] {
+    opacity: .5;
+  }
+}

@@ -3,6 +3,8 @@ import { useState } from 'react';
 import * as v from 'valibot';
 import { optional } from 'valibot';
 import { Table } from '~/components/Table.tsx';
+import { TagSelect } from '~/components/TagSelect.tsx';
+import { CreateTagDialog } from '~/components/dialogs/CreateTagDialog.tsx';
 import { CreateWordDialog } from '~/components/dialogs/CreateWordDialog.tsx';
 import { Button } from '~/components/forms/Button.tsx';
 import { Container } from '~/components/layout/Container.tsx';
@@ -11,8 +13,6 @@ import { db } from '~/db.server.ts';
 import { requireUser, requireUserId } from '~/session.server.ts';
 import { actions, intent } from '~/utils/actions.server.ts';
 import type { Route } from './+types/_index.ts';
-import { CreateTagDialog } from '~/components/dialogs/CreateTagDialog.tsx';
-import { TagSelect } from '~/components/TagSelect.tsx';
 import styles from './_index.module.scss';
 
 export const meta: Route.MetaFunction = () => [{ title: 'Overview / Glossify' }];
