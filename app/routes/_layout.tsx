@@ -1,33 +1,11 @@
-import { faFolders } from '@fortawesome/pro-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Outlet } from 'react-router';
-import { Navigation } from '~/components/Navigation.tsx';
 import { Container } from '~/components/layout/Container.tsx';
 import styles from './_layout.module.scss';
 
 export default function Component() {
   return (
     <>
-      <nav className={styles.navigation}>
-        <Container>
-          <div className={styles.inner}>
-            <div className={styles.title}>
-              <FontAwesomeIcon icon={faFolders} /> Glossify
-            </div>
-            <Navigation
-              items={[
-                {
-                  title: 'Words',
-                  to: '/',
-                  end: true
-                }
-              ]}
-              orientation="horizontal"
-            />
-          </div>
-        </Container>
-      </nav>
-      <main>
+      <main className={styles.main}>
         <Outlet />
       </main>
       <Container>

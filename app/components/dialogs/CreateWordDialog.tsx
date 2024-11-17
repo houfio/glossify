@@ -1,10 +1,10 @@
-import { faAdd, faTag, faTimes } from '@fortawesome/pro-regular-svg-icons';
+import { faAdd, faTimes } from '@fortawesome/pro-regular-svg-icons';
 import type { Language, Tag } from '@prisma/client';
-import { type PropsWithChildren, useId, useState } from 'react';
-import { Form } from 'react-router';
+import { type PropsWithChildren, useState } from 'react';
 import { TagSelect } from '~/components/TagSelect.tsx';
 import { Dialog } from '~/components/dialogs/Dialog.tsx';
 import { Button } from '~/components/forms/Button.tsx';
+import { Form } from '~/components/forms/Form.tsx';
 import { Input } from '~/components/forms/Input.tsx';
 import { Select } from '~/components/forms/Select.tsx';
 import { Grid } from '~/components/layout/Grid.tsx';
@@ -15,11 +15,12 @@ type Props = {
   tags: Pick<Tag, 'id' | 'name' | 'parentId'>[];
 };
 
-export function CreateWordDialog({ languages, tags, children }: PropsWithChildren<Props>) {
-  const id = useId();
-  const [selectedTags, setSelectedTags] = useState<string[][]>([]);
+type KeyedList<T> = { value: T; key: string }[];
 
-  const tagIds = [...new Set(selectedTags.flat())];
+export function CreateWordDialog({ languages, tags, children }: PropsWithChildren<Props>) {
+  const [selectedTags, setSelectedTags] = useState<KeyedList<string[]>>([]);
+
+  const tagIds = [...new Set(selectedTags.flatMap((t) => t.value))];
 
   return (
     <Dialog
@@ -41,11 +42,11 @@ export function CreateWordDialog({ languages, tags, children }: PropsWithChildre
                   size="small"
                   variant="flat"
                   palette="accent"
-                  onPress={() => setSelectedTags([...selectedTags, []])}
+                  onPress={() => setSelectedTags([...selectedTags, { key: crypto.randomUUID(), value: [] }])}
                 />
               </div>
-              {selectedTags.map((t, i) => (
-                <div key={i} className={styles.row}>
+              {selectedTags.map(({ key, value }) => (
+                <div key={key} className={styles.row}>
                   <Button
                     text="Remove"
                     type="button"
@@ -54,12 +55,22 @@ export function CreateWordDialog({ languages, tags, children }: PropsWithChildre
                     palette="surface"
                     showText={false}
                     variant="flat"
-                    onPress={() => setSelectedTags(selectedTags.filter((_, ii) => i !== ii))}
+                    onPress={() => setSelectedTags(selectedTags.filter((tag) => key !== tag.key))}
                   />
                   <TagSelect
                     tags={tags}
-                    selected={t}
-                    setSelected={(tt) => setSelectedTags(selectedTags.map((s, ii) => (i === ii ? tt : s)))}
+                    selected={value}
+                    setSelected={(ids) =>
+                      setSelectedTags(
+                        selectedTags.map((tag) => {
+                          if (key !== tag.key) {
+                            return tag;
+                          }
+
+                          return { key, value: ids };
+                        })
+                      )
+                    }
                   />
                 </div>
               ))}

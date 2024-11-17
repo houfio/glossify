@@ -5,11 +5,11 @@ import { mergeProps } from 'react-aria';
 import {
   Button as AriaButton,
   ComboBox as AriaComboBox,
-  type ComboBoxProps,
   Input as AriaInput,
   Label as AriaLabel,
   ListBox as AriaListBox,
-  ListBoxItem as AriaListBoxItem
+  ListBoxItem as AriaListBoxItem,
+  type ComboBoxProps
 } from 'react-aria-components';
 import { Popover } from '~/components/popovers/Popover.tsx';
 import styles from './Select.module.scss';
