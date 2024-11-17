@@ -1,5 +1,39 @@
 .popover {
-  inset: unset;
-  position-try: flip-block, flip-inline, flip-block flip-inline;
-  position-visibility: anchors-visible;
+  min-width: var(--trigger-width);
+  color: var(--on-color);
+  background-color: var(--color);
+  border: 1px solid var(--color-outline);
+  border-radius: .5rem;
+
+  &[data-entering] {
+    animation: slide-in .1s ease;
+  }
+
+  &[data-placement=left] {
+    --origin: translateX(.5rem);
+  }
+
+  &[data-placement=right] {
+    --origin: translateX(-.5rem);
+  }
+
+  &[data-placement=top] {
+    --origin: translateY(.5rem);
+  }
+
+  &[data-placement=bottom] {
+    --origin: translateY(-.5rem);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: var(--origin);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

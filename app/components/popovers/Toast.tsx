@@ -1,31 +1,40 @@
-import { useLayoutEffect, useRef } from 'react';
+import { faXmark } from '@fortawesome/pro-regular-svg-icons';
+import { type AriaToastProps, useToast } from '@react-aria/toast';
+import type { ToastState } from '@react-stately/toast';
+import { useRef } from 'react';
+import { Button } from '~/components/forms/Button.tsx';
 import { withPalette } from '~/utils/styles.ts';
+import type { ToastData } from '~/utils/toast.ts';
 import styles from './Toast.module.scss';
 
-type Props = {
-  message: string;
-  palette: string;
-  index: number;
+type Props = AriaToastProps<ToastData> & {
+  state: ToastState<ToastData>;
 };
 
-export function Toast({ message, palette, index }: Props) {
+export function Toast({ state, ...props }: Props) {
   const ref = useRef<HTMLDivElement>(null);
-
-  useLayoutEffect(() => {
-    ref.current?.showPopover();
-  }, []);
+  const { toastProps, contentProps, titleProps, closeButtonProps } = useToast(props, state, ref);
 
   return (
     <div
+      {...toastProps}
       ref={ref}
-      popover="manual"
-      style={{
-        bottom: `${index * 3 + 0.5}rem`,
-        ...withPalette(palette)
-      }}
       className={styles.toast}
+      data-animation={props.toast.animation}
+      style={withPalette(props.toast.content.palette)}
     >
-      {message}
+      <div {...contentProps}>
+        <div {...titleProps}>{props.toast.content.message}</div>
+      </div>
+      <Button
+        {...closeButtonProps}
+        text="Dismiss"
+        icon={faXmark}
+        showText={false}
+        size="small"
+        variant="flat"
+        palette={props.toast.content.palette}
+      />
     </div>
   );
 }

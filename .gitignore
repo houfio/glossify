@@ -1,3 +1,4 @@
+db.sql*
 .env
 .cache/
 .idea/

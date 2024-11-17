@@ -1,4 +1,3 @@
-import { Slot } from '@radix-ui/react-slot';
 import { clsx } from 'clsx';
 import type { PropsWithChildren } from 'react';
 import { mapStyles } from '~/utils/styles.ts';
@@ -10,11 +9,9 @@ type Props = {
   asChild?: boolean;
 };
 
-export function Grid({ columns = {}, gaps = {}, asChild, children }: PropsWithChildren<Props>) {
-  const Component = asChild ? Slot : 'div';
-
+export function Grid({ columns = {}, gaps = {}, children }: PropsWithChildren<Props>) {
   return (
-    <Component
+    <div
       className={clsx(
         styles.grid,
         mapStyles(styles, columns, 'columns-$key-$value'),
@@ -22,6 +19,6 @@ export function Grid({ columns = {}, gaps = {}, asChild, children }: PropsWithCh
       )}
     >
       {children}
-    </Component>
+    </div>
   );
 }

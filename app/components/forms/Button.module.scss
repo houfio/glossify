@@ -1,47 +1,105 @@
+@use "../../utils";
+
 .button {
+  --extra-padding: 0rem;
+
   position: relative;
   display: block;
-  padding: .5rem;
+  padding: var(--padding) calc(var(--padding) + var(--extra-padding));
   color: var(--on-color);
   background-color: var(--color);
-  border: 1px solid var(--color-outline);
-  border-radius: .5rem;
-  text-align: center;
+  outline: none;
 
-  &:hover {
-    cursor: pointer;
+  &[data-hovered] {
     background-color: var(--color-hover);
+    cursor: pointer;
   }
 
-  &:active {
+  &[data-pressed] {
     background-color: var(--color-click);
   }
 
-  &:disabled {
-    pointer-events: none;
+  &[data-disabled] {
     opacity: .5;
   }
 
-  &.small {
-    padding: 0;
-    width: 1.5rem;
-    height: 1.5rem;
-    border: none;
-    border-radius: 50%;
+  &[data-focus-visible] {
+    outline: 5px auto -webkit-focus-ring-color;
+  }
+
+  &.size {
+    &-small {
+      --padding: .25rem;
+    }
+
+    &-medium {
+      --padding: .5rem;
+    }
+
+    &-big {
+      --padding: .75rem;
+    }
+  }
+
+  &.shape {
+    &-square {
+      border-radius: .5rem;
+    }
+
+    &-round {
+      border-radius: 1000px;
+    }
+  }
+
+  &.variant {
+    &-outlined {
+      border: 1px solid var(--color-outline);
+    }
+
+    &-flat {
+      border: none;
+    }
   }
 }
 
-.icon {
-  margin-right: .25rem;
+.inner {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+
+  &.pending {
+    visibility: hidden;
+  }
 }
 
-.loading {
-  visibility: hidden;
+.text {
+  display: none;
+}
+
+.icon {
+  width: 1rem;
 }
 
 .spinner {
   position: absolute;
-  top: .5rem;
+  top: calc(50% - .5rem);
   left: calc(50% - .5rem);
-  pointer-events: none;
+}
+
+@each $breakpoint, $width in utils.$breakpoints {
+  @include utils.with-breakpoint($breakpoint) {
+    .text-#{$breakpoint} {
+      & .icon {
+        width: auto;
+      }
+
+      & .text {
+        display: unset;
+      }
+
+      &.shape-round {
+        --extra-padding: .25rem;
+      }
+    }
+  }
 }

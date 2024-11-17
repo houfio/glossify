@@ -1,12 +1,11 @@
 import './root.scss';
 
 import { config } from '@fortawesome/fontawesome-svg-core';
-import { useStore } from '@nanostores/react';
 import { type PropsWithChildren, useEffect } from 'react';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, data } from 'react-router';
-import { Toast } from '~/components/popovers/Toast.tsx';
+import { ToastRegion } from '~/components/popovers/ToastRegion.tsx';
 import { getMessage } from '~/session.server.ts';
-import { $toasts, openToast } from '~/stores/toasts.ts';
+import { showToast } from '~/utils/toast.ts';
 import type { Route } from './+types/root.ts';
 
 config.autoAddCss = false;
@@ -36,22 +35,18 @@ export function Layout({ children }: PropsWithChildren) {
 }
 
 export default function App({ loaderData }: Route.ComponentProps) {
-  const toasts = useStore($toasts);
-
   useEffect(() => {
     if (loaderData.message) {
       const [message, palette] = loaderData.message;
 
-      openToast(message, palette);
+      showToast(message, palette);
     }
   }, [loaderData]);
 
   return (
     <>
       <Outlet />
-      {toasts.map((toast, i) => (
-        <Toast key={toast.id} message={toast.message} palette={toast.palette} index={toasts.length - i - 1} />
-      ))}
+      <ToastRegion />
     </>
   );
 }

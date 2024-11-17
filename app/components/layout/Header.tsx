@@ -9,7 +9,7 @@ type Props = {
 export function Header({ text, children }: PropsWithChildren<Props>) {
   return (
     <header className={styles.header}>
-      <Container asChild={true}>
+      <Container>
         <div className={styles.container}>
           <span className={styles.title}>{text}</span>
           {children}

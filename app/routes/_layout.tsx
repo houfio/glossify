@@ -1,9 +1,9 @@
-import { Outlet } from 'react-router';
-import styles from './_layout.module.scss';
-import { Container } from '~/components/layout/Container.tsx';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolders } from '@fortawesome/pro-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Outlet } from 'react-router';
 import { Navigation } from '~/components/Navigation.tsx';
+import { Container } from '~/components/layout/Container.tsx';
+import styles from './_layout.module.scss';
 
 export default function Component() {
   return (
@@ -12,7 +12,7 @@ export default function Component() {
         <Container asChild={true}>
           <div className={styles.inner}>
             <div className={styles.title}>
-              <FontAwesomeIcon icon={faFolders}/> Glossify
+              <FontAwesomeIcon icon={faFolders} /> Glossify
             </div>
             <Navigation
               items={[
@@ -28,7 +28,7 @@ export default function Component() {
         </Container>
       </nav>
       <main>
-        <Outlet/>
+        <Outlet />
       </main>
       <Container asChild={true}>
         <footer className={styles.footer}>

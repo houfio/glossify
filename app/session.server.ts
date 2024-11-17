@@ -1,4 +1,4 @@
-import { createCookieSessionStorage, redirect } from 'react-router';
+import { type Session, createCookieSessionStorage, redirect } from 'react-router';
 import { db } from '~/db.server.ts';
 
 type Data = {
@@ -27,9 +27,7 @@ function getSession(request: Request) {
   return storage.getSession(cookie);
 }
 
-export async function setMessage(request: Request, message: string, palette = 'accent') {
-  const session = await getSession(request);
-
+export async function setMessage(session: Session, message: string, palette = 'surface') {
   session.flash('message', message);
   session.flash('palette', palette);
 
@@ -89,13 +87,9 @@ export async function login(request: Request, userId: string) {
   const session = await getSession(request);
 
   session.set('userId', userId);
-  session.flash('message', 'Successfully logged in');
-  session.flash('palette', 'accent');
 
   return redirect('/', {
-    headers: {
-      'Set-Cookie': await storage.commitSession(session)
-    }
+    headers: await setMessage(session, 'Successfully logged in')
   });
 }
 
@@ -103,12 +97,8 @@ export async function logout(request: Request) {
   const session = await getSession(request);
 
   session.unset('userId');
-  session.flash('message', 'Successfully logged out');
-  session.flash('palette', 'accent');
 
   return redirect('/login', {
-    headers: {
-      'Set-Cookie': await storage.commitSession(session)
-    }
+    headers: await setMessage(session, 'Successfully logged out')
   });
 }

@@ -1,19 +1,19 @@
+import { faAdd } from '@fortawesome/pro-regular-svg-icons';
 import { useEffect, useState } from 'react';
 import { Form } from 'react-router';
 import * as v from 'valibot';
 import { optional } from 'valibot';
+import { Table } from '~/components/Table.tsx';
 import { TagSelect } from '~/components/TagSelect.tsx';
 import { CreateWordDialog } from '~/components/dialogs/CreateWordDialog.tsx';
 import { Button } from '~/components/forms/Button.tsx';
 import { Container } from '~/components/layout/Container.tsx';
+import { Header } from '~/components/layout/Header.tsx';
 import { db } from '~/db.server.ts';
-import { useDialogs } from '~/hooks/useDialogs.tsx';
 import { requireUserId } from '~/session.server.ts';
 import { actions, intent } from '~/utils/actions.server.ts';
 import { arrayToTree } from '~/utils/trees.ts';
 import type { Route } from './+types/_index.ts';
-import { Header } from '~/components/layout/Header.tsx';
-import { Table } from '~/components/Table.tsx';
 
 export const meta: Route.MetaFunction = () => [{ title: 'Overview / Glossify' }];
 
@@ -98,9 +98,6 @@ export const action = async ({ request }: Route.ActionArgs) => {
 };
 
 export default function Component({ loaderData, actionData }: Route.ComponentProps) {
-  const [open, close, component] = useDialogs({
-    createWord: () => <CreateWordDialog languages={loaderData.languages} tags={loaderData.tags} />
-  });
   const [selected, setSelected] = useState<string[]>([]);
 
   useEffect(() => {
@@ -112,7 +109,9 @@ export default function Component({ loaderData, actionData }: Route.ComponentPro
   return (
     <>
       <Header text="Words">
-        <Button text="Create word" onClick={() => open('createWord')} />
+        <CreateWordDialog languages={loaderData.languages} tags={loaderData.tags}>
+          <Button text="Create word" icon={faAdd} />
+        </CreateWordDialog>
       </Header>
       <Container>
         <Table
@@ -133,16 +132,17 @@ export default function Component({ loaderData, actionData }: Route.ComponentPro
             },
             tags: {
               title: 'Tags',
-              render: (value) => value
-                .map((t) => loaderData.tags.find((tt) => t.id === tt.id))
-                .filter((t) => t !== undefined)
-                .map((t) => t.name)
-                .join(', ')
+              render: (value) =>
+                value
+                  .map((t) => loaderData.tags.find((tt) => t.id === tt.id))
+                  .filter((t) => t !== undefined)
+                  .map((t) => t.name)
+                  .join(', ')
             }
           }}
         />
       </Container>
-      <Header text="Tags"/>
+      <Header text="Tags" />
       <Container>
         <Form method="post">
           <input name="name" />
@@ -154,7 +154,6 @@ export default function Component({ loaderData, actionData }: Route.ComponentPro
         </Form>
         <pre>{JSON.stringify(actionData, undefined, 2)}</pre>
       </Container>
-      {component}
     </>
   );
 }
