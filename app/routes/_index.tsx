@@ -1,5 +1,5 @@
 import { faAdd, faTag } from '@fortawesome/pro-regular-svg-icons';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import * as v from 'valibot';
 import { optional } from 'valibot';
 import { Table } from '~/components/Table.tsx';
@@ -8,7 +8,7 @@ import { Button } from '~/components/forms/Button.tsx';
 import { Container } from '~/components/layout/Container.tsx';
 import { Header } from '~/components/layout/Header.tsx';
 import { db } from '~/db.server.ts';
-import { requireUserId } from '~/session.server.ts';
+import { requireUser, requireUserId } from '~/session.server.ts';
 import { actions, intent } from '~/utils/actions.server.ts';
 import type { Route } from './+types/_index.ts';
 import { CreateTagDialog } from '~/components/dialogs/CreateTagDialog.tsx';
@@ -18,18 +18,13 @@ import styles from './_index.module.scss';
 export const meta: Route.MetaFunction = () => [{ title: 'Overview / Glossify' }];
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
-  const userId = await requireUserId(request);
+  const user = await requireUser(request);
   const languages = await db.language.findMany({
     select: { id: true, name: true },
-    where: {
-      users: {
-        none: { id: userId }
-      }
-    },
     orderBy: { name: 'asc' }
   });
   const words = await db.word.findMany({
-    where: { userId },
+    where: { user },
     select: {
       id: true,
       source: true,
@@ -42,13 +37,20 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
     orderBy: { source: 'asc' }
   });
   const tags = await db.tag.findMany({
-    where: { userId },
+    where: { user },
     select: { id: true, name: true, parentId: true },
     orderBy: { name: 'asc' }
   });
 
+  const language = languages.find((l) => l.id === user.languageId);
+
+  if (!language) {
+    throw new Error(`Invalid language: \`${user.languageId}\``);
+  }
+
   return {
-    languages,
+    language,
+    languages: languages.filter((l) => l.id !== user.languageId),
     words: words.map(({ tags, ...word }) => ({
       ...word,
       tagIds: tags.map((tag) => tag.id)
@@ -103,12 +105,6 @@ export const action = async ({ request }: Route.ActionArgs) => {
 export default function Component({ loaderData, actionData }: Route.ComponentProps) {
   const [selected, setSelected] = useState<string[]>([]);
 
-  useEffect(() => {
-    if (actionData?.success) {
-      close();
-    }
-  }, [actionData]);
-
   return (
     <>
       <Header text="Words">
@@ -129,12 +125,12 @@ export default function Component({ loaderData, actionData }: Route.ComponentPro
           columns={[
             {
               key: 'source',
-              title: 'Source',
+              title: `${loaderData.language.name} word`,
               render: (row) => row.source
             },
             {
               key: 'destination',
-              title: 'Destination',
+              title: 'Foreign word',
               render: (row) => row.destination
             },
             {
