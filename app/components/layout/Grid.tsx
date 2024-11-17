@@ -6,7 +6,6 @@ import styles from './Grid.module.scss';
 type Props = {
   columns?: Record<string, number>;
   gaps?: Record<string, number>;
-  asChild?: boolean;
 };
 
 export function Grid({ columns = {}, gaps = {}, children }: PropsWithChildren<Props>) {

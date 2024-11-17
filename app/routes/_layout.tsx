@@ -9,7 +9,7 @@ export default function Component() {
   return (
     <>
       <nav className={styles.navigation}>
-        <Container asChild={true}>
+        <Container>
           <div className={styles.inner}>
             <div className={styles.title}>
               <FontAwesomeIcon icon={faFolders} /> Glossify
@@ -30,7 +30,7 @@ export default function Component() {
       <main>
         <Outlet />
       </main>
-      <Container asChild={true}>
+      <Container>
         <footer className={styles.footer}>
           <span>Glossify</span>
           <a

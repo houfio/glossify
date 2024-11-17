@@ -12,6 +12,8 @@ import { requireUserId } from '~/session.server.ts';
 import { actions, intent } from '~/utils/actions.server.ts';
 import type { Route } from './+types/_index.ts';
 import { CreateTagDialog } from '~/components/dialogs/CreateTagDialog.tsx';
+import { TagSelect } from '~/components/TagSelect.tsx';
+import styles from './_index.module.scss';
 
 export const meta: Route.MetaFunction = () => [{ title: 'Overview / Glossify' }];
 
@@ -47,7 +49,10 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
   return {
     languages,
-    words,
+    words: words.map(({ tags, ...word }) => ({
+      ...word,
+      tagIds: tags.map((tag) => tag.id)
+    })),
     tags
   };
 };
@@ -115,8 +120,11 @@ export default function Component({ loaderData, actionData }: Route.ComponentPro
         </CreateTagDialog>
       </Header>
       <Container>
+        <div className={styles.select}>
+          <TagSelect tags={loaderData.tags} selected={selected} setSelected={setSelected} />
+        </div>
         <Table
-          rows={loaderData.words}
+          rows={loaderData.words.filter((word) => selected.every((s) => word.tagIds.includes(s)))}
           rowKey="id"
           columns={[
             {
