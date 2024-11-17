@@ -1,4 +1,4 @@
-import { faAdd, faTag } from '@fortawesome/pro-regular-svg-icons';
+import { faInputText, faTag } from '@fortawesome/pro-regular-svg-icons';
 import { useState } from 'react';
 import * as v from 'valibot';
 import { optional } from 'valibot';
@@ -109,7 +109,7 @@ export default function Component({ loaderData, actionData }: Route.ComponentPro
     <>
       <Header text="Words">
         <CreateWordDialog languages={loaderData.languages} tags={loaderData.tags}>
-          <Button text="Create word" icon={faAdd} />
+          <Button text="Create word" icon={faInputText} />
         </CreateWordDialog>
         <CreateTagDialog tags={loaderData.tags}>
           <Button text="Create tag" icon={faTag} />

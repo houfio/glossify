@@ -1,4 +1,4 @@
-import { faAdd, faTimes } from '@fortawesome/pro-regular-svg-icons';
+import { faPlus, faTimes } from '@fortawesome/pro-regular-svg-icons';
 import type { Language, Tag } from '@prisma/client';
 import { type PropsWithChildren, useState } from 'react';
 import { TagSelect } from '~/components/TagSelect.tsx';
@@ -37,7 +37,7 @@ export function CreateWordDialog({ languages, tags, children }: PropsWithChildre
                 <Button
                   text="Add tags"
                   type="button"
-                  icon={faAdd}
+                  icon={faPlus}
                   showText={false}
                   size="small"
                   variant="flat"
@@ -78,7 +78,7 @@ export function CreateWordDialog({ languages, tags, children }: PropsWithChildre
                 <input key={tagId} type="hidden" name="tagIds[]" value={tagId} />
               ))}
             </div>
-            <Button text="Create word" type="submit" icon={faAdd} name="intent" value="createWord" />
+            <Button text="Create word" type="submit" icon={faPlus} name="intent" value="createWord" />
           </Grid>
         </Form>
       }

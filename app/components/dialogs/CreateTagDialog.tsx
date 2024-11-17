@@ -1,4 +1,4 @@
-import { faAdd } from '@fortawesome/pro-regular-svg-icons';
+import { faPlus } from '@fortawesome/pro-regular-svg-icons';
 import type { Tag } from '@prisma/client';
 import { type PropsWithChildren, useState } from 'react';
 import { TagSelect } from '~/components/TagSelect.tsx';
@@ -25,7 +25,7 @@ export function CreateTagDialog({ tags, children }: PropsWithChildren<Props>) {
             <input type="hidden" name="parentId" value={selected.length ? selected[selected.length - 1] : ''} />
             Parent
             <TagSelect tags={tags} selected={selected} setSelected={setSelected} />
-            <Button text="Create tag" type="submit" icon={faAdd} name="intent" value="createTag" />
+            <Button text="Create tag" type="submit" icon={faPlus} name="intent" value="createTag" />
           </Grid>
         </Form>
       }
