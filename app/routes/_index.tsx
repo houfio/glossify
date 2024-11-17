@@ -1,10 +1,8 @@
-import { faAdd } from '@fortawesome/pro-regular-svg-icons';
+import { faAdd, faTag } from '@fortawesome/pro-regular-svg-icons';
 import { useEffect, useState } from 'react';
-import { Form } from 'react-router';
 import * as v from 'valibot';
 import { optional } from 'valibot';
 import { Table } from '~/components/Table.tsx';
-import { TagSelect } from '~/components/TagSelect.tsx';
 import { CreateWordDialog } from '~/components/dialogs/CreateWordDialog.tsx';
 import { Button } from '~/components/forms/Button.tsx';
 import { Container } from '~/components/layout/Container.tsx';
@@ -12,8 +10,8 @@ import { Header } from '~/components/layout/Header.tsx';
 import { db } from '~/db.server.ts';
 import { requireUserId } from '~/session.server.ts';
 import { actions, intent } from '~/utils/actions.server.ts';
-import { arrayToTree } from '~/utils/trees.ts';
 import type { Route } from './+types/_index.ts';
+import { CreateTagDialog } from '~/components/dialogs/CreateTagDialog.tsx';
 
 export const meta: Route.MetaFunction = () => [{ title: 'Overview / Glossify' }];
 
@@ -112,46 +110,33 @@ export default function Component({ loaderData, actionData }: Route.ComponentPro
         <CreateWordDialog languages={loaderData.languages} tags={loaderData.tags}>
           <Button text="Create word" icon={faAdd} />
         </CreateWordDialog>
+        <CreateTagDialog tags={loaderData.tags}>
+          <Button text="Create tag" icon={faTag} />
+        </CreateTagDialog>
       </Header>
       <Container>
         <Table
-          data={loaderData.words}
+          rows={loaderData.words}
           rowKey="id"
-          columns={{
-            source: {
+          columns={[
+            {
+              key: 'source',
               title: 'Source',
-              render: (value) => value
+              render: (row) => row.source
             },
-            destination: {
+            {
+              key: 'destination',
               title: 'Destination',
-              render: (value) => value
+              render: (row) => row.destination
             },
-            languageId: {
+            {
+              key: 'languageId',
               title: 'Language',
-              render: (value) => loaderData.languages.find((l) => l.id === value)?.name
-            },
-            tags: {
-              title: 'Tags',
-              render: (value) =>
-                value
-                  .map((t) => loaderData.tags.find((tt) => t.id === tt.id))
-                  .filter((t) => t !== undefined)
-                  .map((t) => t.name)
-                  .join(', ')
+              render: (row) => loaderData.languages.find((l) => l.id === row.languageId)?.name
             }
-          }}
+          ]}
+          aria-label="Words"
         />
-      </Container>
-      <Header text="Tags" />
-      <Container>
-        <Form method="post">
-          <input name="name" />
-          <input type="hidden" name="parentId" value={selected.length ? selected[selected.length - 1] : ''} />
-          <button type="submit" name="intent" value="createTag">
-            Create tag
-          </button>
-          <TagSelect tags={arrayToTree(loaderData.tags)} selected={selected} setSelected={setSelected} />
-        </Form>
         <pre>{JSON.stringify(actionData, undefined, 2)}</pre>
       </Container>
     </>

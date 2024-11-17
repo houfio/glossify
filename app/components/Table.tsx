@@ -1,61 +1,60 @@
 import { faCactus } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { clsx } from 'clsx';
+import { mergeProps } from '@react-aria/utils';
 import type { ReactNode } from 'react';
+import {
+  Cell as AriaCell,
+  Column as AriaColumn,
+  Row as AriaRow,
+  Table as AriaTable,
+  TableBody as AriaTableBody,
+  TableHeader as AriaTableHeader,
+  type TableProps
+} from 'react-aria-components';
+import { withPalette } from '~/utils/styles.ts';
 import styles from './Table.module.scss';
 
-type Props<T> = {
-  data: T[];
+type Props<T> = Omit<TableProps, 'children'> & {
+  rows: T[];
   rowKey: keyof T;
-  columns: {
-    [K in keyof T]?: ColumnConfig<T, K>;
-  };
+  columns: Column<T>[];
+  palette?: string;
 };
 
-type ColumnConfig<T, K extends keyof T> = {
+type Column<T> = {
+  key: string;
   title: string;
-  render: (row: T[K], data: T) => ReactNode;
+  render: (row: T) => ReactNode;
 };
 
-export function Table<T>({ data, rowKey, columns }: Props<T>) {
-  const columnArrays = Object.entries(columns).map(([key, value]) => ({
-    key: key as keyof T & string,
-    config: value as ColumnConfig<T, keyof T>
-  }));
-
+export function Table<T>({ rows, rowKey, columns, palette = 'surface', ...props }: Props<T>) {
   return (
-    <table className={styles.table}>
-      <thead className={styles.header}>
-        <tr>
-          {columnArrays.map(({ key, config }) => (
-            <th key={key} className={clsx(styles.head, !config.title && styles.small)}>
-              {config.title}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {data.length ? (
-          data.map((row) => (
-            <tr key={String(row[rowKey])} className={styles.row}>
-              {columnArrays.map(({ key, config }) => (
-                <td key={key} className={styles.body}>
-                  {config.render(row[key], row)}
-                </td>
-              ))}
-            </tr>
-          ))
-        ) : (
-          <tr className={styles.row}>
-            <td colSpan={columnArrays.length} className={styles.body}>
-              <div className={styles.empty}>
-                <FontAwesomeIcon icon={faCactus} size="xl" />
-                There's nothing to see here
-              </div>
-            </td>
-          </tr>
+    <AriaTable {...mergeProps(props, { className: styles.table, style: withPalette(palette) })}>
+      <AriaTableHeader>
+        {columns.map((column, index) => (
+          <AriaColumn key={column.key} className={styles.column} isRowHeader={index === 0}>
+            {column.title}
+          </AriaColumn>
+        ))}
+      </AriaTableHeader>
+      <AriaTableBody
+        renderEmptyState={() => (
+          <div className={styles.empty}>
+            <FontAwesomeIcon icon={faCactus} />
+            There's nothing to see here
+          </div>
         )}
-      </tbody>
-    </table>
+      >
+        {rows.map((row) => (
+          <AriaRow key={String(row[rowKey])} className={styles.row}>
+            {columns.map((column) => (
+              <AriaCell key={column.key} className={styles.cell}>
+                {column.render(row)}
+              </AriaCell>
+            ))}
+          </AriaRow>
+        ))}
+      </AriaTableBody>
+    </AriaTable>
   );
 }

@@ -6,7 +6,6 @@ import { TagSelect } from '~/components/TagSelect.tsx';
 import { Dialog } from '~/components/dialogs/Dialog.tsx';
 import { Button } from '~/components/forms/Button.tsx';
 import { Grid } from '~/components/layout/Grid.tsx';
-import { arrayToTree } from '~/utils/trees.ts';
 import styles from './CreateWordDialog.module.scss';
 
 type Props = {
@@ -18,7 +17,6 @@ export function CreateWordDialog({ languages, tags, children }: PropsWithChildre
   const id = useId();
   const [selectedTags, setSelectedTags] = useState<string[][]>([[]]);
 
-  const tagTree = arrayToTree(tags);
   const tagIds = [...new Set(selectedTags.flat())];
 
   return (
@@ -54,7 +52,7 @@ export function CreateWordDialog({ languages, tags, children }: PropsWithChildre
                     onPress={() => setSelectedTags(selectedTags.filter((_, ii) => i !== ii))}
                   />
                   <TagSelect
-                    tags={tagTree}
+                    tags={tags}
                     selected={t}
                     setSelected={(tt) => setSelectedTags(selectedTags.map((s, ii) => (i === ii ? tt : s)))}
                   />
