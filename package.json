@@ -26,7 +26,7 @@
     "react-aria-components": "^1.4.1",
     "react-dom": "rc",
     "react-router": "nightly",
-    "valibot": "^1.0.0-beta.6"
+    "valibot": "^1.0.0-beta.7"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
