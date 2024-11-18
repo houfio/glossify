@@ -4,8 +4,8 @@ import { mergeProps } from 'react-aria';
 import {
   Label as AriaLabel,
   Select as AriaSelect,
-  type SelectProps,
-  SelectValue as AriaSelectValue
+  SelectValue as AriaSelectValue,
+  type SelectProps
 } from 'react-aria-components';
 import { ListBox } from '~/components/ListBox.tsx';
 import { Button } from '~/components/forms/Button.tsx';
@@ -26,7 +26,15 @@ export function Select<T extends object>({ label, items, render, size, shape, va
   return (
     <AriaSelect {...mergeProps(props, { className: styles.select })}>
       {label && <AriaLabel>{label}</AriaLabel>}
-      <Button text={<AriaSelectValue />} icon={faChevronDown} flipOrder={true} size={size} shape={shape} variant={variant} palette={palette} />
+      <Button
+        text={<AriaSelectValue />}
+        icon={faChevronDown}
+        flipOrder={true}
+        size={size}
+        shape={shape}
+        variant={variant}
+        palette={palette}
+      />
       <Popover palette={palette}>
         <ListBox items={items} render={render} />
       </Popover>

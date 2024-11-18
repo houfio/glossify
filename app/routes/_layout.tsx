@@ -1,10 +1,12 @@
-import { Outlet } from 'react-router';
+import { NavLink, Outlet } from 'react-router';
 import { Container } from '~/components/layout/Container.tsx';
 import styles from './_layout.module.scss';
 
 export default function Component() {
   return (
     <>
+      <NavLink to="/">Words</NavLink>
+      <NavLink to="/practises">Practises</NavLink>
       <main className={styles.main}>
         <Outlet />
       </main>

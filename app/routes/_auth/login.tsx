@@ -13,7 +13,7 @@ export const action = async ({ request }: Route.ActionArgs) =>
     intent(
       'login',
       v.object({
-        username: v.string(),
+        username: v.pipe(v.string(), v.minLength(3), v.toLowerCase()),
         password: v.string()
       }),
       async (data) => {

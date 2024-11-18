@@ -35,10 +35,9 @@ export function CreateWordDialog({ languages, tags, children }: PropsWithChildre
               <div className={styles.header}>
                 Tags
                 <Button
-                  text="Add tags"
+                  text="Add"
                   type="button"
                   icon={faPlus}
-                  showText={false}
                   size="small"
                   variant="flat"
                   palette="accent"
@@ -51,9 +50,9 @@ export function CreateWordDialog({ languages, tags, children }: PropsWithChildre
                     text="Remove"
                     type="button"
                     icon={faTimes}
+                    showText={false}
                     size="small"
                     palette="surface"
-                    showText={false}
                     variant="flat"
                     onPress={() => setSelectedTags(selectedTags.filter((tag) => key !== tag.key))}
                   />

@@ -21,7 +21,7 @@ export const action = async ({ request }: Route.ActionArgs) =>
     intent(
       'register',
       v.object({
-        username: v.string(),
+        username: v.pipe(v.string(), v.minLength(3), v.toLowerCase()),
         password: v.string(),
         languageId: v.string()
       }),
