@@ -78,6 +78,10 @@
 
 .icon {
   width: 1rem;
+
+  &.flip {
+    order: 1;
+  }
 }
 
 .spinner {

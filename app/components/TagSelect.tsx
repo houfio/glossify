@@ -1,6 +1,7 @@
 import { faChevronRight, faXmark } from '@fortawesome/pro-regular-svg-icons';
 import type { Tag } from '@prisma/client';
-import { ListBox as AriaListBox, ListBoxItem as AriaListBoxItem, Select as AriaSelect } from 'react-aria-components';
+import { Select as AriaSelect } from 'react-aria-components';
+import { ListBox } from '~/components/ListBox.tsx';
 import { Button } from '~/components/forms/Button.tsx';
 import { Popover } from '~/components/popovers/Popover.tsx';
 import { arrayToTree, followPath } from '~/utils/trees.ts';
@@ -50,9 +51,7 @@ export function TagSelect({ tags, selected, setSelected }: Props) {
             palette="surface"
           />
           <Popover>
-            <AriaListBox items={options} className={styles.list}>
-              {(option) => <AriaListBoxItem className={styles.item}>{option.name}</AriaListBoxItem>}
-            </AriaListBox>
+            <ListBox items={options} render={(option) => option.name} />
           </Popover>
         </AriaSelect>
       )}

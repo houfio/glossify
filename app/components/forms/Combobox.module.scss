@@ -1,0 +1,34 @@
+.combobox {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+  color: var(--on-background);
+}
+
+.input {
+  width: 100%;
+  height: 2.25rem;
+  padding: 0 2rem 0 .5rem;
+  color: var(--on-background);
+  background-color: var(--background);
+  border: 1px solid var(--background-outline);
+  border-radius: .5rem;
+  outline: none;
+
+  &[data-focused] {
+    outline: 5px auto -webkit-focus-ring-color;
+  }
+
+  &[data-disabled] {
+    opacity: .5;
+  }
+}
+
+.button {
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-left: -2.25rem;
+  background: none;
+  border: none;
+  appearance: none;
+}

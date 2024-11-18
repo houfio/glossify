@@ -3,15 +3,17 @@ import { faRotate } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { mergeProps } from '@react-aria/utils';
 import { clsx } from 'clsx';
+import type { ReactNode } from 'react';
 import { Button as AriaButton, type ButtonProps } from 'react-aria-components';
 import { useNavigation } from 'react-router';
 import { withPalette } from '~/utils/styles.ts';
 import styles from './Button.module.scss';
 
 type Props = Omit<ButtonProps, 'children'> & {
-  text: string;
+  text: ReactNode;
   icon?: IconProp;
   showText?: string | boolean;
+  flipOrder?: boolean;
   size?: 'small' | 'medium' | 'big';
   shape?: 'square' | 'round';
   variant?: 'outlined' | 'flat';
@@ -22,6 +24,7 @@ export function Button({
   text,
   icon,
   showText = 'phone',
+  flipOrder,
   size = 'medium',
   shape = 'square',
   variant = 'outlined',
@@ -47,7 +50,7 @@ export function Button({
       {({ isPending }) => (
         <>
           <div className={clsx(styles.inner, isPending && styles.pending)}>
-            {icon && <FontAwesomeIcon icon={icon} className={styles.icon} />}
+            {icon && <FontAwesomeIcon icon={icon} className={clsx(styles.icon, flipOrder && styles.flip)} />}
             <span className={styles.text}>{text}</span>
           </div>
           {isPending && (

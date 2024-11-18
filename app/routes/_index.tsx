@@ -7,6 +7,7 @@ import { TagSelect } from '~/components/TagSelect.tsx';
 import { CreateTagDialog } from '~/components/dialogs/CreateTagDialog.tsx';
 import { CreateWordDialog } from '~/components/dialogs/CreateWordDialog.tsx';
 import { Button } from '~/components/forms/Button.tsx';
+import { Select } from '~/components/forms/Select.tsx';
 import { Container } from '~/components/layout/Container.tsx';
 import { Header } from '~/components/layout/Header.tsx';
 import { db } from '~/db.server.ts';
@@ -103,7 +104,8 @@ export const action = async ({ request }: Route.ActionArgs) => {
 };
 
 export default function Component({ loaderData, actionData }: Route.ComponentProps) {
-  const [selected, setSelected] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedLanguage, setSelectedLanguage] = useState('');
 
   return (
     <>
@@ -117,10 +119,25 @@ export default function Component({ loaderData, actionData }: Route.ComponentPro
       </Header>
       <Container>
         <div className={styles.select}>
-          <TagSelect tags={loaderData.tags} selected={selected} setSelected={setSelected} />
+          <TagSelect tags={loaderData.tags} selected={selectedTags} setSelected={setSelectedTags} />
+          <Select
+            selectedKey={selectedLanguage}
+            items={[
+              { id: '', name: 'All languages' },
+              ...loaderData.languages
+            ]}
+            render={(language) => language.name}
+            size="small"
+            shape="round"
+            variant="flat"
+            palette="surface"
+            onSelectionChange={(key) => setSelectedLanguage(String(key))}
+          />
         </div>
         <Table
-          rows={loaderData.words.filter((word) => selected.every((s) => word.tagIds.includes(s)))}
+          rows={loaderData.words
+            .filter((word) => selectedTags.every((s) => word.tagIds.includes(s)))
+            .filter((word) => word.languageId.includes(selectedLanguage))}
           rowKey="id"
           columns={[
             {

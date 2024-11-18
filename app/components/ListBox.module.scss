@@ -1,0 +1,27 @@
+.list {
+  outline: none;
+  min-width: var(--trigger-width);
+}
+
+.item {
+  padding: .5rem;
+  border-radius: .5rem;
+  outline: none;
+
+  &[data-hovered] {
+    background-color: var(--color-hover);
+    cursor: pointer;
+  }
+
+  &[data-pressed] {
+    background-color: var(--color-click);
+  }
+
+  &[data-disabled] {
+    opacity: .5;
+  }
+
+  &[data-focus-visible] {
+    outline: 5px auto -webkit-focus-ring-color;
+  }
+}

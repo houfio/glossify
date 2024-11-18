@@ -4,9 +4,9 @@ import { type PropsWithChildren, useState } from 'react';
 import { TagSelect } from '~/components/TagSelect.tsx';
 import { Dialog } from '~/components/dialogs/Dialog.tsx';
 import { Button } from '~/components/forms/Button.tsx';
+import { Combobox } from '~/components/forms/Combobox.tsx';
 import { Form } from '~/components/forms/Form.tsx';
 import { Input } from '~/components/forms/Input.tsx';
-import { Select } from '~/components/forms/Select.tsx';
 import { Grid } from '~/components/layout/Grid.tsx';
 import styles from './CreateWordDialog.module.scss';
 
@@ -30,7 +30,7 @@ export function CreateWordDialog({ languages, tags, children }: PropsWithChildre
           <Grid gaps={{ phone: 1 }}>
             <Input label="Source" name="source" />
             <Input label="Destination" name="destination" />
-            <Select label="Language" name="languageId" items={languages} render={(language) => language.name} />
+            <Combobox label="Language" name="languageId" items={languages} render={(language) => language.name} />
             <div className={styles.tags}>
               <div className={styles.header}>
                 Tags
