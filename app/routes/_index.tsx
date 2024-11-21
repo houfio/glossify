@@ -170,6 +170,7 @@ export default function Component({ loaderData, actionData }: Route.ComponentPro
             shape="round"
             variant="flat"
             palette="surface"
+            aria-label="Language"
             onSelectionChange={(key) => setSelectedLanguage(String(key))}
           />
         </div>
