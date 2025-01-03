@@ -1,5 +1,5 @@
 import { faChevronRight, faXmark } from '@fortawesome/pro-regular-svg-icons';
-import type { Tag } from '@prisma/client';
+import type { Tag } from '@prisma/client/index.js';
 import { Select as AriaSelect } from 'react-aria-components';
 import { ListBox } from '~/components/ListBox.tsx';
 import { Button } from '~/components/forms/Button.tsx';

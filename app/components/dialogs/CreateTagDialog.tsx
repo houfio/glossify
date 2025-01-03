@@ -1,5 +1,5 @@
 import { faPlus } from '@fortawesome/pro-regular-svg-icons';
-import type { Tag } from '@prisma/client';
+import type { Tag } from '@prisma/client/index.js';
 import { type PropsWithChildren, useState } from 'react';
 import { TagSelect } from '~/components/TagSelect.tsx';
 import { Dialog } from '~/components/dialogs/Dialog.tsx';

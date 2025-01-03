@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client/index.js';
 import * as v from 'valibot';
 import { type BaseIssue, type BaseSchema, type InferOutput, ValiError } from 'valibot';
 import { parseFormData } from '~/utils/data.server.ts';
