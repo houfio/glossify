@@ -1,4 +1,4 @@
-import { type ToastOptions, ToastQueue } from '@react-stately/toast';
+import { type ToastOptions, UNSTABLE_ToastQueue as ToastQueue } from 'react-aria-components';
 
 export type ToastData = {
   message: string;

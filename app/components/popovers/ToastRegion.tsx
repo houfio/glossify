@@ -1,28 +1,34 @@
-import { type AriaToastRegionProps, useToastRegion } from '@react-aria/toast';
-import { useToastQueue } from '@react-stately/toast';
-import { useRef } from 'react';
-import { createPortal } from 'react-dom';
-import { Toast } from '~/components/popovers/Toast.tsx';
+import {
+  Text as AriaText,
+  UNSTABLE_Toast as AriaToast,
+  UNSTABLE_ToastContent as AriaToastContent,
+  UNSTABLE_ToastRegion as AriaToastRegion
+} from 'react-aria-components';
 import { toasts } from '~/utils/toast.ts';
+import { Button } from '~/components/forms/Button.tsx';
+import { faXmark } from '@fortawesome/pro-regular-svg-icons';
+import { withPalette } from '~/utils/styles.ts';
 import styles from './ToastRegion.module.scss';
 
-type Props = AriaToastRegionProps;
-
-export function ToastRegion(props: Props) {
-  const state = useToastQueue(toasts);
-  const ref = useRef<HTMLDivElement>(null);
-  const { regionProps } = useToastRegion(props, state, ref);
-
-  if (!state.visibleToasts.length) {
-    return null;
-  }
-
-  return createPortal(
-    <div {...regionProps} ref={ref} className={styles.region}>
-      {state.visibleToasts.map((toast) => (
-        <Toast key={toast.key} toast={toast} state={state} />
-      ))}
-    </div>,
-    document.body
+export function ToastRegion() {
+  return (
+    <AriaToastRegion queue={toasts} className={styles.region}>
+      {({ toast }) => (
+        <AriaToast toast={toast} className={styles.toast} style={withPalette(toast.content.palette)}>
+          <AriaToastContent>
+            <AriaText slot="title">{toast.content.message}</AriaText>
+          </AriaToastContent>
+          <Button
+            slot="close"
+            text="Dismiss"
+            icon={faXmark}
+            showText={false}
+            size="small"
+            variant="flat"
+            palette={toast.content.palette}
+          />
+        </AriaToast>
+      )}
+    </AriaToastRegion>
   );
 }
