@@ -6,18 +6,16 @@ import { actions, intent } from '~/utils/actions.server.ts';
 import { login } from '~/utils/session.server.ts';
 import type { Route } from './+types/register.ts';
 
-export const meta: Route.MetaFunction = () => [{ title: 'Register / Glossify' }];
-
-export const loader = async () => {
+export async function loader() {
   const languages = await db.language.findMany({
     select: { id: true, name: true }
   });
 
   return { languages };
-};
+}
 
-export const action = async ({ request, context }: Route.ActionArgs) =>
-  actions(request, [
+export function action({ request, context }: Route.ActionArgs) {
+  return actions(request, [
     intent(
       'register',
       type({
@@ -39,6 +37,11 @@ export const action = async ({ request, context }: Route.ActionArgs) =>
       }
     )
   ]);
+}
+
+export const handle = {
+  title: 'Register'
+};
 
 export default function Component({ loaderData, actionData }: Route.ComponentProps) {
   return (

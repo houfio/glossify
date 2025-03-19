@@ -18,9 +18,7 @@ import { findWordsForPractise } from '~/utils/practise.server.ts';
 import type { Route } from './+types/_index.ts';
 import styles from './_index.module.scss';
 
-export const meta: Route.MetaFunction = () => [{ title: 'Overview / Glossify' }];
-
-export const loader = async ({ context }: Route.LoaderArgs) => {
+export async function loader({ context }: Route.LoaderArgs) {
   const user = getUser(context);
   const languages = await db.language.findMany({
     select: { id: true, name: true },
@@ -60,12 +58,12 @@ export const loader = async ({ context }: Route.LoaderArgs) => {
     })),
     tags
   };
-};
+}
 
-export const action = async ({ request, context }: Route.ActionArgs) => {
+export function action({ request, context }: Route.ActionArgs) {
   const user = getUser(context);
 
-  return await actions(request, [
+  return actions(request, [
     intent(
       'createWord',
       type({
@@ -142,6 +140,10 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
       }
     )
   ]);
+}
+
+export const handle = {
+  title: 'Overview'
 };
 
 export default function Component({ loaderData, actionData }: Route.ComponentProps) {

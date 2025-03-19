@@ -2,7 +2,7 @@ import './root.scss';
 
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { type PropsWithChildren, useEffect } from 'react';
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, useMatches } from 'react-router';
 import { ToastRegion } from '~/components/popovers/ToastRegion.tsx';
 import { getSession, sessionMiddleware } from '~/middleware/session.ts';
 import { showToast } from '~/utils/toast.ts';
@@ -20,6 +20,10 @@ export const loader = async ({ context }: Route.LoaderArgs) => {
   return {
     message: !message || !palette ? undefined : ([message, palette] as const)
   };
+};
+
+export const handle = {
+  title: 'Glossify'
 };
 
 export function Layout({ children }: PropsWithChildren) {
@@ -40,7 +44,15 @@ export function Layout({ children }: PropsWithChildren) {
   );
 }
 
-export default function App({ loaderData }: Route.ComponentProps) {
+export default function Component({ loaderData }: Route.ComponentProps) {
+  const matches = useMatches();
+
+  const title = matches
+    .map((match) => match.handle && typeof match.handle === 'object' && 'title' in match.handle ? match.handle.title : undefined)
+    .filter((title) => typeof title === 'string')
+    .reverse()
+    .join(' / ');
+
   useEffect(() => {
     if (loaderData.message) {
       const [message, palette] = loaderData.message;
@@ -51,6 +63,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
+      <title>{title}</title>
       <Outlet />
       <ToastRegion />
     </>

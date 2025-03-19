@@ -3,7 +3,7 @@ import { db } from '~/db.server.ts';
 import { getUser } from '~/middleware/user.ts';
 import type { Route } from './+types/_index.ts';
 
-export const loader = async ({ context }: Route.LoaderArgs) => {
+export async function loader({ context }: Route.LoaderArgs) {
   const user = getUser(context);
   const practises = await db.practise.findMany({
     where: {
@@ -21,9 +21,11 @@ export const loader = async ({ context }: Route.LoaderArgs) => {
     }
   });
 
-  return {
-    practises
-  };
+  return { practises };
+}
+
+export const handle = {
+  title: 'Practise'
 };
 
 export default function Component({ loaderData }: Route.ComponentProps) {

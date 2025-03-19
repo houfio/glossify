@@ -8,7 +8,7 @@ import { getUser } from '~/middleware/user.ts';
 import { actions, intent } from '~/utils/actions.server.ts';
 import type { Route } from './+types/practise.ts';
 
-export const loader = async ({ params, context }: Route.LoaderArgs) => {
+export async function loader({ params, context }: Route.LoaderArgs) {
   const user = getUser(context);
   const practise = await db.practise.findUnique({
     where: {
@@ -44,10 +44,10 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
     wordId: word.id,
     word: word.word.source
   };
-};
+}
 
-export const action = async ({ request }: Route.ActionArgs) => {
-  return await actions(request, [
+export function action({ request }: Route.ActionArgs) {
+  return actions(request, [
     intent(
       'submitAnswer',
       type({
@@ -74,7 +74,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
       }
     )
   ]);
-};
+}
 
 export default function Component({ loaderData, actionData }: Route.ComponentProps) {
   return (

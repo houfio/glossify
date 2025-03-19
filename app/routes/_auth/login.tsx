@@ -6,10 +6,8 @@ import { actions, intent } from '~/utils/actions.server.ts';
 import { login } from '~/utils/session.server.ts';
 import type { Route } from './+types/login.ts';
 
-export const meta: Route.MetaFunction = () => [{ title: 'Login / Glossify' }];
-
-export const action = async ({ request, context }: Route.ActionArgs) =>
-  actions(request, [
+export function action({ request, context }: Route.ActionArgs) {
+  return actions(request, [
     intent(
       'login',
       type({
@@ -30,6 +28,11 @@ export const action = async ({ request, context }: Route.ActionArgs) =>
       }
     )
   ]);
+}
+
+export const handle = {
+  title: 'Login'
+};
 
 export default function Component({ actionData }: Route.ComponentProps) {
   return (
