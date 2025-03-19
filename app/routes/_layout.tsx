@@ -1,6 +1,10 @@
 import { NavLink, Outlet } from 'react-router';
 import { Container } from '~/components/layout/Container.tsx';
+import { userMiddleware } from '~/middleware/user.ts';
+import type { Route } from './+types/_layout.ts';
 import styles from './_layout.module.scss';
+
+export const unstable_middleware: Route.unstable_MiddlewareFunction[] = [userMiddleware];
 
 export default function Component() {
   return (

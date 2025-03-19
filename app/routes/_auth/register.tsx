@@ -1,9 +1,9 @@
-import * as v from 'valibot';
+import { type } from 'arktype';
 import { Form } from '~/components/forms/Form.tsx';
 import { Container } from '~/components/layout/Container.tsx';
 import { db } from '~/db.server.ts';
-import { login } from '~/session.server.ts';
 import { actions, intent } from '~/utils/actions.server.ts';
+import { login } from '~/utils/session.server.ts';
 import type { Route } from './+types/register.ts';
 
 export const meta: Route.MetaFunction = () => [{ title: 'Register / Glossify' }];
@@ -16,26 +16,26 @@ export const loader = async () => {
   return { languages };
 };
 
-export const action = async ({ request }: Route.ActionArgs) =>
+export const action = async ({ request, context }: Route.ActionArgs) =>
   actions(request, [
     intent(
       'register',
-      v.object({
-        username: v.pipe(v.string(), v.minLength(3), v.toLowerCase()),
-        password: v.string(),
-        languageId: v.string()
+      type({
+        username: 'string >= 3',
+        password: 'string > 0',
+        languageId: 'string'
       }),
       async (data) => {
         const { hash } = await import('@node-rs/argon2');
         const user = await db.user.create({
           data: {
-            username: data.username,
+            username: data.username.toLowerCase(),
             password: await hash(data.password),
             languageId: data.languageId
           }
         });
 
-        throw await login(request, user.id);
+        throw await login(context, user.id);
       }
     )
   ]);

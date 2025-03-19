@@ -2,18 +2,24 @@ import './root.scss';
 
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { type PropsWithChildren, useEffect } from 'react';
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, data } from 'react-router';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
 import { ToastRegion } from '~/components/popovers/ToastRegion.tsx';
-import { getMessage } from '~/session.server.ts';
+import { getSession, sessionMiddleware } from '~/middleware/session.ts';
 import { showToast } from '~/utils/toast.ts';
 import type { Route } from './+types/root.ts';
 
 config.autoAddCss = false;
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
-  const { message, headers } = await getMessage(request);
+export const unstable_middleware: Route.unstable_MiddlewareFunction[] = [sessionMiddleware];
 
-  return data({ message }, { headers });
+export const loader = async ({ context }: Route.LoaderArgs) => {
+  const session = getSession(context);
+  const message = session.get('message');
+  const palette = session.get('palette');
+
+  return {
+    message: !message || !palette ? undefined : ([message, palette] as const)
+  };
 };
 
 export function Layout({ children }: PropsWithChildren) {

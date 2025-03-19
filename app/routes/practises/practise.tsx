@@ -1,19 +1,19 @@
-import type { Route } from './+types/practise.ts';
-import { requireUserId } from '~/session.server.ts';
-import { db } from '~/db.server.ts';
+import { type } from 'arktype';
 import { redirect } from 'react-router';
-import { actions, intent } from '~/utils/actions.server.ts';
+import { Button } from '~/components/forms/Button.tsx';
 import { Form } from '~/components/forms/Form.tsx';
 import { Input } from '~/components/forms/Input.tsx';
-import { Button } from '~/components/forms/Button.tsx';
-import * as v from 'valibot';
+import { db } from '~/db.server.ts';
+import { getUser } from '~/middleware/user.ts';
+import { actions, intent } from '~/utils/actions.server.ts';
+import type { Route } from './+types/practise.ts';
 
-export const loader = async ({ params, request }: Route.LoaderArgs) => {
-  const userId = await requireUserId(request);
+export const loader = async ({ params, context }: Route.LoaderArgs) => {
+  const user = getUser(context);
   const practise = await db.practise.findUnique({
     where: {
       id: params.id,
-      userId
+      userId: user.id
     },
     include: {
       words: {
@@ -46,15 +46,13 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   };
 };
 
-export const action = async ({ params, request }: Route.ActionArgs) => {
-  const userId = await requireUserId(request);
-
+export const action = async ({ request }: Route.ActionArgs) => {
   return await actions(request, [
     intent(
       'submitAnswer',
-      v.object({
-        wordId: v.string(),
-        answer: v.string()
+      type({
+        wordId: 'string',
+        answer: 'string > 0'
       }),
       async (data) => {
         const word = await db.practiseWord.findUnique({

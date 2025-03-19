@@ -1,13 +1,13 @@
-import { db } from '~/db.server.ts';
-import { requireUserId } from '~/session.server.ts';
-import type { Route } from './+types/practises.ts';
 import { NavLink } from 'react-router';
+import { db } from '~/db.server.ts';
+import { getUser } from '~/middleware/user.ts';
+import type { Route } from './+types/_index.ts';
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
-  const userId = await requireUserId(request);
+export const loader = async ({ context }: Route.LoaderArgs) => {
+  const user = getUser(context);
   const practises = await db.practise.findMany({
     where: {
-      userId,
+      userId: user.id,
       NOT: {
         words: {
           every: {
@@ -31,10 +31,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
     <div>
       {loaderData.practises.map((practise) => (
         <div key={practise.id}>
-          {practise.name} ({practise.language.name})
-          <NavLink to={practise.id}>
-            Continue
-          </NavLink>
+          {practise.name} ({practise.language.name})<NavLink to={practise.id}>Continue</NavLink>
         </div>
       ))}
     </div>

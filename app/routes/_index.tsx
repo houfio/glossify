@@ -1,8 +1,7 @@
 import { faBook, faInputText, faTag } from '@fortawesome/pro-regular-svg-icons';
+import { type } from 'arktype';
 import { useState } from 'react';
 import { redirect } from 'react-router';
-import * as v from 'valibot';
-import { optional } from 'valibot';
 import { Table } from '~/components/Table.tsx';
 import { TagSelect } from '~/components/TagSelect.tsx';
 import { CreateTagDialog } from '~/components/dialogs/CreateTagDialog.tsx';
@@ -13,7 +12,7 @@ import { Select } from '~/components/forms/Select.tsx';
 import { Container } from '~/components/layout/Container.tsx';
 import { Header } from '~/components/layout/Header.tsx';
 import { db } from '~/db.server.ts';
-import { requireUser, requireUserId } from '~/session.server.ts';
+import { getUser } from '~/middleware/user.ts';
 import { actions, intent } from '~/utils/actions.server.ts';
 import { findWordsForPractise } from '~/utils/practise.server.ts';
 import type { Route } from './+types/_index.ts';
@@ -21,8 +20,8 @@ import styles from './_index.module.scss';
 
 export const meta: Route.MetaFunction = () => [{ title: 'Overview / Glossify' }];
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
-  const user = await requireUser(request);
+export const loader = async ({ context }: Route.LoaderArgs) => {
+  const user = getUser(context);
   const languages = await db.language.findMany({
     select: { id: true, name: true },
     orderBy: { name: 'asc' }
@@ -63,17 +62,17 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   };
 };
 
-export const action = async ({ request }: Route.ActionArgs) => {
-  const userId = await requireUserId(request);
+export const action = async ({ request, context }: Route.ActionArgs) => {
+  const user = getUser(context);
 
   return await actions(request, [
     intent(
       'createWord',
-      v.object({
-        source: v.pipe(v.string(), v.minLength(1)),
-        destination: v.pipe(v.string(), v.minLength(1)),
-        languageId: v.string(),
-        tagIds: optional(v.array(v.string()), [])
+      type({
+        source: 'string > 0',
+        destination: 'string > 0',
+        languageId: 'string',
+        'tagIds?': 'string[]'
       }),
       (data) =>
         db.word.create({
@@ -82,33 +81,33 @@ export const action = async ({ request }: Route.ActionArgs) => {
             destination: data.destination,
             languageId: data.languageId,
             tags: {
-              connect: data.tagIds.map((id) => ({ id }))
+              connect: data.tagIds?.map((id) => ({ id }))
             },
-            userId
+            userId: user.id
           }
         })
     ),
     intent(
       'createTag',
-      v.object({
-        name: v.pipe(v.string(), v.minLength(1)),
-        parentId: v.string()
+      type({
+        name: 'string > 0',
+        parentId: 'string'
       }),
       (data) =>
         db.tag.create({
           data: {
             name: data.name,
             parentId: data.parentId || undefined,
-            userId
+            userId: user.id
           }
         })
     ),
     intent(
       'startPractise',
-      v.object({
-        words: v.pipe(v.string(), v.transform(Number)),
-        languageId: v.string(),
-        tagIds: v.array(v.string())
+      type({
+        words: 'string.numeric.parse',
+        languageId: 'string',
+        tagIds: 'string[]'
       }),
       async (data) => {
         const words = await findWordsForPractise(data.words, data.languageId, data.tagIds);
@@ -127,7 +126,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
         await db.practise.create({
           data: {
             name: tags.map((tag) => tag.name).join(' / '),
-            userId,
+            userId: user.id,
             languageId: data.languageId,
             words: {
               createMany: {

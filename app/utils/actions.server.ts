@@ -1,7 +1,6 @@
 import { Prisma } from '@prisma/client/index.js';
-import * as v from 'valibot';
-import { type BaseIssue, type BaseSchema, type InferOutput, ValiError } from 'valibot';
 import { parseFormData } from '~/utils/data.server.ts';
+import type { StandardSchemaV1 } from '~/utils/standard-schema.ts';
 
 type Action<N extends string, T extends object> = {
   name: N;
@@ -31,23 +30,38 @@ export async function actions<const A extends Action<string, object>[]>(request:
   } as Actions<A>[number];
 }
 
-export function intent<
-  N extends string,
-  T extends object,
-  const S extends BaseSchema<unknown, unknown, BaseIssue<unknown>>
->(
+export function intent<N extends string, T extends object, S extends StandardSchemaV1>(
   name: N,
   schema: S,
-  handle: (data: InferOutput<S>) => Promise<T>,
+  handle: (data: StandardSchemaV1.InferOutput<S>) => Promise<T>,
   handleError?: (e: unknown) => ActionError | undefined
 ): Action<N, T> {
   return {
     name,
     handle: async (data) => {
       try {
-        const validated = v.parse(schema, parseFormData(data));
+        const validated = await schema['~standard'].validate(parseFormData(data));
 
-        return { success: true, data: await handle(validated) };
+        if (validated.issues) {
+          return {
+            success: false,
+            error: {
+              message: 'Validation error',
+              fields: validated.issues.reduce<Record<string, string[]>>((previous, current) => {
+                const path = current.path?.join('.');
+
+                if (path) {
+                  previous[path] ??= [];
+                  previous[path].push(current.message);
+                }
+
+                return previous;
+              }, {})
+            }
+          };
+        }
+
+        return { success: true, data: await handle(validated.value) };
       } catch (e) {
         if (e instanceof Response) {
           throw e;
@@ -71,12 +85,6 @@ export function intent<
 function errorHandler(e: unknown): ActionError | undefined {
   if (typeof e === 'string') {
     return { message: e, fields: {} };
-  }
-
-  if (e instanceof ValiError) {
-    const issues = v.flatten(e.issues);
-
-    return { message: 'Validation error', fields: issues.nested ?? {} };
   }
 
   if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {

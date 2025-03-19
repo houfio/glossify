@@ -1,32 +1,32 @@
-import * as v from 'valibot';
+import { type } from 'arktype';
 import { Form } from '~/components/forms/Form.tsx';
 import { Container } from '~/components/layout/Container.tsx';
 import { db } from '~/db.server.ts';
-import { login } from '~/session.server.ts';
 import { actions, intent } from '~/utils/actions.server.ts';
+import { login } from '~/utils/session.server.ts';
 import type { Route } from './+types/login.ts';
 
 export const meta: Route.MetaFunction = () => [{ title: 'Login / Glossify' }];
 
-export const action = async ({ request }: Route.ActionArgs) =>
+export const action = async ({ request, context }: Route.ActionArgs) =>
   actions(request, [
     intent(
       'login',
-      v.object({
-        username: v.pipe(v.string(), v.minLength(3), v.toLowerCase()),
-        password: v.string()
+      type({
+        username: 'string >= 3',
+        password: 'string > 0'
       }),
       async (data) => {
         const { verify } = await import('@node-rs/argon2');
         const user = await db.user.findUnique({
-          where: { username: data.username }
+          where: { username: data.username.toLowerCase() }
         });
 
         if (!user || !(await verify(user.password, data.password))) {
           throw 'Invalid username or password';
         }
 
-        throw await login(request, user.id);
+        throw await login(context, user.id);
       }
     )
   ]);
