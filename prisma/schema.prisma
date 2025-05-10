@@ -1,10 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client"
+  previewFeatures = ["queryCompiler", "driverAdapters"]
+  output          = "../.prisma"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:db.sql"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {

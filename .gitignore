@@ -3,5 +3,6 @@ db.sql*
 .cache/
 .idea/
 .react-router/
+.prisma/
 build/
 node_modules/
