@@ -3,6 +3,9 @@
   "private": true,
   "sideEffects": false,
   "type": "module",
+  "engines": {
+    "node": "22"
+  },
   "scripts": {
     "prebuild": "prisma generate",
     "build": "vite build",
