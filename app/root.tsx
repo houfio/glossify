@@ -48,7 +48,9 @@ export default function Component({ loaderData }: Route.ComponentProps) {
   const matches = useMatches();
 
   const title = matches
-    .map((match) => match.handle && typeof match.handle === 'object' && 'title' in match.handle ? match.handle.title : undefined)
+    .map((match) =>
+      match.handle && typeof match.handle === 'object' && 'title' in match.handle ? match.handle.title : undefined
+    )
     .filter((title) => typeof title === 'string')
     .reverse()
     .join(' / ');

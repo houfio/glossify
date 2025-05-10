@@ -1,13 +1,13 @@
+import { faXmark } from '@fortawesome/pro-regular-svg-icons';
 import {
   Text as AriaText,
   UNSTABLE_Toast as AriaToast,
   UNSTABLE_ToastContent as AriaToastContent,
   UNSTABLE_ToastRegion as AriaToastRegion
 } from 'react-aria-components';
-import { toasts } from '~/utils/toast.ts';
 import { Button } from '~/components/forms/Button.tsx';
-import { faXmark } from '@fortawesome/pro-regular-svg-icons';
 import { withPalette } from '~/utils/styles.ts';
+import { toasts } from '~/utils/toast.ts';
 import styles from './ToastRegion.module.scss';
 
 export function ToastRegion() {

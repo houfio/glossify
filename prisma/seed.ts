@@ -1,6 +1,11 @@
-import { PrismaClient } from "~/prisma/client";
+import { PrismaPg } from '@prisma/adapter-pg';
+import { PrismaClient } from '../.prisma/client.ts';
 
-const client = new PrismaClient();
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+const client = new PrismaClient({
+  adapter,
+  log: ['query', 'info', 'warn', 'error']
+});
 
 await client.language.createMany({
   data: [
