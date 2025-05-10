@@ -10,7 +10,7 @@
     "prebuild": "prisma generate",
     "build": "vite build",
     "dev": "vite",
-    "start": "react-router-serve ./build/server/index.js",
+    "start": "prisma migrate deploy && react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "check": "biome check --write",
     "db:migrate": "prisma migrate dev",
