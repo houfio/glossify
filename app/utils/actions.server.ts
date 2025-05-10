@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client/index.js';
+import { Prisma } from '~/prisma/client.ts';
 import { parseFormData } from '~/utils/data.server.ts';
 import type { StandardSchemaV1 } from '~/utils/standard-schema.ts';
 

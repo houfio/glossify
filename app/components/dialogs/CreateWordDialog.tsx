@@ -1,5 +1,4 @@
 import { faPlus, faTimes } from '@fortawesome/pro-regular-svg-icons';
-import type { Language, Tag } from '@prisma/client/index.js';
 import { type PropsWithChildren, useState } from 'react';
 import { TagSelect } from '~/components/TagSelect.tsx';
 import { Dialog } from '~/components/dialogs/Dialog.tsx';
@@ -8,6 +7,7 @@ import { Combobox } from '~/components/forms/Combobox.tsx';
 import { Form } from '~/components/forms/Form.tsx';
 import { Input } from '~/components/forms/Input.tsx';
 import { Grid } from '~/components/layout/Grid.tsx';
+import type { Language, Tag } from '~/prisma/client.ts';
 import styles from './CreateWordDialog.module.scss';
 
 type Props = {

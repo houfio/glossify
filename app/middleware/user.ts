@@ -1,4 +1,3 @@
-import type { User } from '@prisma/client';
 import {
   type unstable_MiddlewareFunction,
   type unstable_RouterContextProvider,
@@ -6,6 +5,7 @@ import {
 } from 'react-router';
 import { db } from '~/db.server.ts';
 import { getSession } from '~/middleware/session.ts';
+import type { User } from '~/prisma/client.ts';
 import { logout } from '~/utils/session.server.ts';
 
 const userContext = unstable_createContext<Omit<User, 'password'>>();
